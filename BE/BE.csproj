@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C6C0F64C-C5E8-4DC0-8427-2BA1BA6D21E9}</ProjectGuid>
+    <ProjectGuid>{6067781A-A872-46C6-A248-5106B6ECA943}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DS</RootNamespace>
-    <AssemblyName>DS</AssemblyName>
+    <RootNamespace>BE</RootNamespace>
+    <AssemblyName>BE</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,14 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataSource.cs" />
+    <Compile Include="AddressStruct.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BE\BE.csproj">
-      <Project>{6067781a-a872-46c6-a248-5106b6eca943}</Project>
-      <Name>BE</Name>
-    </ProjectReference>
+    <Compile Include="Test.cs" />
+    <Compile Include="Tester.cs" />
+    <Compile Include="Trainee.cs" />
+    <Compile Include="whatToWorkOn.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

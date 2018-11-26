@@ -18,8 +18,8 @@ namespace BE
         Adrees TesterAdress;
         int YearsOfExperience;
         int MaxTestsInaWeek;
-        enum CarType Testercar;
-        int[,] Schedual[5][7]; //5 days a week, 6 hours +1 to show the day
+        //enum CarType Testercar;
+        //int[,] Schedual[5][7]; //5 days a week, 6 hours +1 to show the day
         double MaxDistanceForTest; //in kilometers
         //get function to check id
         public string Id

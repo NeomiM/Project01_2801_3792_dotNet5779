@@ -14,8 +14,9 @@ namespace BE
         string traineeGender;
         string PhoneNumber;
         Adrees traineeAdress;
-        enum CarType traineecar;
-        enum GearType traineeGear;
+        
+         CarType traineecar;
+        //enum GearType traineeGear;
         string DrivingSchool;
         string DrivingTeacher;
         int LessonsPassed;

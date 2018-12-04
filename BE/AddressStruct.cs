@@ -4,11 +4,11 @@ using System.Text;
 
 namespace BE
 {
-    struct Addrees
+    struct Address
     {
-        private string street;
-        private int BuildingNumber;
-        private string City;
+        private string _street;
+        private int _buildingNumber;
+        private string _city;
     }
 }
 

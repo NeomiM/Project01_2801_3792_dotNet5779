@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BE
 {
-    struct Adrees
+    struct Addrees
     {
         private string street;
         private int BuildingNumber;

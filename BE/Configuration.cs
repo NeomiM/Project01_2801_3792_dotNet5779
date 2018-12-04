@@ -6,6 +6,6 @@ namespace BE
 {
     class Configuration
     {
-        //global firstTestID
+        public static int FirstTestId = 0;
     }
 }

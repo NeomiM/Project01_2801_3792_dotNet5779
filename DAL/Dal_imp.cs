@@ -4,9 +4,9 @@ using BE;
 using DS;
 namespace DAL
 {
-    public class Dal_imp : Idal
+    public class DalImp : IDal
     {
-        public void addTest(Test T) //add check for id if exist
+        public void AddTest(Test T) //add check for id if exist
         {
             //adds a test to the list of tests in dataSourse
             //pushback/front
@@ -14,52 +14,52 @@ namespace DAL
             throw new NotImplementedException();
         }
 
-        public void addTester(Tester T)  //add check for id if exist
+        public void AddTester(Tester T)  //add check for id if exist
         {
             throw new NotImplementedException();
         }
 
-        public void addTrainee(Trainee T) //add check for id if exist
+        public void AddTrainee(Trainee T) //add check for id if exist
         {
             throw new NotImplementedException();
         }
 
-        public void deleteTester(Tester T)
+        public void DeleteTester(Tester T)
         {
             throw new NotImplementedException();
         }
 
-        public void deleteTester(Trainee T)
+        public void DeleteTester(Trainee T)
         {
             throw new NotImplementedException();
         }
 
-        public List<Tester> getListOfTesters()
+        public List<Tester> GetListOfTesters()
         {
             throw new NotImplementedException();
         }
 
-        public List<Test> getListOfTests()
+        public List<Test> GetListOfTests()
         {
             throw new NotImplementedException();
         }
 
-        public List<Trainee> getListOfTrainees()
+        public List<Trainee> GetListOfTrainees()
         {
             throw new NotImplementedException();
         }
 
-        public void updateTest(Test T)
+        public void UpdateTest(Test T)
         {
             throw new NotImplementedException();
         }
 
-        public void updateTester(Tester T)
+        public void UpdateTester(Tester T)
         {
             throw new NotImplementedException();
         }
 
-        public void updateTrainee(Trainee T)
+        public void UpdateTrainee(Trainee T)
         {
             throw new NotImplementedException();
         }

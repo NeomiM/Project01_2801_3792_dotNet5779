@@ -15,7 +15,7 @@ namespace BE
         // enums.gender; //do we nned a poperty?
         string testerGender;
         string PhoneNumber;
-        Adrees TesterAdress;
+        Addrees TesterAdress;
         int YearsOfExperience;
         int MaxTestsInaWeek;
         //enum CarType Testercar;
@@ -32,7 +32,7 @@ namespace BE
         public string PhoneNumber1 { get => PhoneNumber; set => PhoneNumber = value; }
         public int YearsOfExperience1 { get => YearsOfExperience; set => YearsOfExperience = value; }
         public int MaxTestsInaWeek1 { get => MaxTestsInaWeek; set => MaxTestsInaWeek = value; }
-        internal Adrees TesterAdress1 { get => TesterAdress; set => TesterAdress = value; }
+        internal Addrees TesterAdress1 { get => TesterAdress; set => TesterAdress = value; }
         public double MaxDistanceForTest1 { get => MaxDistanceForTest; set => MaxDistanceForTest = value; }
 
         public override string ToString()

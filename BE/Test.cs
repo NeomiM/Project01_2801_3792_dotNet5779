@@ -6,43 +6,44 @@ namespace BE
 {
     public class Test
     {
-        string testID;
-        string testerID; //might need to have a user for each tester
-        string traineeID;
-        DateTime testDate;
-        DateTime dateAndHourofTest;
-        Adrees StartingPoint;
+        private string _testId;
+        private string _testerId; //might need to have a user for each tester
+        private string _traineeId;
+        private DateTime _testDate;
+        private DateTime _dateAndHourofTest;
+
+        internal Address StartingPoint;
         //things to check in test
-        bool keptDistance;
-        bool parking;
-        bool reverseParking;
-        bool checkMirrors;
-        bool usedSignal;
-        bool keptRightofPresidence; //zchoot kdima
-        bool stoppedAtRed;
-        bool stoppedAtcrossWalk;
-        bool rightTurn;
-        bool imediateStop;
+        private bool _keptDistance;
+        private bool _parking;
+        private bool _reverseParking;
+        private bool _checkMirrors;
+        private bool _usedSignal;
+        private bool _keptRightofPresidence; //zchoot kdima
+        private bool _stoppedAtRed;
+        private bool _stoppedAtcrossWalk;
+        private bool _rightTurn;
+        private bool _imediateStop;
 
-        bool testPassed;
-        string RemarksOnTest; //hearot
+        private bool _testPassed;
+        private string _remarksOnTest; //hearot
 
-        public string TestNumber { get => testID; set => testID = value; }
-        public string TesterID { get => testerID; set => testerID = value; }
-        public string TraineeID { get => traineeID; set => traineeID = value; }
-        public DateTime TestDate { get => testDate; set => testDate = value; }
-        public DateTime DateAndHourofTest { get => dateAndHourofTest; set => dateAndHourofTest = value; }
-        public bool KeptDistance { get => keptDistance; set => keptDistance = value; }
-        public bool Parking { get => parking; set => parking = value; }
-        public bool ReverseParking { get => reverseParking; set => reverseParking = value; }
-        public bool CheckMirrors { get => checkMirrors; set => checkMirrors = value; }
-        public bool UsedSignal { get => usedSignal; set => usedSignal = value; }
-        public bool KeptRightofPresidence { get => keptRightofPresidence; set => keptRightofPresidence = value; }
-        public bool StoppedAtRed { get => stoppedAtRed; set => stoppedAtRed = value; }
-        public bool StoppedAtcrossWalk { get => stoppedAtcrossWalk; set => stoppedAtcrossWalk = value; }
-        public bool RightTurn { get => rightTurn; set => rightTurn = value; }
-        public bool ImediateStop { get => imediateStop; set => imediateStop = value; }
-        internal Adrees StartingPoint1 { get => StartingPoint; set => StartingPoint = value; }
+        private string TestId { get => _testId; set => _testId = value; }
+        private string TesterId { get => _testerId; set => _testerId = value; }
+        private string TraineeId { get => _traineeId; set => _traineeId = value; }
+        private DateTime TestDate { get => _testDate; set => _testDate = value; }
+        private DateTime DateAndHourofTest { get => _dateAndHourofTest; set => _dateAndHourofTest = value; }
+        private bool KeptDistance { get => _keptDistance; set => _keptDistance = value; }
+        private bool Parking { get => _parking; set => _parking = value; }
+        private bool ReverseParking { get => _reverseParking; set => _reverseParking = value; }
+        private bool CheckMirrors { get => _checkMirrors; set => _checkMirrors = value; }
+        private bool UsedSignal { get => _usedSignal; set => _usedSignal = value; }
+        private bool KeptRightofPresidence { get => _keptRightofPresidence; set => _keptRightofPresidence = value; }
+        private bool StoppedAtRed { get => _stoppedAtRed; set => _stoppedAtRed = value; }
+        private bool StoppedAtcrossWalk { get => _stoppedAtcrossWalk; set => _stoppedAtcrossWalk = value; }
+        private bool RightTurn { get => _rightTurn; set => _rightTurn = value; }
+        private bool ImediateStop { get => _imediateStop; set => _imediateStop = value; }
+        internal Address StartingPoint1 { get => StartingPoint; set => StartingPoint = value; }
 
         public override string ToString()
         {

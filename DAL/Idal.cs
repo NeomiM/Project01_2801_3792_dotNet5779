@@ -6,23 +6,23 @@ using BE;
 
 namespace DAL
 {
-    interface Idal
+    interface IDal
     {
         //fuctions for tester
-        void addTester(Tester T);
-        void deleteTester(Tester T);
-        void updateTester(Tester T);
+        void AddTester(Tester T);
+        void DeleteTester(Tester T);
+        void UpdateTester(Tester T);
         //fuctions for trainee
-        void addTrainee(Trainee T);
-        void deleteTester(Trainee T);
-        void updateTrainee(Trainee T);
+        void AddTrainee(Trainee T);
+        void DeleteTester(Trainee T);
+        void UpdateTrainee(Trainee T);
         //fuctions for test
-        void addTest(Test T);
-        void updateTest(Test T);
+        void AddTest(Test T);
+        void UpdateTest(Test T);
 
-        List<Tester> getListOfTesters();
-        List<Trainee> getListOfTrainees();
-        List<Test> getListOfTests();
+        List<Tester> GetListOfTesters();
+        List<Trainee> GetListOfTrainees();
+        List<Test> GetListOfTests();
 
 
     }

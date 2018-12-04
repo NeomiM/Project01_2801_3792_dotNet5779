@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace BE
@@ -12,7 +13,7 @@ namespace BE
         private DateTime _testDate;
         private DateTime _dateAndHourofTest; //need to check if it is an exact hour?
 
-        internal Address StartingPoint;
+        internal Address _startingPoint;
         //things to check in test
         private bool _keptDistance;
         private bool _parking;
@@ -139,11 +140,28 @@ namespace BE
         private bool StoppedAtcrossWalk { get => _stoppedAtcrossWalk; set => _stoppedAtcrossWalk = value; }
         private bool RightTurn { get => _rightTurn; set => _rightTurn = value; }
         private bool ImediateStop { get => _imediateStop; set => _imediateStop = value; }
-        internal Address StartingPoint1 { get => StartingPoint; set => StartingPoint = value; }
-
+        internal Address StartingPoint { get => _startingPoint; set => _startingPoint = value; }
         public override string ToString()
         {
-            return base.ToString();
+             PropertyInfo[] _PropertyInfos = this.GetType().GetProperties(); ;
+
+            var sb = new StringBuilder();
+
+            foreach (var info in _PropertyInfos)
+            {
+                var value = info.GetValue(this, null) ?? "(null)";
+                //puts spaces between the property words
+                StringBuilder builder = new StringBuilder();
+                foreach (char c in info.Name)
+                {
+                    if (Char.IsUpper(c) && builder.Length > 0) builder.Append(' ');
+                    builder.Append(c);
+                }
+
+                sb.AppendLine(builder.ToString() + ": " + value.ToString());
+            }
+
+            return sb.ToString();
         }
     }
 }

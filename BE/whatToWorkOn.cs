@@ -7,6 +7,7 @@ BE
 5 add a toString for the tester class
 6 think of more properties for tester and trainee: picture, how many stars, option to write review
 7 configureation: make global firstTestID for the first test number
+8 add to every property the proper checks
 
  DAL
  1 how to get the lists from DS->DataSource.cs

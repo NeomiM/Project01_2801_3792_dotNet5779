@@ -21,7 +21,7 @@ namespace BE
         private bool[,] _schedual= new bool[5, 6];
 
         double _maxDistanceForTest; //in kilometers
-                                    //add more
+                                                    //add more properties
         //get function to check id
         public string Id
         {

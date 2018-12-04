@@ -18,6 +18,7 @@ namespace BE
         private string _drivingSchool;
         private string _drivingTeacher;
         private int _lessonsPassed;
+        //add more
 
         public string Id
         {

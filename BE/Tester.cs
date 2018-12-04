@@ -12,16 +12,17 @@ namespace BE
         string _sirname;
         string _firstName;
         DateTime _dateOfBirth;
-        // enums.gender; //do we nned a poperty?
-        string _testerGender;
+        Gender _testerGender;
         string _phoneNumber;
         Address _testerAdress;
         int _yearsOfExperience;
         int _maxTestsInaWeek;
-        //enum CarType Testercar;
+
+        CarType _testercar;
+
         //int[,] Schedual[5][7]; //5 days a week, 6 hours +1 to show the day
         double _maxDistanceForTest; //in kilometers
-        //get function to check id
+       
         public string Id
         {
             get { return _id; }
@@ -68,12 +69,14 @@ namespace BE
         { get => _sirname; set => _sirname = value; }
         public string FirstName { get => _firstName; set => _firstName = value; }
         public DateTime DateOfBirth1 { get => _dateOfBirth; set => _dateOfBirth = value; }
-        public string TesterGender { get => _testerGender; set => _testerGender = value; } //add enumsomehow
+        public Gender TesterGender { get => _testerGender; set => _testerGender = value; } //add enumsomehow
         public string PhoneNumber1 { get => _phoneNumber; set => _phoneNumber = value; }
         public int YearsOfExperience1 { get => _yearsOfExperience; set => _yearsOfExperience = value; }
         public int MaxTestsInaWeek1 { get => _maxTestsInaWeek; set => _maxTestsInaWeek = value; }
         internal Address TesterAdress1 { get => _testerAdress; set => _testerAdress = value; }
         public double MaxDistanceForTest1 { get => _maxDistanceForTest; set => _maxDistanceForTest = value; }
+
+        public CarType Testercar { get => _testercar; set => _testercar = value; }
 
         public override string ToString()
         {

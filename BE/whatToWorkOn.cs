@@ -3,7 +3,7 @@
 BE
  1 V what is a struct
 2 how to do global enums and add to a class
-3 get function to check id
+3 add what to do if id is wrong/ not in the right format
 5 add a toString for the tester class
 6 think of more properties for tester and trainee: picture, how many stars, option to write review
 7 configureation: make global firstTestID for the first test number

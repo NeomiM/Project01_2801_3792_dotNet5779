@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace BE
 {
     class Configuration
     {
-        //global firstTestID
+        //how to make it global
+        public static int FirstTestId = 0;
     }
 }

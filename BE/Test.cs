@@ -29,7 +29,7 @@ namespace BE
         private bool _testPassed;
         private string _remarksOnTest; //hearot
 
-        Test()
+        public Test()
         {
            
             //TestId =Configuration.FirstTestId.ToString();
@@ -86,7 +86,7 @@ namespace BE
             #endregion
         }
 
-        private string TesterId
+        public string TesterId
         {
             get { return _testerId; }
             //not all options checked
@@ -127,19 +127,21 @@ namespace BE
             }
             #endregion
         }
-        private string TraineeId { get => _traineeId; set => _traineeId = value; }
-        private DateTime TestDate { get => _testDate; set => _testDate = value; }
-        private DateTime DateAndHourofTest { get => _dateAndHourofTest; set => _dateAndHourofTest = value; }
-        private bool KeptDistance { get => _keptDistance; set => _keptDistance = value; }
-        private bool Parking { get => _parking; set => _parking = value; }
-        private bool ReverseParking { get => _reverseParking; set => _reverseParking = value; }
-        private bool CheckMirrors { get => _checkMirrors; set => _checkMirrors = value; }
-        private bool UsedSignal { get => _usedSignal; set => _usedSignal = value; }
-        private bool KeptRightofPresidence { get => _keptRightofPresidence; set => _keptRightofPresidence = value; }
-        private bool StoppedAtRed { get => _stoppedAtRed; set => _stoppedAtRed = value; }
-        private bool StoppedAtcrossWalk { get => _stoppedAtcrossWalk; set => _stoppedAtcrossWalk = value; }
-        private bool RightTurn { get => _rightTurn; set => _rightTurn = value; }
-        private bool ImediateStop { get => _imediateStop; set => _imediateStop = value; }
+
+        public string TraineeId { get => _traineeId; set => _traineeId = value; }
+        public DateTime TestDate
+        { get => _testDate; set => _testDate = value; }
+        public DateTime DateAndHourofTest { get => _dateAndHourofTest; set => _dateAndHourofTest = value; }
+        public bool KeptDistance { get => _keptDistance; set => _keptDistance = value; }
+        public bool Parking { get => _parking; set => _parking = value; }
+        public bool ReverseParking { get => _reverseParking; set => _reverseParking = value; }
+        public bool CheckMirrors { get => _checkMirrors; set => _checkMirrors = value; }
+        public bool UsedSignal { get => _usedSignal; set => _usedSignal = value; }
+        public bool KeptRightofPresidence { get => _keptRightofPresidence; set => _keptRightofPresidence = value; }
+        public bool StoppedAtRed { get => _stoppedAtRed; set => _stoppedAtRed = value; }
+        public bool StoppedAtcrossWalk { get => _stoppedAtcrossWalk; set => _stoppedAtcrossWalk = value; }
+        public bool RightTurn { get => _rightTurn; set => _rightTurn = value; }
+        public bool ImediateStop { get => _imediateStop; set => _imediateStop = value; }
         internal Address StartingPoint { get => _startingPoint; set => _startingPoint = value; }
         public override string ToString()
         {

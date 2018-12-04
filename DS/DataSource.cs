@@ -12,7 +12,25 @@ namespace DS
 
         public DataSource()
         {
-            //make netunim for when the program starts;
+            Test test=new Test();
+            test.CheckMirrors = true;
+            DateTime time= DateTime.Today;
+            test.DateAndHourofTest =time;
+            test.ImediateStop = true;
+            test.KeptDistance = true;
+            test.KeptRightofPresidence = true;
+            test.Parking = true;
+            test.ReverseParking = true;
+            test.RightTurn = true;
+            test.StoppedAtRed = true;
+            test.StoppedAtcrossWalk = true;
+            test.TestDate = time;
+            test.TesterId = "328772801";
+            test.TraineeId = "328772801";
+            
+
+
+            //make netunim for stuff   
         }
     }
 }

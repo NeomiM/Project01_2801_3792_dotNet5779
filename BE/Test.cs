@@ -131,7 +131,7 @@ namespace BE
         public string TraineeId { get => _traineeId; set => _traineeId = value; }
         public DateTime TestDate
         { get => _testDate; set => _testDate = value; }
-        public DateTime DateAndHourofTest { get => _dateAndHourofTest; set => _dateAndHourofTest = value; }
+        public DateTime DateAndHourOfTest { get => _dateAndHourofTest; set => _dateAndHourofTest = value; }
         public bool KeptDistance { get => _keptDistance; set => _keptDistance = value; }
         public bool Parking { get => _parking; set => _parking = value; }
         public bool ReverseParking { get => _reverseParking; set => _reverseParking = value; }

@@ -28,6 +28,13 @@ namespace BE
         private bool _testPassed;
         private string _remarksOnTest; //hearot
 
+        Test()
+        {
+            Configuration.FirstTestId++;
+            //TestId =Configuration.FirstTestId.ToString();
+            TestId +=""+ Configuration.FirstTestId.ToString();
+        }
+
         private string TestId { get => _testId; set => _testId = value; }
         private string TesterId { get => _testerId; set => _testerId = value; }
         private string TraineeId { get => _traineeId; set => _traineeId = value; }

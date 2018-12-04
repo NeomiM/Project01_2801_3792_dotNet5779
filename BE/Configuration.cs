@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BE
 {
-    class Configuration
+    public class Configuration
     {
         //how to make it global
         public static int FirstTestId = 0;

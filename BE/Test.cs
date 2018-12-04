@@ -30,7 +30,7 @@ namespace BE
 
         Test()
         {
-            Configuration.FirstTestId++;
+           
             //TestId =Configuration.FirstTestId.ToString();
             if(Configuration.FirstTestId <99999999)
             TestId +=""+ Configuration.FirstTestId.ToString("D" + 8);
@@ -39,6 +39,7 @@ namespace BE
                 //we finished the numbers
                 //we could move on to letters like in hex
             }
+            Configuration.FirstTestId++;
         }
 
         private string TestId
@@ -50,6 +51,7 @@ namespace BE
             {
                 string tempId = value;
                 //check if it's all numbers- 8/9 numbers
+                //check for letters,and ammount of numbers in the id
                 if (tempId.Length == 8)
                     tempId = "0" + tempId;//adding '0' to id begining
                 if (tempId.Length == 9)

@@ -9,7 +9,7 @@ namespace BE
 {
     public class Tester //can it be public?S
     {
-        string _id;
+        string _testerId;
         string _sirname;
         string _firstName;
         DateTime _dateOfBirth;
@@ -24,9 +24,9 @@ namespace BE
         //int[,] Schedual[5][7]; //5 days a week, 6 hours +1 to show the day
         double _maxDistanceForTest; //in kilometers
        
-        public string Id
+        public string TesterId
         {
-            get { return _id; }
+            get { return _testerId; }
             //not all options checked
             #region checkid
             set
@@ -58,7 +58,7 @@ namespace BE
                     }
                     if (sum % 10 == 0)
                     {
-                        _id = tempId;
+                        _testerId = tempId;
 
                         //else- throw an exception
                     }
@@ -66,16 +66,15 @@ namespace BE
             }
             #endregion
         }
-        public string Sirname
-        { get => _sirname; set => _sirname = value; }
+        public string Sirname{ get => _sirname; set => _sirname = value; }
         public string FirstName { get => _firstName; set => _firstName = value; }
-        public DateTime DateOfBirth1 { get => _dateOfBirth; set => _dateOfBirth = value; }
+        public DateTime DateOfBirth { get => _dateOfBirth; set => _dateOfBirth = value; }
         public Gender TesterGender { get => _testerGender; set => _testerGender = value; } //add enumsomehow
-        public string PhoneNumber1 { get => _phoneNumber; set => _phoneNumber = value; }
-        public int YearsOfExperience1 { get => _yearsOfExperience; set => _yearsOfExperience = value; }
-        public int MaxTestsInaWeek1 { get => _maxTestsInaWeek; set => _maxTestsInaWeek = value; }
-        internal Address TesterAdress1 { get => _testerAdress; set => _testerAdress = value; }
-        public double MaxDistanceForTest1 { get => _maxDistanceForTest; set => _maxDistanceForTest = value; }
+        public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = value; }
+        public int YearsOfExperience { get => _yearsOfExperience; set => _yearsOfExperience = value; }
+        public int MaxTestsInaWeek { get => _maxTestsInaWeek; set => _maxTestsInaWeek = value; }
+        internal Address TesterAdress { get => _testerAdress; set => _testerAdress = value; }
+        public double MaxDistanceForTest { get => _maxDistanceForTest; set => _maxDistanceForTest = value; }
 
         public CarType Testercar { get => _testercar; set => _testercar = value; }
 

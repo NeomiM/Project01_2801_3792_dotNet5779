@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using BE;
-
-namespace DAL
+namespace BL
 {
-    public interface Idal
+    interface IBL
     {
         //fuctions for tester
         void AddTester(Tester T);
@@ -23,7 +23,6 @@ namespace DAL
         List<Tester> GetListOfTesters();
         List<Trainee> GetListOfTrainees();
         List<Test> GetListOfTests();
-
 
     }
 }

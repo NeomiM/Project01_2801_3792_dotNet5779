@@ -31,7 +31,7 @@ namespace BE
 
         public Test()
         {
-           
+          /* 
             //TestId =Configuration.FirstTestId.ToString();
             if(Configuration.FirstTestId <99999999)
             _testId +=""+ Configuration.FirstTestId.ToString("D" + 8);
@@ -41,12 +41,14 @@ namespace BE
                 //we could move on to letters like in hex
             }
             Configuration.FirstTestId++;
-        }
+    */    
+           }
 
         public string TestId
         {
             get { return _testId; }
-            
+            set { _testId = value; }
+
         }
 
         public string TesterId

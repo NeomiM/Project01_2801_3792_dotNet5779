@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BE
 {
-    class Configuration
+    public class Configuration
     {
         public static int FirstTestId = 0;
     }

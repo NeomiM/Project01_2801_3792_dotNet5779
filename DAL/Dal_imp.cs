@@ -8,14 +8,14 @@ namespace DAL
     {
         public void AddTest(Test T) //add check for id if exist
         {
-            if(!DataSource._testList.Contains(T))
+            //if(!DataSource._testList.Contains(T))
             DataSource._testList.Add(T);
             
         }
 
         public void AddTester(Tester T)  //add check for id if exist
         {
-            if (!DataSource._testerList.Contains(T))
+            //if (!DataSource._testerList.Contains(T))
                 DataSource._testerList.Add(T);
         }
 

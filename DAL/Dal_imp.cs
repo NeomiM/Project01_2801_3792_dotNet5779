@@ -8,14 +8,14 @@ namespace DAL
     {
         public void AddTest(Test T) //add check for id if exist
         {
-            //if(!DataSource._testList.Contains(T))
+            if(!DataSource._testList.Contains(T))
             DataSource._testList.Add(T);
             
         }
 
         public void AddTester(Tester T)  //add check for id if exist
         {
-            //if (!DataSource._testerList.Contains(T))
+            if (!DataSource._testerList.Contains(T))
                 DataSource._testerList.Add(T);
         }
 
@@ -52,20 +52,23 @@ namespace DAL
 
         public void UpdateTest(Test T)
         {
-            //DataSource._testList.Find(==T.TestId);
-
-            throw new NotImplementedException();
-
+            //removes the old thing in list
+            DataSource._testList.Remove(DataSource._testList.Find(x => x.TestId == T.TestId));
+            DataSource._testList.Add(T);
         }
 
         public void UpdateTester(Tester T)
         {
-            throw new NotImplementedException();
+            //removes the old thing in list
+            DataSource._testerList.Remove(DataSource._testerList.Find(x => x.Id == T.Id));
+            DataSource._testerList.Add(T);
         }
 
         public void UpdateTrainee(Trainee T)
         {
-            throw new NotImplementedException();
+            //removes the old thing in list
+            DataSource._traineeList.Remove(DataSource._traineeList.Find(x => x.Id == T.Id));
+            DataSource._traineeList.Add(T);
         }
     }
 }

@@ -4,13 +4,13 @@ using BE;
 using DS;
 namespace DAL
 {
-    public class DalImp : IDal
+    public class DalImp : Idal
     {
         public void AddTest(Test T) //add check for id if exist
         {
             if(!DataSource._testList.Contains(T)) //if the test doesnt exist
-                if(DataSource._traineeList.Exists(x=> x.Id==T.TraineeId)) //and both ids are in the system
-                    if (DataSource._testerList.Exists(x => x.Id == T.TesterId))
+                if(DataSource._traineeList.Exists(x=> x.TraineeId==T.TraineeId)) //and both ids are in the system
+                    if (DataSource._testerList.Exists(x => x.TesterId == T.TesterId))
                         DataSource._testList.Add(T);
             
         }
@@ -62,9 +62,9 @@ namespace DAL
         public void UpdateTester(Tester T)
         {
             //removes the old thing in list
-            if (DataSource._testerList.Exists((x => x.Id == T.Id)))
+            if (DataSource._testerList.Exists((x => x.TesterId == T.TesterId)))
             {
-                DataSource._testerList.Remove(DataSource._testerList.Find(x => x.Id == T.Id));
+                DataSource._testerList.Remove(DataSource._testerList.Find(x => x.TesterId == T.TesterId));
                 DataSource._testerList.Add(T);
             }
         }
@@ -72,9 +72,9 @@ namespace DAL
         public void UpdateTrainee(Trainee T)
         {
             //removes the old thing in list
-            if (DataSource._traineeList.Exists((x => x.Id == T.Id)))
+            if (DataSource._traineeList.Exists((x => x.TraineeId == T.TraineeId)))
             {
-                DataSource._traineeList.Remove(DataSource._traineeList.Find(x => x.Id == T.Id));
+                DataSource._traineeList.Remove(DataSource._traineeList.Find(x => x.TraineeId == T.TraineeId));
                 DataSource._traineeList.Add(T);
             }
         }

@@ -10,14 +10,17 @@ namespace BL
 {
     public class ibl_imp: IBL
     {
+
+        DAL.Idal dal=new DAL.DalImp();
+
         //fuctions for tester
-        void IBL.AddTester(Tester T)
+        public void AddTester(Tester T)
         {
           /*  try
             {
 
                 DAL.DalImp dal;
-                //   if (T.DateOfBirth1 < 1989)
+                //   if (T.DateOfBirth < 1989)
                 // throw("too young")      
 
 
@@ -33,54 +36,54 @@ namespace BL
 
         
 
-        void IBL.DeleteTester(Tester T)
+        public void DeleteTester(Tester T)
         {
-           DeleteTester(T);
+           //DeleteTester(T);
         }
 
-        void IBL.UpdateTester(Tester T)
+        public void UpdateTester(Tester T)
         {
-            UpdateTester(T);
+        //    UpdateTester(T);
         }
 
-        void IBL.AddTrainee(Trainee T)
+        public void AddTrainee(Trainee T)
         {
-            AddTrainee(T);
+          //  AddTrainee(T);
         }
 
-        void IBL.DeleteTrainee(Trainee T)
+        public void DeleteTrainee(Trainee T)
         {
-            DeleteTrainee(T);
+            //DeleteTrainee(T);
         }
 
-        void IBL.UpdateTrainee(Trainee T)
+        public void UpdateTrainee(Trainee T)
         {
-            UpdateTrainee(T);
+            //UpdateTrainee(T);
         }
 
-        void IBL.AddTest(Test T)
+        public void AddTest(Test T)
         {
-            AddTest(T);
+            //AddTest(T);
         }
 
-        void IBL.UpdateTest(Test T)
+        public void UpdateTest(Test T)
         {
-            UpdateTest(T);
+            //UpdateTest(T);
         }
 
-        List<Tester> IBL.GetListOfTesters()
+        public List<Tester> GetListOfTesters()
         {
-            return GetListOfTesters();
+            return dal.GetListOfTesters();
         }
 
-        List<Trainee> IBL.GetListOfTrainees()
+        public List<Trainee> GetListOfTrainees()
         {
-            return GetListOfTrainees();
+            return dal.GetListOfTrainees();
         }
 
-        List<Test> IBL.GetListOfTests()
+        public List<Test> GetListOfTests()
         {
-            return GetListOfTests();
+            return dal.GetListOfTests();
         }
     }
 }

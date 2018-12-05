@@ -7,7 +7,7 @@ namespace BE
 {
     public class Trainee
     {
-        private string _id;
+        private string _traineeId;
         private string _sirname;
         private string _firstName;
         private DateTime _dateOfBirth;
@@ -21,9 +21,9 @@ namespace BE
         private int _lessonsPassed;
         //add more
 
-        public string Id
+        public string TraineeId
         {
-            get { return _id; }
+            get { return _traineeId; }
             //not all options checked
             #region checkid
             set
@@ -54,7 +54,7 @@ namespace BE
                     }
                     if (sum % 10 == 0)
                     {
-                        _id = tempId;
+                        _traineeId = tempId;
 
                         //else- throw an exception
                     }
@@ -64,15 +64,15 @@ namespace BE
         }
         public string Sirname { get => _sirname; set => _sirname = value; }
         public string FirstName { get => _firstName; set => _firstName = value; }
-        public DateTime DateOfBirth1 { get => _dateOfBirth; set => _dateOfBirth = value; }
+        public DateTime DateOfBirth { get => _dateOfBirth; set => _dateOfBirth = value; }
         public Gender TraineeGender { get => _traineeGender; set => _traineeGender = value; }
-        public string PhoneNumber1 { get => _phoneNumber; set => _phoneNumber = value; }
+        public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = value; }
         internal Address TraineeAddress { get => _traineeAddress; set => _traineeAddress = value; }
         public CarType Traineecar { get => _traineecar; set => _traineecar = value; }
         public GearType TraineeGear { get => _traineeGear; set => _traineeGear = value; }
-        public string DrivingSchool1 { get => _drivingSchool; set => _drivingSchool = value; }
-        public string DrivingTeacher1 { get => _drivingTeacher; set => _drivingTeacher = value; }
-        public int LessonsPassed1 { get => _lessonsPassed; set => _lessonsPassed = value; }
+        public string DrivingSchool { get => _drivingSchool; set => _drivingSchool = value; }
+        public string DrivingTeacher { get => _drivingTeacher; set => _drivingTeacher = value; }
+        public int LessonsPassed { get => _lessonsPassed; set => _lessonsPassed = value; }
 
 
         public override string ToString()

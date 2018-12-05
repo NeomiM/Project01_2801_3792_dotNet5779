@@ -8,8 +8,10 @@ namespace DAL
     {
         public void AddTest(Test T) //add check for id if exist
         {
-            if(!DataSource._testList.Contains(T))
-            DataSource._testList.Add(T);
+            if(!DataSource._testList.Contains(T)) //if the test doesnt exist
+                if(DataSource._traineeList.Exists(x=> x.Id==T.TraineeId)) //and both ids are in the system
+                    if (DataSource._testerList.Exists(x => x.Id == T.TesterId))
+                        DataSource._testList.Add(T);
             
         }
 
@@ -60,15 +62,21 @@ namespace DAL
         public void UpdateTester(Tester T)
         {
             //removes the old thing in list
-            DataSource._testerList.Remove(DataSource._testerList.Find(x => x.Id == T.Id));
-            DataSource._testerList.Add(T);
+            if (DataSource._testerList.Exists((x => x.Id == T.Id)))
+            {
+                DataSource._testerList.Remove(DataSource._testerList.Find(x => x.Id == T.Id));
+                DataSource._testerList.Add(T);
+            }
         }
 
         public void UpdateTrainee(Trainee T)
         {
             //removes the old thing in list
-            DataSource._traineeList.Remove(DataSource._traineeList.Find(x => x.Id == T.Id));
-            DataSource._traineeList.Add(T);
+            if (DataSource._traineeList.Exists((x => x.Id == T.Id)))
+            {
+                DataSource._traineeList.Remove(DataSource._traineeList.Find(x => x.Id == T.Id));
+                DataSource._traineeList.Add(T);
+            }
         }
     }
 }

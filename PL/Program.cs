@@ -13,7 +13,7 @@ namespace PL
             Test test = new Test();
             test.CheckMirrors = true;
             DateTime time = DateTime.Today;
-            test.DateAndHourofTest = time;
+            test.DateAndHourOfTest = time;
             test.ImediateStop = true;
             test.KeptDistance = true;
             test.KeptRightofPresidence = true;

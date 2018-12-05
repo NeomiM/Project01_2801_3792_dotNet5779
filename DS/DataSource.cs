@@ -13,10 +13,12 @@ namespace DS
 
         static  DataSource()
         {
-            Test test=new Test();
+            #region two tests
+
+            Test test = new Test();
             test.CheckMirrors = true;
-            DateTime time= DateTime.Today;
-            test.DateAndHourOfTest =time;
+            DateTime time = DateTime.Today;
+            test.DateAndHourOfTest = time;
             test.ImediateStop = true;
             test.KeptDistance = true;
             test.KeptRightofPresidence = true;
@@ -47,6 +49,16 @@ namespace DS
 
             _testList.Add(test);
             _testList.Add(test2);
+
+            #endregion
+
+            #region two testers
+
+            
+
+            #endregion
+
+            //205823792
 
             //make netunim for stuff   
         }

@@ -8,50 +8,52 @@ namespace DAL
     {
         public void AddTest(Test T) //add check for id if exist
         {
-            //adds a test to the list of tests in dataSourse
-            //pushback/front
-            //testList.push_back(T);
-            throw new NotImplementedException();
+
+            DataSource._testList.Add(T);
+            
         }
 
         public void AddTester(Tester T)  //add check for id if exist
         {
-            throw new NotImplementedException();
+            DataSource._testerList.Add(T);
         }
 
         public void AddTrainee(Trainee T) //add check for id if exist
         {
-            throw new NotImplementedException();
+            DataSource._traineeList.Add(T);
         }
 
         public void DeleteTester(Tester T)
         {
-            throw new NotImplementedException();
+            DataSource._testerList.Remove(T);
         }
 
-        public void DeleteTester(Trainee T)
+        public void DeleteTrainee(Trainee T)
         {
-            throw new NotImplementedException();
+            DataSource._traineeList.Remove(T);
         }
 
         public List<Tester> GetListOfTesters()
         {
-            throw new NotImplementedException();
+            return DataSource._testerList;
         }
 
         public List<Test> GetListOfTests()
         {
-            throw new NotImplementedException();
+            return DataSource._testList;
         }
 
         public List<Trainee> GetListOfTrainees()
         {
-            throw new NotImplementedException();
+            return DataSource._traineeList;
         }
 
         public void UpdateTest(Test T)
         {
+            //DataSource._testList.Find(T.TestId);
+
             throw new NotImplementedException();
+
         }
 
         public void UpdateTester(Tester T)

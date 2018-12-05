@@ -10,6 +10,8 @@ namespace BE
         private int _buildingNumber;
         private string _city;
     }
+
+    //might need to add tostring
 }
 
 

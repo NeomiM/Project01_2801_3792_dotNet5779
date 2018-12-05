@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace BE
@@ -72,11 +73,29 @@ namespace BE
         public string DrivingSchool1 { get => _drivingSchool; set => _drivingSchool = value; }
         public string DrivingTeacher1 { get => _drivingTeacher; set => _drivingTeacher = value; }
         public int LessonsPassed1 { get => _lessonsPassed; set => _lessonsPassed = value; }
-       
+
 
         public override string ToString()
         {
-            return base.ToString();
+            PropertyInfo[] _PropertyInfos = this.GetType().GetProperties(); ;
+
+            var sb = new StringBuilder();
+
+            foreach (var info in _PropertyInfos)
+            {
+                var value = info.GetValue(this, null) ?? "(null)";
+                //puts spaces between the property words
+                StringBuilder builder = new StringBuilder();
+                foreach (char c in info.Name)
+                {
+                    if (Char.IsUpper(c) && builder.Length > 0) builder.Append(' ');
+                    builder.Append(c);
+                }
+
+                sb.AppendLine(builder.ToString() + ": " + value.ToString());
+            }
+
+            return sb.ToString();
         }
     }
 }

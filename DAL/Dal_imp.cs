@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using BE;
 using DS;
 namespace DAL
@@ -8,11 +9,20 @@ namespace DAL
     {
         public void AddTest(Test T) //add check for id if exist
         {
-            if(!DataSource._testList.Contains(T)) //if the test doesnt exist
-                if(DataSource._traineeList.Exists(x=> x.TraineeId==T.TraineeId)) //and both ids are in the system
-                    if (DataSource._testerList.Exists(x => x.TesterId == T.TesterId))
-                        DataSource._testList.Add(T);
-            
+            if (Configuration.FirstTestId < 99999999)
+            T.TestId += "" + Configuration.FirstTestId.ToString("D" + 8);
+            else
+            {
+                //we finished the numbers
+                //we could move on to letters like in hex
+            }
+            Configuration.FirstTestId++;
+
+            //add if ids are in the system
+            if (DataSource._traineeList.Exists(x=> x.TraineeId==T.TraineeId))
+          if (DataSource._testerList.Exists(x => x.TesterId == T.TesterId))
+             DataSource._testList.Add(T);
+           //if(DataSource._testList.Any(x=>x.i)) 
         }
 
         public void AddTester(Tester T)  //add check for id if exist
@@ -39,17 +49,17 @@ namespace DAL
 
         public List<Tester> GetListOfTesters()
         {
-            return DataSource._testerList;
+            return new List<Tester>(DataSource._testerList);
         }
 
         public List<Test> GetListOfTests()
         {
-            return DataSource._testList;
+            return new List<Test>(DataSource._testList);
         }
 
         public List<Trainee> GetListOfTrainees()
         {
-            return DataSource._traineeList;
+            return new List<Trainee>(DataSource._traineeList);
         }
 
         public void UpdateTest(Test T)

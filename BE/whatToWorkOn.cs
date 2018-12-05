@@ -4,9 +4,9 @@ BE
  1 V what is a struct
 2 how to do global enums and add to a class
 3 add what to do if id is wrong/ not in the right format
-5 add a toString for the tester class
+5 V add a toString for the tester class
 6 think of more properties for tester and trainee: picture, how many stars, option to write review
-7 configureation: make global firstTestID for the first test number
+7 V configureation: make global firstTestID for the first test number
 8 add to every property the proper checks
                 //check if it's all numbers- 8/9 numbers
                 //check for letters,and ammount of numbers in the id
@@ -20,8 +20,8 @@ BE
  1 how to get the lists from DS->DataSource.cs
  2 implement the functions in Dal_imp
  3 add check for id if exist
- 4 make "printer number" for testId from usercontrol (automatially updates number from the first number in configuration in BE)
- 
+ 4 V make "printer number" for testId from usercontrol (automatially updates number from the first number in configuration in BE)
+ 5 make uopdates for people and test
  DS
  make netunim for when the program starts
   

@@ -14,7 +14,7 @@ namespace DAL
         void UpdateTester(Tester T);
         //fuctions for trainee
         void AddTrainee(Trainee T);
-        void DeleteTester(Trainee T);
+        void DeleteTrainee(Trainee T);
         void UpdateTrainee(Trainee T);
         //fuctions for test
         void AddTest(Test T);

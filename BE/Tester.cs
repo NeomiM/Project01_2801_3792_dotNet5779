@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 //using ClassLibrary1.enums
 //using BE;
@@ -80,7 +81,25 @@ namespace BE
 
         public override string ToString()
         {
-            return base.ToString();
+            PropertyInfo[] _PropertyInfos = this.GetType().GetProperties(); ;
+
+            var sb = new StringBuilder();
+
+            foreach (var info in _PropertyInfos)
+            {
+                var value = info.GetValue(this, null) ?? "(null)";
+                //puts spaces between the property words
+                StringBuilder builder = new StringBuilder();
+                foreach (char c in info.Name)
+                {
+                    if (Char.IsUpper(c) && builder.Length > 0) builder.Append(' ');
+                    builder.Append(c);
+                }
+
+                sb.AppendLine(builder.ToString() + ": " + value.ToString());
+            }
+
+            return sb.ToString();
         }
 
         //not sure if need mishtanim

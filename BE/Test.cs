@@ -34,7 +34,7 @@ namespace BE
            
             //TestId =Configuration.FirstTestId.ToString();
             if(Configuration.FirstTestId <99999999)
-            TestId +=""+ Configuration.FirstTestId.ToString("D" + 8);
+            _testId +=""+ Configuration.FirstTestId.ToString("D" + 8);
             else
             {
                 //we finished the numbers
@@ -43,89 +43,16 @@ namespace BE
             Configuration.FirstTestId++;
         }
 
-        private string TestId
+        public string TestId
         {
             get { return _testId; }
-            //not all options checked
-            #region checkid
-            set
-            {
-                string tempId = value;
-                //check if it's all numbers- 8/9 numbers
-                //check for letters,and ammount of numbers in the id
-                if (tempId.Length == 8)
-                    tempId = "0" + tempId;//adding '0' to id begining
-                if (tempId.Length == 9)
-                {
-                    int sum = 0;
-                    int calulate = 0;
-                    for (int i = 0; i < 9; i++)
-                    {
-                        if (i % 2 == 0)//Multiplying the double places by 1
-                        {
-                            calulate = 1 * (int)Char.GetNumericValue(tempId[i]);
-                        }
-                        else //if(i % 2 != 0) Multiplying the double places by 2
-                        {
-                            calulate = 2 * (int)Char.GetNumericValue(tempId[i]);
-                        }
-                        if (calulate >= 10)
-                        {
-                            calulate = 1 + (calulate % 10);//tens digit (can only be 1) + Unity digit
-                        }
-                        sum += calulate;
-                    }
-                    if (sum % 10 == 0)
-                    {
-                        _testId = tempId;
-
-                        //else- throw an exception
-                    }
-                }
-            }
-            #endregion
+            
         }
 
         public string TesterId
         {
             get { return _testerId; }
-            //not all options checked
-            #region checkid
-            set
-            {
-                string tempId = value;
-                //check if it's all numbers- 8/9 numbers
-                if (tempId.Length == 8)
-                    tempId = "0" + tempId;//adding '0' to id begining
-                if (tempId.Length == 9)
-                {
-                    int sum = 0;
-                    int calulate = 0;
-                    for (int i = 0; i < 9; i++)
-                    {
-                        if (i % 2 == 0)//Multiplying the double places by 1
-                        {
-                            calulate = 1 * (int)Char.GetNumericValue(tempId[i]);
-                        }
-                        else //if(i % 2 != 0) Multiplying the double places by 2
-                        {
-                            calulate = 2 * (int)Char.GetNumericValue(tempId[i]);
-                        }
-                        if (calulate >= 10)
-                        {
-                            calulate = 1 + (calulate % 10);//tens digit (can only be 1) + Unity digit
-                        }
-                        sum += calulate;
-                    }
-                    if (sum % 10 == 0)
-                    {
-                        _testerId = tempId;
-
-                        //else- throw an exception
-                    }
-                }
-            }
-            #endregion
+            set { _testerId = value; }
         }
 
         public string TraineeId { get => _traineeId; set => _traineeId = value; }
@@ -143,6 +70,9 @@ namespace BE
         public bool RightTurn { get => _rightTurn; set => _rightTurn = value; }
         public bool ImediateStop { get => _imediateStop; set => _imediateStop = value; }
         internal Address StartingPoint { get => _startingPoint; set => _startingPoint = value; }
+        public bool TestPassed { get => _testPassed; set => _testPassed = value; }
+        public string RemarksOnTest { get => _remarksOnTest; set => _remarksOnTest = value; }
+
         public override string ToString()
         {
              PropertyInfo[] _PropertyInfos = this.GetType().GetProperties(); ;

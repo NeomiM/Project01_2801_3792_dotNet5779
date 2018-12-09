@@ -14,7 +14,7 @@ namespace BE
         private Gender _traineeGender;
         private string _phoneNumber;
         private Address _traineeAddress; 
-        private CarType _traineecar;
+        private CarType[] _traineecar;
         private GearType _traineeGear;
         private string _drivingSchool;
         private string _drivingTeacher;
@@ -68,12 +68,11 @@ namespace BE
         public Gender TraineeGender { get => _traineeGender; set => _traineeGender = value; }
         public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = value; }
         internal Address TraineeAddress { get => _traineeAddress; set => _traineeAddress = value; }
-        public CarType Traineecar { get => _traineecar; set => _traineecar = value; }
         public GearType TraineeGear { get => _traineeGear; set => _traineeGear = value; }
         public string DrivingSchool { get => _drivingSchool; set => _drivingSchool = value; }
         public string DrivingTeacher { get => _drivingTeacher; set => _drivingTeacher = value; }
         public int LessonsPassed { get => _lessonsPassed; set => _lessonsPassed = value; }
-
+        public CarType[] Traineecar1 { get => _traineecar; set => _traineecar = value; }
 
         public override string ToString()
         {

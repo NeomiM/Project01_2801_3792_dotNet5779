@@ -21,7 +21,7 @@ namespace BE
 
         CarType _testercar;
 
-        //int[,] Schedual[5][7]; //5 days a week, 6 hours +1 to show the day
+        private bool[,] schedule=new bool[5,6]; //5 days a week, 6 hours +1 to show the day
         double _maxDistanceForTest; //in kilometers
        
         public string TesterId
@@ -77,6 +77,7 @@ namespace BE
         public double MaxDistanceForTest { get => _maxDistanceForTest; set => _maxDistanceForTest = value; }
 
         public CarType Testercar { get => _testercar; set => _testercar = value; }
+        public bool[,] Schedule { get => schedule; set => schedule = value; }
 
         public override string ToString()
         {

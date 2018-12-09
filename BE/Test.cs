@@ -12,7 +12,7 @@ namespace BE
         private string _traineeId;
         private DateTime _testDate;
         private DateTime _dateAndHourofTest; //need to check if it is an exact hour?
-
+        private CarType _carType;
         internal Address _startingPoint;
         //things to check in test
         private bool _keptDistance;
@@ -74,6 +74,7 @@ namespace BE
         internal Address StartingPoint { get => _startingPoint; set => _startingPoint = value; }
         public bool TestPassed { get => _testPassed; set => _testPassed = value; }
         public string RemarksOnTest { get => _remarksOnTest; set => _remarksOnTest = value; }
+        public CarType CarType { get => _carType; set => _carType = value; }
 
         public override string ToString()
         {

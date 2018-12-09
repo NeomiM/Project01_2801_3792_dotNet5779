@@ -9,20 +9,38 @@ namespace DAL
     {
         public void AddTest(Test T) //add check for id if exist
         {
-            if (Configuration.FirstTestId < 99999999)
-            T.TestId += "" + Configuration.FirstTestId.ToString("D" + 8);
-            else
+            try
             {
-                //we finished the numbers
-                //we could move on to letters like in hex
-            }
-            Configuration.FirstTestId++;
+                if (Configuration.FirstTestId < 99999999)
+                    T.TestId += "" + Configuration.FirstTestId.ToString("D" + 8);
+                else
+                {
+                    throw new Exception("test id storage full");
+                }
+                Configuration.FirstTestId++;
+                //add if ids are in the system
+                if (DataSource._traineeList.Exists(x => x.TraineeId == T.TraineeId))
+                {
 
-            //add if ids are in the system
-            if (DataSource._traineeList.Exists(x=> x.TraineeId==T.TraineeId))
-          if (DataSource._testerList.Exists(x => x.TesterId == T.TesterId))
-             DataSource._testList.Add(T);
-           //if(DataSource._testList.Any(x=>x.i)) 
+                    if (DataSource._testerList.Exists(x => x.TesterId == T.TesterId))
+                        DataSource._testList.Add(T);
+                    else
+                    {
+                        throw new Exception("ERROR. The tester isn't in the system");
+                    }
+                }
+                else
+                {
+                    throw new Exception("ERROR. The trainee isn't in the system.");
+                }
+
+                //if(DataSource._testList.Any(x=>x.i)) 
+
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+            }
         }
 
         public void AddTester(Tester T)  //add check for id if exist

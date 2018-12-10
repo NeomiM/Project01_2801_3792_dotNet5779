@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,28 +24,17 @@ namespace BL
         List<Tester> GetListOfTesters();
         List<Trainee> GetListOfTrainees();
         List<Test> GetListOfTests();
-
-        bool checkID(int id);
-        /*
-         try{
-         if (id isnt ok)
-        throw not ok
-        return true
-        }
-        catch
-        {
-        print "not ok"
-        return flase
-        }
-         
-        //if (checkid(id)&&checkage(age))
-        //add tester
-
-        bool[]checkAll= {checkid(id ), checkage(age)}
-        checkall.All(x=>x)
-        add tester
-        if(all in)
-
-        */
+        
+        //checks for trainer and trainee
+        bool CheckId(string id);
+        bool CheckAge(DateTime birthday, string person);
+        //checks for test
+        bool NoConflictingTests(Test T);
+        bool HadMinAmountOfLessons(Test T);
+        bool HourInRange(int hour);
+        bool NotPassedTest(Test T);
+        bool AvailableTester(Test T);
+        //additional functions
+        List<Tester> TestersInArea(BE.Address a);
     }
 }

@@ -102,6 +102,8 @@ namespace BL
             //AddTest(T);
             try
             {
+                //func check ids
+
                 List<Test> testlist = GetListOfTests();
                 List<Trainee> trainees = GetListOfTrainees();
                 List<Tester> testers = GetListOfTesters();
@@ -136,6 +138,16 @@ namespace BL
 
                 //if tester is available in hour but he finshed max hours of tests a week
                 */
+
+                //1 check if test hour is in general hours (9-15)
+                //2 get list of testers that are not testing in that hour
+                //3 find the first one that hasnt finished his max test a week and that the distance isnt too far 
+                //4 if there arent any testers available-> find all available hours and ask the trainee
+               //print a list of available hours and ask the adder to add the test again.
+
+
+
+
                 //if the trainee already git his liscence for a certain car
                 bool passedTheTest = testlist.Where(x => x.TraineeId == T.TraineeId)
                     .Any(x => x.CarType == T.CarType && x.TestPassed == T.TestPassed);

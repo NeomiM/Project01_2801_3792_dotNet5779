@@ -24,5 +24,27 @@ namespace BL
         List<Trainee> GetListOfTrainees();
         List<Test> GetListOfTests();
 
+        bool checkID(int id);
+        /*
+         try{
+         if (id isnt ok)
+        throw not ok
+        return true
+        }
+        catch
+        {
+        print "not ok"
+        return flase
+        }
+         
+        //if (checkid(id)&&checkage(age))
+        //add tester
+
+        bool[]checkAll= {checkid(id ), checkage(age)}
+        checkall.All(x=>x)
+        add tester
+        if(all in)
+
+        */
     }
 }

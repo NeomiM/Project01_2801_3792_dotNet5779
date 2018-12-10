@@ -49,4 +49,26 @@ BE
   
  class exception catch
 
+ 10/12
+ 1 finish dal imp - add exceptions
+ 2 work on adding a test with the right tester -ibl_imp
+ 3 work out what distance for where in Addtest -ibl_imp
+
+
+ neomi: 
+ what is the difference between argumant exceptoion and exception
+ finish writing bl functions
+ add functions to bl to make it all smaller
+ add parse to check id
+
+ Beila:
+  dont worry be happy
+ add excetions to DAL_imp
+ add checks in PL 
+
+
+
+
+
+
   */

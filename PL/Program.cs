@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using BE;
@@ -29,6 +30,13 @@ namespace PL
                 System.Console.WriteLine(t);
             }
             System.Console.ReadKey();
+            //make a trainee that it not ok
+            //call ibl.addtrainee 
+            Trainee trainee;
+            //trainee.id=328772
+            ibl.AddTrainee(trainee);
+            //see what it prints out if it is ok
+
         }
     }
 }

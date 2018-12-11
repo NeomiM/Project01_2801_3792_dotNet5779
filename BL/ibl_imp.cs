@@ -6,6 +6,9 @@ using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+
+
+
 using BE;
 using DAL;
 
@@ -88,12 +91,17 @@ namespace BL
                     NoConflictingTests(T),
                     HadMinAmountOfLessons(T),
                     HourInRange(T.DateAndHourOfTest.Hour),
-                    NotPassedTest(T),
-                    AvailableTester(T)
+                    NotPassedPrevTest(T),
+                    AvailableTesterFound(T)!=null, //add tester to return by reference
+                    DayInRange((int)T.TestDate.DayOfWeek)
                 };
             bool clear = checkAll.All(x => x);
             if (clear)
+            {
+                T.TestId = AvailableTesterFound(T);
                 dal.AddTest(T);
+                Console.WriteLine("Test added successfully");
+            }
                 try
             {
                 //func check ids
@@ -316,7 +324,7 @@ namespace BL
             }
         }
 
-        public bool NotPassedTest(Test T)
+        public bool NotPassedPrevTest(Test T)
         {
             try
             {
@@ -334,18 +342,143 @@ namespace BL
             }
         }
 
-        public bool AvailableTester(Test T)
+        public string AvailableTesterFound(Test T)
         {
-            return true;
+            //all testers available in that hour from work schedual and other tests
+            List<int> availableHours = new List<int>();
+            try
+            {
+                //makes a list of all avialble hours for a test
+                List<Tester> filteredTesters = new List<Tester>();                
+                DateTime checkhour = T.TestDate;
+                checkhour = checkhour.AddHours(Configuration.StartOfWorkDay);
+                for (int i = Configuration.StartOfWorkDay; i <= Configuration.EndOfWorkDay; i++)
+                {
+                    checkhour = checkhour.AddHours(1);
+                    filteredTesters = AvailableTesters(checkhour);
+                    if (filteredTesters.Any())
+                    {
+                        availableHours.Add(i);
+                    }
+                    else throw new Exception("ERROR. There are now available testers that day.");
+                }
+                string hours = string.Join(",", availableHours);
+                filteredTesters =AvailableTesters(T.DateAndHourOfTest);
+                //check for any testers in that hour
+                if (!filteredTesters.Any())
+                {
+                    throw new Exception("ERROR. No testers available in that hour");
+                }
+                //filters all of the cartypes
+                var carMatch = from tester in filteredTesters
+                    where tester.Testercar == T.CarType
+                    select tester;
+                if(!carMatch.Any())
+                    throw new Exception("ERROR. There are no testers with that car type available that date.");
+                filteredTesters = (List<Tester>) carMatch;
+
+                string testerfound="";
+                return testerfound;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                if (e.Message == "ERROR. No testers available in that hour")
+                {
+                    if (availableHours.Any())
+                    {
+                        Console.WriteLine("Avialable hours are: ");
+                        string hours=string.Join(",",availableHours);
+                        Console.WriteLine(hours);
+                    }
+
+                }
+
+                return null;
+            }
+
+
+            
+        }
+
+        public bool DayInRange(int t)
+        {
+            try
+            {
+                if (t >4)
+                    throw new Exception("ERROR. Test day of the week is out of range.");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+        }
+
+        public bool HourInRage(int h)
+        {
+            try
+            {
+                if(h<Configuration.StartOfWorkDay || h>Configuration.EndOfWorkDay)
+                    throw new Exception("ERROR. Hour of test is out of general working hours");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool HasntPassedMaxTests(Tester T,DateTime DateOfTest)
+        {
+            List < Test > tests= dal.GetListOfTests();
+
+            return false;
         }
 
         #endregion
 
         public List<Tester> TestersInArea(Address a)
         {
-            throw new NotImplementedException();
+            List<Tester> testerlist = dal.GetListOfTesters();
+            //makes a random number for distance
+           Random r=new Random();
+           int x=r.Next(100, 1000);
+            foreach (Tester t in testerlist)
+            {
+               // if(!distance(a,t)==x)
+                //testerlist.remove(T);
+            }
+
+            return testerlist;
         }
 
+        public List<Tester> AvailableTesters(DateTime dateAndHour)
+        {
+            List<Tester> testerlist = dal.GetListOfTesters();
+            List<Test> testlist = dal.GetListOfTests();
+            List<Tester> filteredTesters=new List<Tester>();
+            int dayOfWeek = (int) dateAndHour.DayOfWeek;
+            int hour = dateAndHour.Hour;
+                if(dayOfWeek<5 && hour>=Configuration.StartOfWorkDay && hour<=Configuration.EndOfWorkDay)
+                foreach (Tester t in testerlist)
+                {
 
+                    var row = Enumerable.Range(0, t.Schedule.GetLength(1))
+                        .Select(x => t.Schedule[dayOfWeek, x])
+                        .ToArray();
+                    bool noOtherTest = 
+                        testlist.Where(x => x.TestDate == dateAndHour.Date && x.TesterId == t.TesterId)
+                        .All(x => x.DateAndHourOfTest.Hour != hour);
+                    if(row[hour-9]!=false && noOtherTest)
+                        filteredTesters.Add(t);
+
+                }
+
+            return filteredTesters;
+        }
     }
 }

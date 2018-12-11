@@ -32,9 +32,18 @@ namespace BL
         bool NoConflictingTests(Test T);
         bool HadMinAmountOfLessons(Test T);
         bool HourInRange(int hour);
-        bool NotPassedTest(Test T);
-        bool AvailableTester(Test T);
+        bool NotPassedPrevTest(Test T);
+        string AvailableTesterFound(Test T);
+        bool DayInRange(int d);
+        bool HourInRage(int h);
+
+        bool HasntPassedMaxTests(Tester T,DateTime DateOfTest);
         //additional functions
         List<Tester> TestersInArea(BE.Address a);
+        List<Tester> AvailableTesters(DateTime dateAndHour);
+        //public delegate bool AllTestThat(Test T);
+       // List<Test> AllTestsThat(Delegate del);
+        //for delegate function use what where takes
+
     }
 }

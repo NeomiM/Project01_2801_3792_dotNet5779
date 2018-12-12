@@ -41,9 +41,8 @@ namespace BL
         //additional functions
         List<Tester> TestersInArea(BE.Address a);
         List<Tester> AvailableTesters(DateTime dateAndHour);
-        //public delegate bool AllTestThat(Test T);
-       // List<Test> AllTestsThat(Delegate del);
-        //for delegate function use what where takes
+        List<Test> AllTestsThat(Func<Test,bool> predicate);
+        
 
     }
 }

@@ -46,14 +46,14 @@ V make netunim for when the program starts
  V what is the difference between argumant exceptoion and exception
  finish writing bl functions
  add functions to bl to make it all smaller
- add parse to check id
-
+ V add parse to check id
+add email
  Beila:
   dont worry be happy
  add excetions to DAL_imp
  add checks in PL 
 
-
+ 
 
 
 

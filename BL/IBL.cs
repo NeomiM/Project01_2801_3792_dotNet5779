@@ -51,10 +51,10 @@ namespace BL
 
         List<Test> TestsByDate();
 
-        IGrouping<CarType, Tester> TestersByCarType(bool orderList = false);
+        IEnumerable<IGrouping<CarType, Tester>> TestersByCarType(bool orderList = false);
 
-        IGrouping<string, Trainee> TraineesByDrivingSchool(bool orderList = false);
-        IGrouping<string,Trainee> TesterSpecialization(bool orderList = false);
-        IGrouping<int, Trainee> TraineesByNumTestsDone(bool orderList = false);
+        IEnumerable<IGrouping<string, Trainee>> TraineesByDrivingSchool(bool orderList = false);
+        IEnumerable<IGrouping<string, Trainee>> TraineesByTeachers(bool orderList = false);
+        IEnumerable<IGrouping<int, Trainee>> TraineesByNumTestsDone(bool orderList = false);
     }
 }

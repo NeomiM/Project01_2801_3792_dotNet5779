@@ -15,6 +15,7 @@ namespace BE
         DateTime _dateOfBirth;
         Gender _testerGender;
         string _phoneNumber;
+        private string _email;
         Address _testerAdress;
         int _yearsOfExperience;
         int _maxTestsInaWeek;
@@ -39,6 +40,7 @@ namespace BE
 
         public CarType Testercar { get => _testercar; set => _testercar = value; }
         public bool[,] Schedule { get; set; } = new bool[5, 6];
+        public string Email { get => _email; set => _email = value; }
 
         public override string ToString()
         {

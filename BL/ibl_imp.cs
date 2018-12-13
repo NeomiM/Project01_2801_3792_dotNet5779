@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
@@ -27,7 +28,7 @@ namespace BL
         public void AddTester(Tester T)
         {
             bool[] checkAll =
-                {CheckId(T.TesterId),CheckAge(T.DateOfBirth,"Tester")};
+                {CheckId(T.TesterId),CheckAge(T.DateOfBirth,"Tester"),CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -46,7 +47,7 @@ namespace BL
         public void UpdateTester(Tester T)
         {
             bool[] checkAll =
-                {CheckId(T.TesterId),CheckAge(T.DateOfBirth,"Tester")};
+                {CheckId(T.TesterId),CheckAge(T.DateOfBirth,"Tester"),CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -59,7 +60,7 @@ namespace BL
 
         public void AddTrainee(Trainee T)
         {
-            bool[] checkAll = { CheckId(T.TraineeId), CheckAge(T.DateOfBirth, "Trainee") };
+            bool[] checkAll = { CheckId(T.TraineeId), CheckAge(T.DateOfBirth, "Trainee"), CheckEmail(T.Email) };
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -74,7 +75,7 @@ namespace BL
         public void UpdateTrainee(Trainee T)
         {
             bool[] checkAll =
-                {CheckId(T.TraineeId),CheckAge(T.DateOfBirth,"Trainee")};
+                {CheckId(T.TraineeId),CheckAge(T.DateOfBirth,"Trainee"),CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -223,6 +224,22 @@ namespace BL
                 return true;
             }
             catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool CheckEmail(string email)
+        {
+            try
+            {
+                var eAddress = new System.Net.Mail.MailAddress(email);
+                if(eAddress.Address != email)
+                    throw new Exception("ERROR. Invalid email address");
+                return true;
+            }
+            catch(Exception e)
             {
                 Console.WriteLine(e.Message);
                 return false;
@@ -483,6 +500,81 @@ namespace BL
                 select test;
             return (List<Test>) all;
 
+        }
+
+        public int NumberOfTests(Trainee T)
+        {
+            List<Test> testList = dal.GetListOfTests();
+            var tests = from test in testList
+                where test.TraineeId == T.TraineeId
+                select test;
+            return tests.Count();
+        }
+
+        public bool CanGetLicence(Trainee T)
+        {
+            List<Test> testList = dal.GetListOfTests();
+            var tests = from test in testList
+                where test.TestPassed
+                select test;
+            if (tests.Any())
+                return true;
+            return false;
+
+        }
+
+        public List<Test> TestsByDate()
+        {
+            List<Test> testList = dal.GetListOfTests();
+            var tests = testList.OrderBy(x => x.TestDate);
+            return (List<Test>) tests;
+        }
+
+        public IGrouping<string, Trainee> TesterSpecialization(bool orderList = false)
+        {
+
+            List<Test> testList = dal.GetListOfTests();
+            List<Trainee> traineeList = dal.GetListOfTrainees();
+            List<Tester> testerList = dal.GetListOfTesters();
+            if (orderList)
+            {
+                 var traineesInOrder = from trainee in traineeList
+                                       orderby trainee.DrivingTeacher
+                                       group trainee by trainee.DrivingTeacher;
+                return (IGrouping<string, Trainee>)traineesInOrder;
+
+
+            }
+            else
+            {
+               var trainees = from trainee in traineeList
+                   group trainee by trainee.DrivingTeacher;
+                return (IGrouping<string, Trainee>)trainees;
+
+            }
+
+        }
+
+        public IGrouping<int, Trainee> TraineesByNumTestsDone(bool orderList = false)
+        {
+           
+            List<Trainee> traineeList = dal.GetListOfTrainees();
+            if (orderList)
+            {
+                var traineesInOrder = from trainee in traineeList
+                    orderby NumberOfTests(trainee)
+                    group trainee by NumberOfTests(trainee);
+                return (IGrouping<int, Trainee>)traineesInOrder;
+
+
+            }
+            else
+            {
+                var trainees = from trainee in traineeList
+                    group trainee by NumberOfTests(trainee);
+                return (IGrouping<int, Trainee>)trainees;
+
+            }
         }
 
         #endregion

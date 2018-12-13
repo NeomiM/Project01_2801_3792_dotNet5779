@@ -28,6 +28,8 @@ namespace BL
         //checks for trainer and trainee
         bool CheckId(string id);
         bool CheckAge(DateTime birthday, string person);
+
+        bool CheckEmail(string email);
         //checks for test
         bool NoConflictingTests(Test T);
         bool HadMinAmountOfLessons(Test T);
@@ -42,7 +44,14 @@ namespace BL
         List<Tester> TestersInArea(BE.Address a);
         List<Tester> AvailableTesters(DateTime dateAndHour);
         List<Test> AllTestsThat(Func<Test,bool> predicate);
-        
 
+        int NumberOfTests(Trainee T);
+
+        bool CanGetLicence(Trainee T);
+
+        List<Test> TestsByDate();
+
+        IGrouping<string,Trainee> TesterSpecialization(bool orderList = false);
+        IGrouping<int, Trainee> TraineesByNumTestsDone(bool orderList = false);
     }
 }

@@ -530,6 +530,47 @@ namespace BL
             return (List<Test>) tests;
         }
 
+        public IGrouping<CarType, Tester> TestersByCarType(bool orderList = false)
+        {
+            List<Tester> testerList = dal.GetListOfTesters();
+            if (orderList)
+            {
+                var testersInOrder = from tester in testerList
+                    orderby tester.Testercar
+                    group tester by tester.Testercar;
+                return (IGrouping<CarType, Tester>)testersInOrder;
+
+
+            }
+            else
+            {
+                var testers = from tester in testerList
+                    group tester by tester.Testercar;
+                return (IGrouping<CarType, Tester>)testers;
+            }
+        }
+
+        public IGrouping<string, Trainee> TraineesByDrivingSchool(bool orderList = false)
+        {
+            List<Trainee> traineeList = dal.GetListOfTrainees();
+            if (orderList)
+            {
+                var traineesInOrder = from trainee in traineeList
+                    orderby trainee.DrivingSchool
+                    group trainee by trainee.DrivingSchool;
+                return (IGrouping<string, Trainee>)traineesInOrder;
+
+
+            }
+            else
+            {
+                var trainees = from trainee in traineeList
+                    group trainee by trainee.DrivingSchool;
+                return (IGrouping<string, Trainee>)trainees;
+
+            }
+        }
+
         public IGrouping<string, Trainee> TesterSpecialization(bool orderList = false)
         {
 

@@ -29,21 +29,6 @@ namespace BE
         private bool _testPassed;
         private string _remarksOnTest; //hearot
 
-        public Test()
-        {
-          /* 
-            //TestId =Configuration.FirstTestId.ToString();
-            if(Configuration.FirstTestId <99999999)
-            _testId +=""+ Configuration.FirstTestId.ToString("D" + 8);
-            else
-            {
-                //we finished the numbers
-                //we could move on to letters like in hex
-            }
-            Configuration.FirstTestId++;
-    */    
-           }
-
         public string TestId
         {
             get { return _testId; }

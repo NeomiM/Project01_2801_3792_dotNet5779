@@ -51,6 +51,9 @@ namespace BL
 
         List<Test> TestsByDate();
 
+        IGrouping<CarType, Tester> TestersByCarType(bool orderList = false);
+
+        IGrouping<string, Trainee> TraineesByDrivingSchool(bool orderList = false);
         IGrouping<string,Trainee> TesterSpecialization(bool orderList = false);
         IGrouping<int, Trainee> TraineesByNumTestsDone(bool orderList = false);
     }

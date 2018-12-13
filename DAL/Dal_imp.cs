@@ -21,18 +21,13 @@ namespace DAL
                 //add if ids are in the system
                 if (DataSource._traineeList.Exists(x => x.TraineeId == T.TraineeId))
                 {
-
-                    if (DataSource._testerList.Exists(x => x.TesterId == T.TesterId))
-                        DataSource._testList.Add(T);
-                    else
-                    {
-                        throw new Exception("ERROR. The tester isn't in the system");
-                    }
+                 throw new Exception("ERROR. The trainee isn't in the system.");
                 }
-                else
-                {
-                    throw new Exception("ERROR. The trainee isn't in the system.");
-                }
+                if (!DataSource._testerList.Exists(x => x.TesterId == T.TesterId))
+                 {
+                 throw new Exception("ERROR. The tester isn't in the system");
+                }                        
+                DataSource._testList.Add(T);
 
                 //if(DataSource._testList.Any(x=>x.i)) 
 

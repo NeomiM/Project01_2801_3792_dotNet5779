@@ -28,7 +28,10 @@ namespace BL
         public void AddTester(Tester T)
         {
             bool[] checkAll =
-                {CheckId(T.TesterId),CheckAge(T.DateOfBirth,"Tester"),CheckEmail(T.Email)};
+                { CheckId(T.TesterId),
+                   CheckAge(T.DateOfBirth,"Tester"),
+                   TesterNotInSystem(T.TesterId),
+                    CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -41,13 +44,24 @@ namespace BL
 
         public void DeleteTester(Tester T)
         {
-            //DeleteTester(T);
+             bool[] checkAll =
+                {CheckId(T.TesterId),
+                
+                TesterInSystem(T.TesterId)
+                };
+
+            bool clear = checkAll.All(x => x);
+            if (clear)          
+            dal.DeleteTester(T);
         }
 
         public void UpdateTester(Tester T)
         {
             bool[] checkAll =
-                {CheckId(T.TesterId),CheckAge(T.DateOfBirth,"Tester"),CheckEmail(T.Email)};
+                {CheckId(T.TesterId),
+                CheckAge(T.DateOfBirth,"Tester"),
+                TesterInSystem(T.TesterId),
+                CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -60,7 +74,11 @@ namespace BL
 
         public void AddTrainee(Trainee T)
         {
-            bool[] checkAll = { CheckId(T.TraineeId), CheckAge(T.DateOfBirth, "Trainee"), CheckEmail(T.Email) };
+            bool[] checkAll = {
+                    CheckId(T.TraineeId),
+                    CheckAge(T.DateOfBirth, "Trainee"),
+                    TraineeNotInSystem(T.TraineeId),
+                    CheckEmail(T.Email) };
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -69,13 +87,22 @@ namespace BL
 
         public void DeleteTrainee(Trainee T)
         {
-            //DeleteTrainee(T);
+                   bool[] checkAll = {
+                    CheckId(T.TraineeId),
+                    TraineeInSystem(T.TraineeId)
+                    };
+
+            bool clear = checkAll.All(x => x);
+            if (clear)
+            dal.DeleteTrainee(T);
         }
 
         public void UpdateTrainee(Trainee T)
         {
             bool[] checkAll =
-                {CheckId(T.TraineeId),CheckAge(T.DateOfBirth,"Trainee"),CheckEmail(T.Email)};
+                {CheckId(T.TraineeId),CheckAge(T.DateOfBirth,"Trainee"),
+                    TraineeInSystem(T.TraineeId)                
+                ,CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -90,6 +117,8 @@ namespace BL
         {
             bool[] checkAll =
             {
+                TraineeInSystem(T.TraineeId),
+                TesterInSystem(T.TesterId),
                 HadMinAmountOfLessons(T),
                 HourInRange(T.DateAndHourOfTest.Hour),
                 DayInRange((int)T.TestDate.DayOfWeek),
@@ -229,7 +258,77 @@ namespace BL
                 return false;
             }
         }
+        public bool TraineeInSystem(string TraineeId)
+        {
 
+            try
+            {
+                List<Trainee> traineeList = dal.GetListOfTrainees();
+                if (!traineeList.Any(x=>x.TraineeId==TraineeId))
+                {
+                 throw new Exception("ERROR. The trainee isn't in the system.");
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+        }
+        
+        public bool TesterInSystem(string TesterId)
+            {
+                try
+                {
+                    List<Trainee> testerList = dal.GetListOfTesters();
+                    if (!testerList.Any(x=>x.TesterId==TesterId))
+                    {
+                    throw new Exception("ERROR. The tester isn't in the system.");
+                    }
+                    return true;
+                }
+                catch (Exception e)
+                {
+                 Console.WriteLine(e.Message);
+                 return false;
+                }
+            }
+        public bool TraineeNotInSystem(string TraineeId)
+        {
+            try
+            {
+                List<Trainee> traineeList = dal.GetListOfTrainees();
+                if (traineeList.Any(x=>x.TraineeId==TraineeId))
+                {
+                 throw new Exception("ERROR. The trainee is alredy in the system.");
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+        public bool TesterNotInSystem(string TesterId)
+            {
+                try
+                {
+                    List<Trainee> testerList = dal.GetListOfTesters();
+                    if (testerList.Any(x=>x.TesterId==TesterId))
+                    {
+                    throw new Exception("ERROR. The tester alredy is in the system.");
+                    }
+                    return true;
+                }
+                catch (Exception e)
+                {
+                 Console.WriteLine(e.Message);
+                 return false;
+                }
+           }
         public bool CheckEmail(string email)
         {
             try

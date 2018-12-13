@@ -28,6 +28,10 @@ namespace BL
         //checks for trainer and trainee
         bool CheckId(string id);
         bool CheckAge(DateTime birthday, string person);
+        bool TraineeInSystem(string TraineeId);
+        bool TesterInSystem(string TesterId);
+        bool TraineeNotInSystem(string TraineeId);
+        bool TesterNotInSystem(string TesterId);
 
         bool CheckEmail(string email);
         //checks for test

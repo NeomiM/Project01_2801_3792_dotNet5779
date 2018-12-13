@@ -9,17 +9,18 @@ namespace BE
 {
     public class Tester //can it be public?S
     {
-        string _testerId;
-        string _sirname;
-        string _firstName;
-        DateTime _dateOfBirth;
-        Gender _testerGender;
-        string _phoneNumber;
-        Address _testerAdress;
-        int _yearsOfExperience;
-        int _maxTestsInaWeek;
+        private string _testerId;
+        private string _sirname;
+        private string _firstName;
+        private DateTime _dateOfBirth;
+        private Gender _testerGender;
+        private string _phoneNumber;
+        private string _email;
+        internal Address _testerAdress;
+        private int _yearsOfExperience;
+        private int _maxTestsInaWeek;
 
-        CarType _testercar;
+        private CarType _testercar;
         double _maxDistanceForTest; //in kilometers
        
         public string TesterId
@@ -39,6 +40,7 @@ namespace BE
 
         public CarType Testercar { get => _testercar; set => _testercar = value; }
         public bool[,] Schedule { get; set; } = new bool[5, 6];
+        public string Email { get => _email; set => _email = value; }
 
         public override string ToString()
         {
@@ -63,7 +65,7 @@ namespace BE
             return sb.ToString();
         }
 
-        //not sure if need mishtanim
+        
 
     }
 }

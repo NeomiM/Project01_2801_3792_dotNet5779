@@ -1,28 +1,30 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Text;
 
 using BE;
-
+//by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace DAL
 {
     public interface Idal
     {
-        //fuctions for tester
+        //functions for tester
         void AddTester(Tester T);
         void DeleteTester(Tester T);
         void UpdateTester(Tester T);
-        //fuctions for trainee
+        //functions for trainee
         void AddTrainee(Trainee T);
         void DeleteTrainee(Trainee T);
         void UpdateTrainee(Trainee T);
-        //fuctions for test
+        //functions for test
         void AddTest(Test T);
         void UpdateTest(Test T);
 
         List<Tester> GetListOfTesters();
         List<Trainee> GetListOfTrainees();
         List<Test> GetListOfTests();
+
+        
 
 
     }

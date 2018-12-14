@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BE;
+
+//by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace BL
 {
     interface IBL
     {
-        //fuctions for tester
+        #region fuctions for tester, trainee and test
+        //functions for tester
         void AddTester(Tester T);
         void DeleteTester(Tester T);
         void UpdateTester(Tester T);
@@ -21,44 +24,124 @@ namespace BL
         void AddTest(Test T);
         void UpdateTest(Test T);
 
+        #endregion
+
         List<Tester> GetListOfTesters();
         List<Trainee> GetListOfTrainees();
         List<Test> GetListOfTests();
-        
-        //checks for trainer and trainee
+
+        #region  checks for trainer and trainee
         bool CheckId(string id);
+        /// <summary>
+        /// Checks if the person is the right age to to something
+        /// </summary>
+        /// <param name="birthday"></param>
+        /// <param name="person"> if it is a trainee or tester</param>
+        /// <returns></returns>
         bool CheckAge(DateTime birthday, string person);
+        /// <summary>
+        /// for when you need to update a person
+        /// </summary>
+        /// <param name="TraineeId">check by id</param>
+        /// <returns></returns>
         bool TraineeInSystem(string TraineeId);
         bool TesterInSystem(string TesterId);
+        /// <summary>
+        /// for when you need to add a person
+        /// </summary>
+        /// <param name="TraineeId">check by id</param>
+        /// <returns></returns>
         bool TraineeNotInSystem(string TraineeId);
         bool TesterNotInSystem(string TesterId);
 
         bool CheckEmail(string email);
-        //checks for test
+        #endregion
+
+        #region  checks for test
+        /// <summary>
+        /// checks if there are no other tests at that time
+        /// and that the new test is at least a week apart
+        /// </summary>
+        /// <param name="T"></param>
+        /// <returns></returns>
         bool NoConflictingTests(Test T);
         bool HadMinAmountOfLessons(Test T);
+        /// <summary>
+        /// hour for test should be in the working hours
+        /// </summary>
+        /// <param name="hour"></param>
+        /// <returns></returns>
         bool HourInRange(int hour);
+        /// <summary>
+        /// you cant add a test if he already passed a previous test
+        /// </summary>
+        /// <param name="T"></param>
+        /// <returns></returns>
         bool NotPassedPrevTest(Test T);
+        /// <summary>
+        /// finds an available tester
+        /// </summary>
+        /// <param name="T"></param>
+        /// <returns>available tester id if found or null if not found</returns>
         string AvailableTesterFound(Test T);
+        /// <summary>
+        /// checks that the day is in the days where the testers work
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         bool DayInRange(int d);
-        bool HourInRage(int h);
-
+        /// <summary>
+        /// checks if a tester hasn't passed his max amount of tests to od per week
+        /// </summary>
+        /// <param name="T"></param>
+        /// <param name="DateOfTest"></param>
+        /// <returns></returns>
         bool HasntPassedMaxTests(Tester T,DateTime DateOfTest);
-        //additional functions
+        #endregion
+
+        #region  additional functions
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="a">an address</param>
+        /// <returns> a list of all testers near an address</returns>
         List<Tester> TestersInArea(BE.Address a);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dateAndHour"></param>
+        /// <returns>returns a list of testers that are potentially availeble in that hour</returns>
         List<Tester> AvailableTesters(DateTime dateAndHour);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns>returns a list of all thats that the predicate returns true</returns>
         List<Test> AllTestsThat(Func<Test,bool> predicate);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="T"></param>
+        /// <returns>returns the number of tests a trainee has done</returns>
         int NumberOfTests(Trainee T);
-
+        /// <summary>
+        /// checks if a trainee can get their license 
+        /// </summary>
+        /// <param name="T"></param>
+        /// <returns></returns>
         bool CanGetLicence(Trainee T);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>returns a list of tests that happen on that date</returns>
         List<Test> TestsByDate();
+        #endregion
 
+        #region grouping functions
         IEnumerable<IGrouping<CarType, Tester>> TestersByCarType(bool orderList = false);
-
         IEnumerable<IGrouping<string, Trainee>> TraineesByDrivingSchool(bool orderList = false);
         IEnumerable<IGrouping<string, Trainee>> TraineesByTeachers(bool orderList = false);
         IEnumerable<IGrouping<int, Trainee>> TraineesByNumTestsDone(bool orderList = false);
+#endregion
     }
 }

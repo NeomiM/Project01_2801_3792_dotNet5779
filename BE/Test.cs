@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-
+//by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace BE
 {
     public class Test
     {
+        #region private variables
         private string _testId;
         private string _testerId; //might need to have a user for each tester
         private string _traineeId;
@@ -28,7 +29,9 @@ namespace BE
 
         private bool _testPassed;
         private string _remarksOnTest; //hearot
+        #endregion
 
+        #region gets and sets
         public string TestId
         {
             get { return _testId; }
@@ -60,6 +63,8 @@ namespace BE
         public bool TestPassed { get => _testPassed; set => _testPassed = value; }
         public string RemarksOnTest { get => _remarksOnTest; set => _remarksOnTest = value; }
         public CarType CarType { get => _carType; set => _carType = value; }
+
+        #endregion
 
         public override string ToString()
         {

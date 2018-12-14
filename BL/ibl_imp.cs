@@ -8,10 +8,10 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
 using BE;
 using DAL;
+
+//by Neomi Mayer 328772801 and Beila Wellner 205823792
 
 namespace BL
 {
@@ -40,13 +40,10 @@ namespace BL
 
         }
 
-
-
         public void DeleteTester(Tester T)
         {
              bool[] checkAll =
                 {CheckId(T.TesterId),
-                
                 TesterInSystem(T.TesterId)
                 };
 
@@ -276,14 +273,13 @@ namespace BL
                 return false;
             }
 
-        }
-        
+        }       
         public bool TesterInSystem(string TesterId)
             {
                 try
                 {
-                    List<Trainee> testerList = dal.GetListOfTesters();
-                    if (!testerList.Any(x=>x.TesterId==TesterId))
+                    List<Tester> testerList = dal.GetListOfTesters();
+                    if (testerList.All(x=>x.TesterId!=TesterId))
                     {
                     throw new Exception("ERROR. The tester isn't in the system.");
                     }
@@ -316,7 +312,7 @@ namespace BL
             {
                 try
                 {
-                    List<Trainee> testerList = dal.GetListOfTesters();
+                    List<Tester> testerList = dal.GetListOfTesters();
                     if (testerList.Any(x=>x.TesterId==TesterId))
                     {
                     throw new Exception("ERROR. The tester alredy is in the system.");
@@ -348,7 +344,6 @@ namespace BL
         #endregion
 
         #region checks for test
-
         public bool NoConflictingTests(Test T)
         {
             try
@@ -397,7 +392,7 @@ namespace BL
         {
             try
             {
-                if (hour < 9 || hour > 15)
+                if (hour < Configuration.StartOfWorkDay || hour > Configuration.EndOfWorkDay)
                     throw new Exception("ERROR. Test hour out of range. Range is from 9:00 to 15:00");
                 return true;
             }
@@ -499,7 +494,7 @@ namespace BL
         {
             try
             {
-                if (t >4)
+                if (t >Configuration.EndOfWorkWeek)
                     throw new Exception("ERROR. Test day of the week is out of range.");
                 return true;
             }
@@ -509,21 +504,6 @@ namespace BL
                 return false;
             }
 
-        }
-
-        public bool HourInRage(int h)
-        {
-            try
-            {
-                if(h<Configuration.StartOfWorkDay || h>Configuration.EndOfWorkDay)
-                    throw new Exception("ERROR. Hour of test is out of general working hours");
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
         }
 
         public bool HasntPassedMaxTests(Tester T,DateTime DateOfTest)
@@ -552,6 +532,7 @@ namespace BL
         #endregion
 
         #region additional functions
+
         public List<Tester> TestersInArea(Address a)
         {
             List<Tester> testerlist = dal.GetListOfTesters();
@@ -566,7 +547,7 @@ namespace BL
 
             return testerlist;
         }
-
+     
         public List<Tester> AvailableTesters(DateTime dateAndHour)
         {
             List<Tester> testerlist = dal.GetListOfTesters();
@@ -590,7 +571,7 @@ namespace BL
                 }
             return filteredTesters;
         }
-
+        
         public List<Test> AllTestsThat(Func<Test, bool> predicate)
         {
             List<Test> testlsList = dal.GetListOfTests();
@@ -600,7 +581,7 @@ namespace BL
             return (List<Test>) all;
 
         }
-
+        
         public int NumberOfTests(Trainee T)
         {
             List<Test> testList = dal.GetListOfTests();
@@ -609,7 +590,7 @@ namespace BL
                 select test;
             return tests.Count();
         }
-
+        
         public bool CanGetLicence(Trainee T)
         {
             List<Test> testList = dal.GetListOfTests();
@@ -621,13 +602,17 @@ namespace BL
             return false;
 
         }
-
+        
         public List<Test> TestsByDate()
         {
             List<Test> testList = dal.GetListOfTests();
             var tests = testList.OrderBy(x => x.TestDate);
             return (List<Test>) tests;
         }
+
+        #endregion
+
+        #region Grouping
 
         public IEnumerable<IGrouping<CarType, Tester>> TestersByCarType(bool orderList = false)
         {

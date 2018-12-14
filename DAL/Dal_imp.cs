@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BE;
 using DS;
+//by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace DAL
 {
     public class DalImp : Idal
@@ -28,8 +29,6 @@ namespace DAL
                  throw new Exception("ERROR. The tester isn't in the system");
                 }                        
                 DataSource._testList.Add(T);
-
-                //if(DataSource._testList.Any(x=>x.i)) 
 
             }
             catch (Exception e)

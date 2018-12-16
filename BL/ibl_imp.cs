@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using BE;
@@ -141,11 +142,17 @@ namespace BL
             {
                 //checks all of the bool properties to see if any are empty
                 bool emptyfield = T.GetType().GetProperties()
-                    .Where(pi => pi.PropertyType == typeof(bool))
-                    .Select(pi => (bool)pi.GetValue(T))
+                    .Where(pi => pi.PropertyType == typeof(string))
+                    .Select(pi => (string)pi.GetValue(T))
                     .Any(value => value == null);
                 if (emptyfield || T.RemarksOnTest == null)
                     throw new Exception("ERROR. Not all of fields for end of test filled");
+                var mostFailed = T.GetType().GetProperties()
+                    .Where(pi => pi.PropertyType == typeof(bool))
+                    .Select(pi => (bool)pi.GetValue(T)==false);
+                if(mostFailed.Count(x=>x==false)>5 && T.TestPassed==true) 
+                    throw new Exception("ERROR. Cannot pass a student if failed more then five checks." +
+                                        " The test will not be updated.");
                 dal.UpdateTest(T);
             }
             catch (Exception e)
@@ -350,9 +357,11 @@ namespace BL
             {
                 List<Test> testlist = GetListOfTests();
                 //gets all of the datetimes of the tests with the same student
-                var testTime = from item in testlist
-                               where item.TraineeId == T.TraineeId &&item.CarType==T.CarType
-                               select item.DateAndHourOfTest;
+                //var testTime = from item in testlist
+                  //             where item.TraineeId == T.TraineeId &&item.CarType==T.CarType
+                    //           select item.DateAndHourOfTest;
+                var testTime=from item in AllTestsThat(x=>x.TraineeId == T.TraineeId &&x.CarType==T.CarType)
+                select item.DateAndHourOfTest;
                 if (testTime.Any())
                 {
                     //if there is a test that is less then a week 
@@ -564,8 +573,9 @@ namespace BL
                         .ToArray();
                     bool noOtherTest =
                         testlist.Where(x => x.TestDate == dateAndHour.Date && x.TesterId == t.TesterId)
-                            .All(x => x.DateAndHourOfTest.Hour != hour);
-                    if (row[hour - 9] != false && noOtherTest)
+                        .All(delegate(Test x) { return x.DateAndHourOfTest.Hour != hour; });
+                    //.All(x => x.DateAndHourOfTest.Hour != hour);
+                    if (row[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
                         filteredTesters.Add(t);
 
                 }
@@ -577,7 +587,7 @@ namespace BL
             List<Test> testlsList = dal.GetListOfTests();
             var all = from test in testlsList
                 where predicate(test)
-                select test;
+                select new {test};
             return (List<Test>) all;
 
         }
@@ -687,8 +697,9 @@ namespace BL
             if (orderList)
             {
                 var traineesInOrder = from trainee in traineeList
-                    orderby NumberOfTests(trainee)
-                    group trainee by NumberOfTests(trainee);
+                    let numTests=NumberOfTests(trainee)
+                    orderby numTests
+                    group trainee by numTests;
                 return traineesInOrder;
 
 

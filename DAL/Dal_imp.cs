@@ -142,6 +142,7 @@ namespace DAL
                 System.Console.WriteLine(e.Message);
             }
         }
+
         public List<Tester> GetListOfTesters()
         {
             return new List<Tester>(DataSource._testerList);

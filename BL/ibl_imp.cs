@@ -6,12 +6,13 @@ using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-
-
 
 using BE;
 using DAL;
+
+//by Neomi Mayer 328772801 and Beila Wellner 205823792
 
 namespace BL
 {
@@ -28,7 +29,10 @@ namespace BL
         public void AddTester(Tester T)
         {
             bool[] checkAll =
-                {CheckId(T.TesterId),CheckAge(T.DateOfBirth,"Tester"),CheckEmail(T.Email)};
+                { CheckId(T.TesterId),
+                   CheckAge(T.DateOfBirth,"Tester"),
+                   TesterNotInSystem(T.TesterId),
+                    CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -37,17 +41,25 @@ namespace BL
 
         }
 
-
-
         public void DeleteTester(Tester T)
         {
-            //DeleteTester(T);
+             bool[] checkAll =
+                {CheckId(T.TesterId),
+                TesterInSystem(T.TesterId)
+                };
+
+            bool clear = checkAll.All(x => x);
+            if (clear)          
+            dal.DeleteTester(T);
         }
 
         public void UpdateTester(Tester T)
         {
             bool[] checkAll =
-                {CheckId(T.TesterId),CheckAge(T.DateOfBirth,"Tester"),CheckEmail(T.Email)};
+                {CheckId(T.TesterId),
+                CheckAge(T.DateOfBirth,"Tester"),
+                TesterInSystem(T.TesterId),
+                CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -60,7 +72,11 @@ namespace BL
 
         public void AddTrainee(Trainee T)
         {
-            bool[] checkAll = { CheckId(T.TraineeId), CheckAge(T.DateOfBirth, "Trainee"), CheckEmail(T.Email) };
+            bool[] checkAll = {
+                    CheckId(T.TraineeId),
+                    CheckAge(T.DateOfBirth, "Trainee"),
+                    TraineeNotInSystem(T.TraineeId),
+                    CheckEmail(T.Email) };
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -69,13 +85,22 @@ namespace BL
 
         public void DeleteTrainee(Trainee T)
         {
-            //DeleteTrainee(T);
+                   bool[] checkAll = {
+                    CheckId(T.TraineeId),
+                    TraineeInSystem(T.TraineeId)
+                    };
+
+            bool clear = checkAll.All(x => x);
+            if (clear)
+            dal.DeleteTrainee(T);
         }
 
         public void UpdateTrainee(Trainee T)
         {
             bool[] checkAll =
-                {CheckId(T.TraineeId),CheckAge(T.DateOfBirth,"Trainee"),CheckEmail(T.Email)};
+                {CheckId(T.TraineeId),CheckAge(T.DateOfBirth,"Trainee"),
+                    TraineeInSystem(T.TraineeId)                
+                ,CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
             if (clear)
@@ -90,6 +115,8 @@ namespace BL
         {
             bool[] checkAll =
             {
+                TraineeInSystem(T.TraineeId),
+                TesterInSystem(T.TesterId),
                 HadMinAmountOfLessons(T),
                 HourInRange(T.DateAndHourOfTest.Hour),
                 DayInRange((int)T.TestDate.DayOfWeek),
@@ -115,11 +142,17 @@ namespace BL
             {
                 //checks all of the bool properties to see if any are empty
                 bool emptyfield = T.GetType().GetProperties()
-                    .Where(pi => pi.PropertyType == typeof(bool))
-                    .Select(pi => (bool)pi.GetValue(T))
+                    .Where(pi => pi.PropertyType == typeof(string))
+                    .Select(pi => (string)pi.GetValue(T))
                     .Any(value => value == null);
                 if (emptyfield || T.RemarksOnTest == null)
                     throw new Exception("ERROR. Not all of fields for end of test filled");
+                var mostFailed = T.GetType().GetProperties()
+                    .Where(pi => pi.PropertyType == typeof(bool))
+                    .Select(pi => (bool)pi.GetValue(T)==false);
+                if(mostFailed.Count(x=>x==false)>5 && T.TestPassed==true) 
+                    throw new Exception("ERROR. Cannot pass a student if failed more then five checks." +
+                                        " The test will not be updated.");
                 dal.UpdateTest(T);
             }
             catch (Exception e)
@@ -229,7 +262,76 @@ namespace BL
                 return false;
             }
         }
+        public bool TraineeInSystem(string TraineeId)
+        {
 
+            try
+            {
+                List<Trainee> traineeList = dal.GetListOfTrainees();
+                if (!traineeList.Any(x=>x.TraineeId==TraineeId))
+                {
+                 throw new Exception("ERROR. The trainee isn't in the system.");
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+        }       
+        public bool TesterInSystem(string TesterId)
+            {
+                try
+                {
+                    List<Tester> testerList = dal.GetListOfTesters();
+                    if (testerList.All(x=>x.TesterId!=TesterId))
+                    {
+                    throw new Exception("ERROR. The tester isn't in the system.");
+                    }
+                    return true;
+                }
+                catch (Exception e)
+                {
+                 Console.WriteLine(e.Message);
+                 return false;
+                }
+            }
+        public bool TraineeNotInSystem(string TraineeId)
+        {
+            try
+            {
+                List<Trainee> traineeList = dal.GetListOfTrainees();
+                if (traineeList.Any(x=>x.TraineeId==TraineeId))
+                {
+                 throw new Exception("ERROR. The trainee is alredy in the system.");
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+        public bool TesterNotInSystem(string TesterId)
+            {
+                try
+                {
+                    List<Tester> testerList = dal.GetListOfTesters();
+                    if (testerList.Any(x=>x.TesterId==TesterId))
+                    {
+                    throw new Exception("ERROR. The tester alredy is in the system.");
+                    }
+                    return true;
+                }
+                catch (Exception e)
+                {
+                 Console.WriteLine(e.Message);
+                 return false;
+                }
+           }
         public bool CheckEmail(string email)
         {
             try
@@ -249,16 +351,17 @@ namespace BL
         #endregion
 
         #region checks for test
-
         public bool NoConflictingTests(Test T)
         {
             try
             {
                 List<Test> testlist = GetListOfTests();
                 //gets all of the datetimes of the tests with the same student
-                var testTime = from item in testlist
-                               where item.TraineeId == T.TraineeId &&item.CarType==T.CarType
-                               select item.DateAndHourOfTest;
+                //var testTime = from item in testlist
+                  //             where item.TraineeId == T.TraineeId &&item.CarType==T.CarType
+                    //           select item.DateAndHourOfTest;
+                var testTime=from item in AllTestsThat(x=>x.TraineeId == T.TraineeId &&x.CarType==T.CarType)
+                select item.DateAndHourOfTest;
                 if (testTime.Any())
                 {
                     //if there is a test that is less then a week 
@@ -298,7 +401,7 @@ namespace BL
         {
             try
             {
-                if (hour < 9 || hour > 15)
+                if (hour < Configuration.StartOfWorkDay || hour > Configuration.EndOfWorkDay)
                     throw new Exception("ERROR. Test hour out of range. Range is from 9:00 to 15:00");
                 return true;
             }
@@ -400,7 +503,7 @@ namespace BL
         {
             try
             {
-                if (t >4)
+                if (t >Configuration.EndOfWorkWeek)
                     throw new Exception("ERROR. Test day of the week is out of range.");
                 return true;
             }
@@ -410,21 +513,6 @@ namespace BL
                 return false;
             }
 
-        }
-
-        public bool HourInRage(int h)
-        {
-            try
-            {
-                if(h<Configuration.StartOfWorkDay || h>Configuration.EndOfWorkDay)
-                    throw new Exception("ERROR. Hour of test is out of general working hours");
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
         }
 
         public bool HasntPassedMaxTests(Tester T,DateTime DateOfTest)
@@ -453,6 +541,7 @@ namespace BL
         #endregion
 
         #region additional functions
+
         public List<Tester> TestersInArea(Address a)
         {
             List<Tester> testerlist = dal.GetListOfTesters();
@@ -467,7 +556,7 @@ namespace BL
 
             return testerlist;
         }
-
+     
         public List<Tester> AvailableTesters(DateTime dateAndHour)
         {
             List<Tester> testerlist = dal.GetListOfTesters();
@@ -484,24 +573,25 @@ namespace BL
                         .ToArray();
                     bool noOtherTest =
                         testlist.Where(x => x.TestDate == dateAndHour.Date && x.TesterId == t.TesterId)
-                            .All(x => x.DateAndHourOfTest.Hour != hour);
-                    if (row[hour - 9] != false && noOtherTest)
+                        .All(delegate(Test x) { return x.DateAndHourOfTest.Hour != hour; });
+                    //.All(x => x.DateAndHourOfTest.Hour != hour);
+                    if (row[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
                         filteredTesters.Add(t);
 
                 }
             return filteredTesters;
         }
-
+        
         public List<Test> AllTestsThat(Func<Test, bool> predicate)
         {
             List<Test> testlsList = dal.GetListOfTests();
             var all = from test in testlsList
                 where predicate(test)
-                select test;
+                select new {test};
             return (List<Test>) all;
 
         }
-
+        
         public int NumberOfTests(Trainee T)
         {
             List<Test> testList = dal.GetListOfTests();
@@ -510,7 +600,7 @@ namespace BL
                 select test;
             return tests.Count();
         }
-
+        
         public bool CanGetLicence(Trainee T)
         {
             List<Test> testList = dal.GetListOfTests();
@@ -522,7 +612,7 @@ namespace BL
             return false;
 
         }
-
+        
         public List<Test> TestsByDate()
         {
             List<Test> testList = dal.GetListOfTests();
@@ -530,7 +620,11 @@ namespace BL
             return (List<Test>) tests;
         }
 
-        public IGrouping<CarType, Tester> TestersByCarType(bool orderList = false)
+        #endregion
+
+        #region Grouping
+
+        public IEnumerable<IGrouping<CarType, Tester>> TestersByCarType(bool orderList = false)
         {
             List<Tester> testerList = dal.GetListOfTesters();
             if (orderList)
@@ -538,7 +632,7 @@ namespace BL
                 var testersInOrder = from tester in testerList
                     orderby tester.Testercar
                     group tester by tester.Testercar;
-                return (IGrouping<CarType, Tester>)testersInOrder;
+                return testersInOrder;
 
 
             }
@@ -546,11 +640,11 @@ namespace BL
             {
                 var testers = from tester in testerList
                     group tester by tester.Testercar;
-                return (IGrouping<CarType, Tester>)testers;
+                return testers;
             }
         }
 
-        public IGrouping<string, Trainee> TraineesByDrivingSchool(bool orderList = false)
+        public IEnumerable<IGrouping<string, Trainee>> TraineesByDrivingSchool(bool orderList = false)
         {
             List<Trainee> traineeList = dal.GetListOfTrainees();
             if (orderList)
@@ -558,7 +652,7 @@ namespace BL
                 var traineesInOrder = from trainee in traineeList
                     orderby trainee.DrivingSchool
                     group trainee by trainee.DrivingSchool;
-                return (IGrouping<string, Trainee>)traineesInOrder;
+                return traineesInOrder;
 
 
             }
@@ -566,12 +660,12 @@ namespace BL
             {
                 var trainees = from trainee in traineeList
                     group trainee by trainee.DrivingSchool;
-                return (IGrouping<string, Trainee>)trainees;
+                return trainees;
 
             }
         }
 
-        public IGrouping<string, Trainee> TesterSpecialization(bool orderList = false)
+        public IEnumerable<IGrouping<string, Trainee>> TraineesByTeachers(bool orderList = false)
         {
 
             List<Test> testList = dal.GetListOfTests();
@@ -582,7 +676,7 @@ namespace BL
                  var traineesInOrder = from trainee in traineeList
                                        orderby trainee.DrivingTeacher
                                        group trainee by trainee.DrivingTeacher;
-                return (IGrouping<string, Trainee>)traineesInOrder;
+                return traineesInOrder;
 
 
             }
@@ -590,22 +684,23 @@ namespace BL
             {
                var trainees = from trainee in traineeList
                    group trainee by trainee.DrivingTeacher;
-                return (IGrouping<string, Trainee>)trainees;
+                return trainees;
 
             }
 
         }
 
-        public IGrouping<int, Trainee> TraineesByNumTestsDone(bool orderList = false)
+        public IEnumerable<IGrouping<int, Trainee>> TraineesByNumTestsDone(bool orderList = false)
         {
            
             List<Trainee> traineeList = dal.GetListOfTrainees();
             if (orderList)
             {
                 var traineesInOrder = from trainee in traineeList
-                    orderby NumberOfTests(trainee)
-                    group trainee by NumberOfTests(trainee);
-                return (IGrouping<int, Trainee>)traineesInOrder;
+                    let numTests=NumberOfTests(trainee)
+                    orderby numTests
+                    group trainee by numTests;
+                return traineesInOrder;
 
 
             }
@@ -613,7 +708,7 @@ namespace BL
             {
                 var trainees = from trainee in traineeList
                     group trainee by NumberOfTests(trainee);
-                return (IGrouping<int, Trainee>)trainees;
+                return trainees;
 
             }
         }

@@ -2,33 +2,36 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-
+//by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace BE
 {
     public class Trainee
     {
+        #region private variables
         private string _traineeId;
         private string _sirname;
         private string _firstName;
         private DateTime _dateOfBirth;
         private Gender _traineeGender;
         private string _phoneNumber;
-        private string _email;
-        private Address _traineeAddress; 
+        private Address _traineeAddress;
         private CarType _traineecar;
         private GearType _traineeGear;
         private string _drivingSchool;
         private string _drivingTeacher;
         private int _lessonsPassed;
-        
+        //things i added
+        private string _email;
 
+
+
+        #endregion
+
+        #region gets and sets
         public string TraineeId
         {
             get { return _traineeId; }
-            //not all options checked
-            #region checkid
             set { _traineeId = value; }
-            #endregion
         }
         public string Sirname { get => _sirname; set => _sirname = value; }
         public string FirstName { get => _firstName; set => _firstName = value; }
@@ -42,6 +45,7 @@ namespace BE
         public int LessonsPassed { get => _lessonsPassed; set => _lessonsPassed = value; }
         public CarType Traineecar { get => _traineecar; set => _traineecar = value; }
         public string Email { get => _email; set => _email = value; }
+        #endregion
 
         public override string ToString()
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BE;
 using DS;
+//by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace DAL
 {
     public class DalImp : Idal
@@ -21,20 +22,13 @@ namespace DAL
                 //add if ids are in the system
                 if (DataSource._traineeList.Exists(x => x.TraineeId == T.TraineeId))
                 {
-
-                    if (DataSource._testerList.Exists(x => x.TesterId == T.TesterId))
-                        DataSource._testList.Add(T);
-                    else
-                    {
-                        throw new Exception("ERROR. The tester isn't in the system");
-                    }
+                 throw new Exception("ERROR. The trainee isn't in the system.");
                 }
-                else
-                {
-                    throw new Exception("ERROR. The trainee isn't in the system.");
-                }
-
-                //if(DataSource._testList.Any(x=>x.i)) 
+                if (!DataSource._testerList.Exists(x => x.TesterId == T.TesterId))
+                 {
+                 throw new Exception("ERROR. The tester isn't in the system");
+                }                        
+                DataSource._testList.Add(T);
 
             }
             catch (Exception e)
@@ -148,6 +142,7 @@ namespace DAL
                 System.Console.WriteLine(e.Message);
             }
         }
+
         public List<Tester> GetListOfTesters()
         {
             return new List<Tester>(DataSource._testerList);

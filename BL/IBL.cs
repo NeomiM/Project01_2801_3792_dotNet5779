@@ -9,7 +9,7 @@ using BE;
 //by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace BL
 {
-    interface IBL
+    public interface IBL
     {
         #region fuctions for tester, trainee and test
         //functions for tester

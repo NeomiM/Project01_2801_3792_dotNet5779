@@ -7,6 +7,23 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="199*"/>
+            <ColumnDefinition Width="389*"/>
+            <ColumnDefinition Width="204*"/>
+        </Grid.ColumnDefinitions>
+        <Button Name="TestersManagement" Content="Manage Testers" Grid.Row="0" Grid.Column="0" Margin="30" Click="ManageTesters_Click"/>
+        <Button Name="TraineesManagement" Content="Manage Trainees" Grid.Row="1" Grid.Column="0" Margin="30" Click="ManageTrainees_Click"/>
+        <Button Name="TestsManagement" Content="Manage Tests" Grid.Row="2" Grid.Column="0" Margin="30" Click="ManageTests_Click"/>
+        <Button Name="ValidableTesters" Content="Validable Testers" Grid.Row="0" Grid.Column="2" Margin="30" Click="ValidableTesters_Click"/>
+        <Button Name="TestsByDate" Content="Tests By date" Grid.Row="1" Grid.Column="2" Margin="30"/>
+        <Button Name="TraineesByTesters" Content="Trainees by testers" Grid.Row="1" Grid.Column="2" Margin="30" Click="TraineesByTesters_Click"/>
+        <Button Name="TestersByCarType"  Content="Testers By car type" Grid.Row="2" Grid.Column="2" Margin="30" Click="TestersByCarType_Click"/>
+
     </Grid>
 </Window>

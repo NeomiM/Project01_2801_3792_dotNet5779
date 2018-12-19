@@ -1,6 +1,7 @@
 ﻿    using System;
 using System.Collections.Generic;
-using System.Text;
+    using System.Runtime.CompilerServices;
+    using System.Text;
 
 using BE;
 //by Neomi Mayer 328772801 and Beila Wellner 205823792
@@ -8,6 +9,8 @@ namespace DAL
 {
     public interface Idal
     {
+
+
         //functions for tester
         void AddTester(Tester T);
         void DeleteTester(Tester T);

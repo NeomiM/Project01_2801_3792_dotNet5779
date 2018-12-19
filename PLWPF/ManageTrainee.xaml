@@ -1,0 +1,25 @@
+﻿<Window x:Class="PLWPF.ManageTrainee"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PLWPF"
+        mc:Ignorable="d"
+        Title="ManageTrainee" Height="450" Width="800">
+    <!--add, update,delete-->
+    <DockPanel LastChildFill="True">
+        <StackPanel Name="backButtonSlot" DockPanel.Dock="Top" Background="AliceBlue">
+            <Button x:Name="BackToMainMenue" Content="Back To Main Menue" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="BackToMainMenue_Click"/>
+        </StackPanel>
+        <StackPanel Name="sideButtonsSlot" DockPanel.Dock="Left" MinWidth="60" MinHeight="100" Background="Bisque">
+
+            <Button x:Name="AddTrainee" Content="Add Trainee"  HorizontalAlignment="Stretch" Margin="15,60,15,30" VerticalAlignment="Stretch" Click="AddTrainee_Click"/>
+            <Button x:Name="UpdateTrainee" Content="Update Trainee" HorizontalAlignment="Stretch" Margin="15,30,15,30" VerticalAlignment="Stretch" Click="UpdateTrainee_Click"/>
+            <Button x:Name="DeleteTrainee" Content="Delete Trainee" HorizontalAlignment="stretch" Margin="15,30,15,60" VerticalAlignment="Stretch" Click="DeleteTrainee_Click"/>
+        
+       </StackPanel>
+        <DockPanel Name="TraineeInfoSlot" DockPanel.Dock="Right" Background="Azure">
+         
+        </DockPanel>
+    </DockPanel>
+</Window>

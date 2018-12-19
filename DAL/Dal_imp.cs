@@ -6,8 +6,32 @@ using DS;
 //by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace DAL
 {
+    public class FactoryDAL
+    {
+        static Idal dal = null;
+
+        public static Idal GetDal()
+        {
+            if (dal == null)
+                dal = new DalImp();
+            return dal;
+        }
+    }
+
     public class DalImp : Idal
     {
+        internal DalImp()
+        {
+        }
+        //protected static DalImp instance = null;
+
+        //public static DalImp GetInstance()
+        //{
+        //    if (instance == null)
+        //        instance = new DalImp();
+        //    return instance;
+        //}
+
         public void AddTest(Test T) //add check for id if exist
         {
             try

@@ -16,12 +16,25 @@ using DAL;
 
 namespace BL
 {
+    public class FactoryBL
+    {
+        static IBL bl = null;
+
+        public static IBL GetBL()
+        {
+            if (bl == null) bl = new ibl_imp();
+            return bl;
+        }
+    }
+
     public class ibl_imp: IBL
     {
-
-        DAL.Idal dal=new DAL.DalImp();
+        private DAL.Idal dal = FactoryDAL.GetDal();
         DateTime now = DateTime.Today;
         //fuctions for tester
+        internal ibl_imp()
+        {
+        }
 
         #region Functions for Tester
 
@@ -474,9 +487,6 @@ namespace BL
                     }
                 }
                 throw new Exception("ERROR. Potential testers have passed their max amount of tests in a week");
-
-
-                return testerFound;
             }
             catch (Exception e)
             {
@@ -518,7 +528,6 @@ namespace BL
         public bool HasntPassedMaxTests(Tester T,DateTime DateOfTest)
         {
             List < Test > tests= dal.GetListOfTests();
-            DateTime time;
             //gets the date for the beginning of the week
             int diff = (7 + (DateOfTest.DayOfWeek - DayOfWeek.Sunday)) % 7;
             DateTime weekDay = DateOfTest.AddDays(-1 * diff).Date;

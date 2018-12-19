@@ -25,7 +25,40 @@ namespace PLWPF
         public MainWindow()
         {
             InitializeComponent();
-            BL.IBL mainBL = new BL.ibl_imp();
+            BL.IBL mainBL =FactoryBL.GetBL();
+
+        }
+
+        private void ManageTesters_Click(object sender, RoutedEventArgs e)
+        {
+            TestersWindow win = new TestersWindow();
+            this.Close();
+            win.Show();
+        }
+
+        private void ManageTrainees_Click(object sender, RoutedEventArgs e)
+        {
+            ManageTrainee win=new ManageTrainee();
+            this.Close();
+            win.Show();
+        }
+
+        private void ManageTests_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void ValidableTesters_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TraineesByTesters_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TestersByCarType_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }

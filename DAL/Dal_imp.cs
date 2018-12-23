@@ -8,29 +8,26 @@ namespace DAL
 {
     public class FactoryDAL
     {
-        static Idal dal = null;
-
-        public static Idal GetDal()
+        public static Idal getDAL(string typeDAL)
         {
-            if (dal == null)
-                dal = new DalImp();
-            return dal;
+           return Dal_imp.Instance;    
         }
     }
 
-    public class DalImp : Idal
+    public class Dal_imp : Idal
     {
-        internal DalImp()
-        {
-        }
-        //protected static DalImp instance = null;
 
-        //public static DalImp GetInstance()
-        //{
-        //    if (instance == null)
-        //        instance = new DalImp();
-        //    return instance;
-        //}
+        #region Singleton
+        private static readonly Dal_imp instance = new Dal_imp();
+        public static Dal_imp Instance
+        {
+            get { return instance; }
+        }
+
+        private Dal_imp() { }
+        static Dal_imp() { }
+
+        #endregion
 
         public void AddTest(Test T) //add check for id if exist
         {

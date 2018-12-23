@@ -42,8 +42,8 @@ namespace PLWPF
         {
             try
             {
-                BL.IBL isThisBLOk = FactoryBL.GetBL();
-                List<Trainee> Trainees = isThisBLOk.GetListOfTrainees();
+           
+            List<Trainee> Trainees = IBL_imp.Instance.GetListOfTrainees();
                 if (Trainees.Count==0)
                     throw new Exception("There are no trainees to update.");
             }
@@ -69,7 +69,13 @@ namespace PLWPF
 
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
 
-        
+            System.Windows.Data.CollectionViewSource traineeViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("traineeViewSource")));
+            // Load data by setting the CollectionViewSource.Source property:
+            // traineeViewSource.Source = [generic data source]
+        }
+
     }
 }

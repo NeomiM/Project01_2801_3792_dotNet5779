@@ -117,7 +117,7 @@ namespace BL
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>returns a list of all thats that the predicate returns true</returns>
-        List<Test> AllTestsThat(Func<Test,bool> predicate);
+        List<Test> AllTestsThat(Func<Test,bool> predicate=null);
         /// <summary>
         /// 
         /// </summary>

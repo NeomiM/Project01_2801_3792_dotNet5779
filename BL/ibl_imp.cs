@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
@@ -16,27 +17,44 @@ using DAL;
 
 namespace BL
 {
+
     public class FactoryBL
     {
-        static IBL bl = null;
-
-        public static IBL GetBL()
+        public static IBL getDAL(string typeDAL)
         {
-            if (bl == null) bl = new ibl_imp();
-            return bl;
+            return IBL_imp.Instance;
         }
     }
-
-    public class ibl_imp: IBL
+    public class IBL_imp: IBL
     {
-        private DAL.Idal dal = FactoryDAL.GetDal();
         DateTime now = DateTime.Today;
-        //fuctions for tester
-        internal ibl_imp()
+
+        #region Singleton
+        private static readonly IBL_imp instance = new IBL_imp();
+
+        public static IBL_imp Instance
         {
+            get { return instance; }
+        }
+        #endregion
+        static Idal MyDal;
+
+        #region Constructor
+
+        private IBL_imp() { }
+
+        static IBL_imp()
+        {
+            string TypeDAL = ConfigurationSettings.AppSettings.Get("TypeDS");
+            MyDal = FactoryDAL.getDAL(TypeDAL);
         }
 
+        private Idal dal = Dal_imp.Instance;
+
+        #endregion
+
         #region Functions for Tester
+
 
 
         public void AddTester(Tester T)
@@ -208,6 +226,8 @@ namespace BL
                     throw new Exception("ERROR. Id must only contain numbers.");
                 if (id.Length < 8)
                     throw new Exception("ERROR. Not enough numbers in id.");
+                if (id.Length > 9)
+                    throw new Exception("ERROR. Idis too long.");
                 string tempId = id;
                 //check if it's all numbers- 8/9 numbers
                 if (tempId.Length == 8)
@@ -591,10 +611,14 @@ namespace BL
             return filteredTesters;
         }
         
-        public List<Test> AllTestsThat(Func<Test, bool> predicate)
+        public List<Test> AllTestsThat(Func<Test, bool> predicate=null)
         {
-            List<Test> testlsList = dal.GetListOfTests();
-            var all = from test in testlsList
+            List<Test> testsList = dal.GetListOfTests();
+
+            if (predicate == null)
+                return testsList;
+
+            var all = from test in testsList
                 where predicate(test)
                 select new {test};
             return (List<Test>) all;
@@ -725,4 +749,6 @@ namespace BL
         #endregion
 
     }
+
+
 }

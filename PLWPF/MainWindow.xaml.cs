@@ -22,10 +22,11 @@ namespace PLWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IBL_imp mainBL;
         public MainWindow()
         {
             InitializeComponent();
-            BL.IBL mainBL =FactoryBL.GetBL();
+            mainBL =IBL_imp.Instance;
 
         }
 

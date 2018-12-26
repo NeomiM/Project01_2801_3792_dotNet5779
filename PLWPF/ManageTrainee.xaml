@@ -32,7 +32,7 @@
         </StackPanel>
         <DockPanel x:Name="TraineeInfoSlot" DockPanel.Dock="Right" Background="Azure">
 
-            <Grid x:Name="TraineeGrid" VerticalAlignment="Center" Margin="0,8,0,-0.2" HorizontalAlignment="Left" DataContext="{StaticResource traineeViewSource}" Height="393" Width="567">
+            <Grid x:Name="TraineeGrid" VerticalAlignment="Top" Margin="0,8,0,-0.2" HorizontalAlignment="Left" DataContext="{StaticResource traineeViewSource}" Height="393" Width="586">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -59,15 +59,15 @@
                 <Label VerticalAlignment="Center" Grid.Row="8" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Driving Teacher:" Height="26" Width="94"/>
                 <TextBox x:Name="drivingTeacherTextBox" Width="120" VerticalAlignment="Center" Text="{Binding DrivingTeacher, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="8" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
                 <Label VerticalAlignment="Center" Grid.Row="6" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Email:" Height="26" Width="42"/>
-                <TextBox x:Name="emailTextBox" Width="120" VerticalAlignment="Center" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="6" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+                <TextBox x:Name="emailTextBox" GotKeyboardFocus="EmailTextBox_OnGotKeyboardFocus" LostKeyboardFocus="EmailTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true ,UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
                 <Label VerticalAlignment="Center" Grid.Row="1" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="First Name:" Height="26" Width="70"/>
-                <TextBox x:Name="firstNameTextBox" Width="120" VerticalAlignment="Center" Text="{Binding FirstName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="1" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1" />
+                <TextBox x:Name="firstNameTextBox" LostKeyboardFocus="FirstNameTextBox_OnLostKeyboardFocus" GotKeyboardFocus="FirstNameTextBox_OnGotKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding FirstName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="1" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1" />
                 <Label VerticalAlignment="Center" Grid.Row="11" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Lessons Passed:" Height="26" Width="93"/>
                 <TextBox x:Name="lessonsPassedTextBox" Width="120" VerticalAlignment="Center" Text="{Binding LessonsPassed, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="11" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
                 <Label VerticalAlignment="Center" Grid.Row="5" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Phone Number:" Height="26" Width="93"/>
-                <TextBox x:Name="phoneNumberTextBox" Width="120" VerticalAlignment="Center" Text="{Binding PhoneNumber, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="5" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+                <TextBox x:Name="phoneNumberTextBox" GotKeyboardFocus="PhoneNumberTextBox_OnGotKeyboardFocus" LostKeyboardFocus="PhoneNumberTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding PhoneNumber, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="5" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
                 <Label VerticalAlignment="Center" Grid.Row="2" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Sirname:" Height="26" Width="56"/>
-                <TextBox x:Name="sirnameTextBox" Width="120" VerticalAlignment="Center" Text="{Binding Sirname,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="2" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+                <TextBox x:Name="sirnameTextBox" GotKeyboardFocus="SirnameTextBox_OnGotKeyboardFocus" LostKeyboardFocus="SirnameTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding Sirname,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="2" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
                 <Label VerticalAlignment="Center" Grid.Row="9" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Car Type:" Height="26" Width="58"/>
                 <ComboBox x:Name="traineecarComboBox" Width="120" VerticalAlignment="Center" Grid.Row="9" Margin="3.4,5,0,5" ItemsSource="{Binding}" Height="22" HorizontalAlignment="Left" DisplayMemberPath="Traineecar" Grid.Column="1">
                     <ComboBox.ItemsPanel>
@@ -90,8 +90,12 @@
                 <TextBox x:Name="traineeIdTextBox" Text="{Binding TraineeId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Width="120" VerticalAlignment="Center" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1" GotKeyboardFocus="TraineeIdTextBox_OnGotKeyboardFocus" LostKeyboardFocus="TraineeIdTextBox_OnLostKeyboardFocus"/>
                 <TextBlock x:Name="IdErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="0"/>
                 <TextBlock x:Name="NameErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="1"/>
+                <TextBlock x:Name="SirNameErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="2"/>
+                <TextBlock x:Name="PhoneNumberErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="5"/>
+                <TextBlock x:Name="EmailErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="6"/>
 
-               <Button x:Name="Save" Content="Save" Grid.Column="2" HorizontalAlignment="Center" Margin="22,0.2,-113.6,2.8" Grid.Row="11" VerticalAlignment="Center" Width="118" Height="29" Click="Save_Click"/>
+
+                <Button x:Name="Save" Content="Save" Grid.Column="2" HorizontalAlignment="Center" Margin="22,0.2,-113.6,2.8" Grid.Row="11" VerticalAlignment="Center" Width="118" Height="29" Click="Save_Click"/>
 
 
             </Grid>

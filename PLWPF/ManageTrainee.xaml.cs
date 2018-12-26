@@ -39,6 +39,7 @@ namespace PLWPF
         {
             this.Close();
         }
+        #region manage buttons
         private void AddTrainee_Click(object sender, RoutedEventArgs e)
         {
             TraineeGrid.Visibility = Visibility.Visible;
@@ -74,7 +75,7 @@ namespace PLWPF
             }
 
         }
-
+#endregion
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -83,10 +84,6 @@ namespace PLWPF
             // traineeViewSource.Source = [generic data source]
         }
 
-        private void TraineeIdTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
@@ -99,26 +96,124 @@ namespace PLWPF
 
         }
 
+        #region id checks
+
         private void TraineeIdTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             try
             {
                 bl.CheckId(TraineeForPL.TraineeId);
+                //make a check if in system- make a messege box option for update/delete then "select" the combox option.
             }
             catch (Exception ex)
             {
                 IdErrors.Text = ex.Message;
-                IdErrors.Foreground=Brushes.Red;
-                traineeIdTextBox.BorderBrush=Brushes.Red;
+                IdErrors.Foreground = Brushes.Red;
+                traineeIdTextBox.BorderBrush = Brushes.Red;
             }
 
         }
 
         private void TraineeIdTextBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            IdErrors.Text="";
+            IdErrors.Text = "";
             IdErrors.Foreground = Brushes.Black;
             traineeIdTextBox.BorderBrush = Brushes.Black;
         }
+
+        #endregion
+        #region Name checks
+        private void FirstNameTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                bl.IsText(TraineeForPL.FirstName);
+            }
+            catch (Exception ex)
+            {
+                NameErrors.Text = ex.Message;
+                NameErrors.Foreground = Brushes.Red;
+                firstNameTextBox.BorderBrush = Brushes.Red;
+            }
+        }
+
+        private void FirstNameTextBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            NameErrors.Text = "";
+            NameErrors.Foreground = Brushes.Black;
+            firstNameTextBox.BorderBrush = Brushes.Black;
+        }
+
+        private void SirnameTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                bl.IsText(TraineeForPL.Sirname);
+            }
+            catch (Exception ex)
+            {
+                SirNameErrors.Text = ex.Message;
+                SirNameErrors.Foreground = Brushes.Red;
+                sirnameTextBox.BorderBrush = Brushes.Red;
+            }
+        }
+
+        private void SirnameTextBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            SirNameErrors.Text = "";
+            SirNameErrors.Foreground = Brushes.Black;
+            sirnameTextBox.BorderBrush = Brushes.Black;
+        }
+        #endregion
+        #region phone Number
+
+        private void PhoneNumberTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                bl.IsNumber(TraineeForPL.PhoneNumber);
+            }
+            catch (Exception ex)
+            {
+                PhoneNumberErrors.Text = ex.Message;
+                PhoneNumberErrors.Foreground = Brushes.Red;
+                phoneNumberTextBox.BorderBrush = Brushes.Red;
+            }
+        }
+
+        private void PhoneNumberTextBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            PhoneNumberErrors.Text = "";
+            PhoneNumberErrors.Foreground = Brushes.Black;
+            phoneNumberTextBox.BorderBrush = Brushes.Black;
+        }
+        #endregion
+
+        #region email
+
+        private void EmailTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                if(TraineeForPL.Email==null|| TraineeForPL.Email=="")
+                    throw new Exception("ERROR. Empty Field");
+                bl.CheckEmail(TraineeForPL.Email);
+            }
+            catch (Exception ex)
+            {
+                EmailErrors.Text = ex.Message;
+                EmailErrors.Foreground = Brushes.Red;
+                emailTextBox.BorderBrush = Brushes.Red;
+            }
+
+        }
+
+        private void EmailTextBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            EmailErrors.Text = "";
+            EmailErrors.Foreground = Brushes.Black;
+            emailTextBox.BorderBrush = Brushes.Black;
+        }
+        #endregion
     }
 }

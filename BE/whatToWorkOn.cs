@@ -14,7 +14,6 @@ BE
 
  first make it like a secretary
 
- find out what is a factory method
 
  main menue: manage people/test buttons -> individual windows for their functions in bl
  and additiontional functions each their own button. 
@@ -23,11 +22,6 @@ BE
 
  when pressing save- the wrong feilds go red.
 
- make sure the fields stay whne trying to update/add
-
- fond the difference between what the UI checks and what bl checks: UI shows on the window BL shows messege box.
-
-
  wpf potential functions:
 
  check box: select a number of people/tests to remove/ group by
@@ -35,10 +29,14 @@ BE
  go over other ones.
 
 
- Neomi: add functions: find tester by: id, (). returns a tester or sends an error.
+ Neomi: add functions: find tester by: id, (). returns a tester or sends an error
  trainee window.
+in change id text in add:
+ make a check if in system- make a messege box option for update/delete then "select" the combox option.
 
  Beila:
  tester window.
+
+ //
 
   */

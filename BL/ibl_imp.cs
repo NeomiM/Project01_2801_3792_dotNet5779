@@ -113,15 +113,24 @@ namespace BL
 
         public void AddTrainee(Trainee T)
         {
-            bool[] checkAll = {
+            try
+            {
+                bool[] checkAll =
+                {
                     CheckId(T.TraineeId),
                     CheckAge(T.DateOfBirth, "Trainee"),
                     TraineeNotInSystem(T.TraineeId),
-                    CheckEmail(T.Email) };
+                    CheckEmail(T.Email)
+                };
 
-            bool clear = checkAll.All(x => x);
-            if (clear)
-                dal.AddTrainee(T);
+                bool clear = checkAll.All(x => x);
+                if (clear)
+                    dal.AddTrainee(T);
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void DeleteTrainee(Trainee T)
@@ -231,21 +240,32 @@ namespace BL
 
         public void IsText(string text)
         {
-            if(!Regex.IsMatch(text, @"^[a-zA-Z]+$"))
+            if (text == ""|| text==null)
+                throw new Exception("ERROR. Field is empty.");
+            if (!Regex.IsMatch(text, @"^[a-zA-Z]+$"))
                 throw new Exception("ERROR. Text must not include numbers.");
+        }
+
+        public void IsNumber(string number)
+        {
+            if (number == ""||number == null)
+                throw new Exception("ERROR. Field is empty.");
+
+            foreach (char c in number)
+            {
+                if (c < '0' || c > '9')
+                    throw new Exception("ERROR. Text must only include numbers.");
+            }
         }
 
         public bool CheckId(string id)
         {
             //try
             //{
-            if (id == "")
-                throw new Exception("ERROR. Id Field is empty.");
+            IsNumber(id);
             int idcheck;
             if (id.Length > 9)
                 throw new Exception("ERROR. Id is too long.");
-            if (int.TryParse(id, out idcheck)==false)
-                    throw new Exception("ERROR. Id must only contain numbers.");
                 if (id.Length < 8)
                     throw new Exception("ERROR. Not enough numbers in id.");
 
@@ -388,18 +408,18 @@ namespace BL
            }
         public bool CheckEmail(string email)
         {
-            try
-            {
+            //try
+            //{
                 var eAddress = new System.Net.Mail.MailAddress(email);
                 if(eAddress.Address != email)
                     throw new Exception("ERROR. Invalid email address");
                 return true;
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            //}
+            //catch(Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //    return false;
+            //}
         }
 
         #endregion

@@ -33,7 +33,7 @@ namespace BL
         #region  checks for trainer and trainee
 
         void IsText(string text);
-       // void IsNumber(string number);
+        void IsNumber(string number);
         bool CheckId(string id);
         /// <summary>
         /// Checks if the person is the right age to to something

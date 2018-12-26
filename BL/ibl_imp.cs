@@ -4,12 +4,14 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Windows;
 using BE;
 using DAL;
 
@@ -59,15 +61,23 @@ namespace BL
 
         public void AddTester(Tester T)
         {
-            bool[] checkAll =
+            try
+            {
+                bool[] checkAll =
                 { CheckId(T.TesterId),
-                   CheckAge(T.DateOfBirth,"Tester"),
-                   TesterNotInSystem(T.TesterId),
+                    CheckAge(T.DateOfBirth,"Tester"),
+                    TesterNotInSystem(T.TesterId),
                     CheckEmail(T.Email)};
 
-            bool clear = checkAll.All(x => x);
-            if (clear)
-                dal.AddTester(T);
+                bool clear = checkAll.All(x => x);
+                if (clear)
+                    dal.AddTester(T);
+            }
+            catch(Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
 
 
         }
@@ -212,22 +222,33 @@ namespace BL
             return dal.GetListOfTests();
         }
 
+
+
         #endregion
 
 
         #region Checks for people
 
+        public void IsText(string text)
+        {
+            if(!Regex.IsMatch(text, @"^[a-zA-Z]+$"))
+                throw new Exception("ERROR. Text must not include numbers.");
+        }
+
         public bool CheckId(string id)
         {
-            try
-            {
-                int idcheck;
-                if (!int.TryParse(id, out idcheck))
+            //try
+            //{
+            if (id == "")
+                throw new Exception("ERROR. Id Field is empty.");
+            int idcheck;
+            if (id.Length > 9)
+                throw new Exception("ERROR. Id is too long.");
+            if (int.TryParse(id, out idcheck)==false)
                     throw new Exception("ERROR. Id must only contain numbers.");
                 if (id.Length < 8)
                     throw new Exception("ERROR. Not enough numbers in id.");
-                if (id.Length > 9)
-                    throw new Exception("ERROR. Idis too long.");
+
                 string tempId = id;
                 //check if it's all numbers- 8/9 numbers
                 if (tempId.Length == 8)
@@ -258,12 +279,12 @@ namespace BL
                     }
                     else throw new Exception("ERROR. Id is invalid.");
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+        //}
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //        return false;
+        //    }
 
             return false;
         }

@@ -33,15 +33,13 @@ namespace PLWPF
         private void ManageTesters_Click(object sender, RoutedEventArgs e)
         {
             TestersWindow win = new TestersWindow();
-            this.Close();
-            win.Show();
+            win.ShowDialog();
+
         }
 
         private void ManageTrainees_Click(object sender, RoutedEventArgs e)
         {
-            ManageTrainee win=new ManageTrainee();
-            this.Close();
-            win.Show();
+            new ManageTrainee().ShowDialog();
         }
 
         private void ManageTests_Click(object sender, RoutedEventArgs e)

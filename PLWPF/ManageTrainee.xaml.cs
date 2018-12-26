@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,20 +23,26 @@ namespace PLWPF
     /// </summary>
     public partial class ManageTrainee : Window
     {
+        private BL.IBL bl;
+        private BE.Trainee TraineeForPL;
         public ManageTrainee()
         {
             InitializeComponent();
+            TraineeGrid.Visibility = Visibility.Hidden;
+            bl = IBL_imp.Instance;
+            TraineeForPL=new Trainee();
+            this.TraineeGrid.DataContext = TraineeForPL;
+            Save.IsEnabled = false;
         }
 
         private void BackToMainMenue_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow win=new MainWindow();
             this.Close();
-            win.Show();
         }
         private void AddTrainee_Click(object sender, RoutedEventArgs e)
         {
-
+            TraineeGrid.Visibility = Visibility.Visible;
+            Save.Content = "Add";
         }
 
         private void UpdateTrainee_Click(object sender, RoutedEventArgs e)
@@ -57,8 +64,7 @@ namespace PLWPF
         {
             try
             {
-                BL.IBL isThisBLOk = FactoryBL.GetBL();
-                List<Trainee> Trainees = isThisBLOk.GetListOfTrainees();
+                List<Trainee> Trainees = IBL_imp.Instance.GetListOfTrainees();
                 if (Trainees.Count == 0)
                     throw new Exception("There are no trainees to update.");
             }
@@ -77,5 +83,42 @@ namespace PLWPF
             // traineeViewSource.Source = [generic data source]
         }
 
+        private void TraineeIdTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            if (Save.Content == "Add")
+            {
+                bl.AddTrainee(TraineeForPL);
+                TraineeForPL=new Trainee();
+                this.TraineeGrid.DataContext = TraineeForPL;
+            }
+
+        }
+
+        private void TraineeIdTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                bl.CheckId(TraineeForPL.TraineeId);
+            }
+            catch (Exception ex)
+            {
+                IdErrors.Text = ex.Message;
+                IdErrors.Foreground=Brushes.Red;
+                traineeIdTextBox.BorderBrush=Brushes.Red;
+            }
+
+        }
+
+        private void TraineeIdTextBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            IdErrors.Text="";
+            IdErrors.Foreground = Brushes.Black;
+            traineeIdTextBox.BorderBrush = Brushes.Black;
+        }
     }
 }

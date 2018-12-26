@@ -27,7 +27,7 @@ namespace PLWPF
 
             tester = new BE.Tester();
             this.DataContext = tester;
-            bl = BL.FactoryBL.GetBL();
+            bl = BL.IBL_imp.Instance;
 
             this.testerGenderComboBox.ItemsSource = Enum.GetValues(typeof(BE.Gender));
             this.testercarComboBox.ItemsSource = Enum.GetValues(typeof(BE.CarType));

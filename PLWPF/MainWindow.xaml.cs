@@ -26,6 +26,7 @@ namespace PLWPF
         public MainWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             mainBL = IBL_imp.Instance;
 
         }

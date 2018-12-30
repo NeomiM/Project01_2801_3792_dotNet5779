@@ -11,7 +11,7 @@ namespace BE
         private string _traineeId;
         private string _sirname;
         private string _firstName;
-        private DateTime _dateOfBirth=DateTime.Now;
+        private DateTime _dateOfBirth=DateTime.Now.AddYears(-1*(int)BE.Configuration.MinAgeOFTrainee);
         private Gender _traineeGender;
         private string _phoneNumber;
         private Address _traineeAddress;

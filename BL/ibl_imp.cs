@@ -5,6 +5,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Mail;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
@@ -70,8 +71,11 @@ namespace BL
                     CheckEmail(T.Email)};
 
                 bool clear = checkAll.All(x => x);
-                if (clear)
-                    dal.AddTester(T);
+                if (!clear)
+                    throw new Exception("Tester Not Added");
+
+               dal.AddTester(T);
+                
             }
             catch(Exception exception)
             {
@@ -121,17 +125,18 @@ namespace BL
                     CheckAge(T.DateOfBirth, "Trainee"),
                     TraineeNotInSystem(T.TraineeId),
                     CheckEmail(T.Email)
-                };
+            };
+                
 
                 bool clear = checkAll.All(x => x);
                 if (clear)
-                    dal.AddTrainee(T);
-            }
+                 dal.AddTrainee(T);
+        }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
+}
 
         public void DeleteTrainee(Trainee T)
         {
@@ -262,7 +267,7 @@ namespace BL
         {
             //try
             //{
-            if (id == null)
+            if (id == null|| id=="")
                 throw new Exception("ERROR. Field is empty.");
             IsNumber(id);
             int idcheck;
@@ -412,12 +417,13 @@ namespace BL
         {
             try
             {
-                new System.Net.Mail.MailAddress(email);
+                if (email != "" ||email != null)
+                  new System.Net.Mail.MailAddress(email);
                 return true;
             }
             catch (Exception e)
             {
-                throw new Exception("ERROR. Invalid email address");
+                //throw new Exception("ERROR. Invalid email address");
                 return false;
             }
         }

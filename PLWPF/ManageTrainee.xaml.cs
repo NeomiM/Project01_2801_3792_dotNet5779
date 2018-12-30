@@ -32,7 +32,11 @@ namespace PLWPF
             bl = IBL_imp.Instance;
             TraineeForPL=new Trainee();
             this.TraineeGrid.DataContext = TraineeForPL;
-            Save.IsEnabled = false;
+            this.traineeGenderComboBox.ItemsSource = Enum.GetValues(typeof(BE.Gender));
+            this.traineeGearComboBox.ItemsSource = Enum.GetValues(typeof(BE.GearType));
+            this.traineecarComboBox.ItemsSource = Enum.GetValues(typeof(BE.CarType));
+
+            
         }
 
         private void BackToMainMenue_Click(object sender, RoutedEventArgs e)
@@ -43,7 +47,7 @@ namespace PLWPF
         private void AddTrainee_Click(object sender, RoutedEventArgs e)
         {
             TraineeGrid.Visibility = Visibility.Visible;
-            Save.Content = "Add";
+            Save.Content = "Check";
         }
 
         private void UpdateTrainee_Click(object sender, RoutedEventArgs e)
@@ -75,7 +79,7 @@ namespace PLWPF
             }
 
         }
-#endregion
+        #endregion
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -92,6 +96,20 @@ namespace PLWPF
                 bl.AddTrainee(TraineeForPL);
                 TraineeForPL=new Trainee();
                 this.TraineeGrid.DataContext = TraineeForPL;
+
+            }
+
+            if (Save.Content == "Check")
+            {
+                if(TraineeForPL.TraineeId!=null &&IdErrors.Text=="" &&TraineeForPL.DateOfBirth!=DateTime.Now && DateErrors.Text=="")
+                {
+                    Save.Content = "Add";
+                }
+                else
+                {
+                    MessageBox.Show("Can't add Trainee. Check empty " +
+                                    "fields and errors in id and date of birth.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
         }
@@ -104,9 +122,11 @@ namespace PLWPF
             {
                 bl.CheckId(TraineeForPL.TraineeId);
                 //make a check if in system- make a messege box option for update/delete then "select" the combox option.
+               
             }
             catch (Exception ex)
             {
+                
                 IdErrors.Text = ex.Message;
                 IdErrors.Foreground = Brushes.Red;
                 traineeIdTextBox.BorderBrush = Brushes.Red;
@@ -131,9 +151,19 @@ namespace PLWPF
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("ERROR"))
+                {
+                    NameErrors.Foreground = Brushes.Red;
+                    firstNameTextBox.BorderBrush = Brushes.Red;
+
+                }
+                else
+                {
+                    NameErrors.Foreground = Brushes.Orange;
+                    firstNameTextBox.BorderBrush = Brushes.Orange;
+                }
                 NameErrors.Text = ex.Message;
-                NameErrors.Foreground = Brushes.Red;
-                firstNameTextBox.BorderBrush = Brushes.Red;
+
             }
         }
 
@@ -152,9 +182,20 @@ namespace PLWPF
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("ERROR"))
+                {
+                    SirNameErrors.Foreground = Brushes.Red;
+                    sirnameTextBox.BorderBrush = Brushes.Red;
+
+                }
+                else
+                {
+                    SirNameErrors.Foreground = Brushes.Orange;
+                    sirnameTextBox.BorderBrush = Brushes.Orange;
+                }
+
                 SirNameErrors.Text = ex.Message;
-                SirNameErrors.Foreground = Brushes.Red;
-                sirnameTextBox.BorderBrush = Brushes.Red;
+
             }
         }
 
@@ -175,9 +216,19 @@ namespace PLWPF
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("ERROR"))
+                {
+                    PhoneNumberErrors.Foreground = Brushes.Red;
+                    phoneNumberTextBox.BorderBrush = Brushes.Red;
+                }
+                else
+                {
+                    PhoneNumberErrors.Foreground = Brushes.Orange;
+                    phoneNumberTextBox.BorderBrush = Brushes.Orange;
+                }
+
                 PhoneNumberErrors.Text = ex.Message;
-                PhoneNumberErrors.Foreground = Brushes.Red;
-                phoneNumberTextBox.BorderBrush = Brushes.Red;
+
             }
         }
 
@@ -189,6 +240,57 @@ namespace PLWPF
         }
         #endregion
 
+        #region driving teacher and driving school
+
+        private void DrivingSchoolTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                bl.IsText(TraineeForPL.DrivingSchool);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("ERROR"))
+                {
+                    DrivingSchoolErrors.Foreground = Brushes.Red;
+                    drivingSchoolTextBox.BorderBrush = Brushes.Red;
+
+                }
+                else
+                {
+                    DrivingSchoolErrors.Foreground = Brushes.Orange;
+                    drivingSchoolTextBox.BorderBrush = Brushes.Orange;
+                }
+                DrivingSchoolErrors.Text = ex.Message;
+
+            }
+        }
+        private void DrivingTeacherTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                bl.IsNumber(TraineeForPL.DrivingTeacher);
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("ERROR"))
+                {
+                    DrivingTeacherErrors.Foreground = Brushes.Red;
+                    drivingTeacherTextBox.BorderBrush = Brushes.Red;
+
+                }
+                else
+                {
+                    DrivingTeacherErrors.Foreground = Brushes.Orange;
+                    drivingTeacherTextBox.BorderBrush = Brushes.Orange;
+                }
+                DrivingTeacherErrors.Text = ex.Message;
+
+            }
+        }
+
+        #endregion
+
         #region email
 
         private void EmailTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -196,14 +298,14 @@ namespace PLWPF
             try
             {
                 if(TraineeForPL.Email==null|| TraineeForPL.Email=="")
-                    throw new Exception("ERROR. Empty Field");
+                    throw new Exception("Warning. Empty Field");
                 bl.CheckEmail(TraineeForPL.Email);
             }
             catch (Exception ex)
             {
                 EmailErrors.Text = ex.Message;
-                EmailErrors.Foreground = Brushes.Red;
-                emailTextBox.BorderBrush = Brushes.Red;
+                EmailErrors.Foreground = Brushes.Orange;
+                emailTextBox.BorderBrush = Brushes.Orange;
             }
 
         }
@@ -215,5 +317,89 @@ namespace PLWPF
             emailTextBox.BorderBrush = Brushes.Black;
         }
         #endregion
+
+        #region lessson passed buttons
+
+        private void Plus_On_Click(object sender, RoutedEventArgs e)
+        {
+            TraineeForPL.LessonsPassed++;
+            lessonsPassedTextBox.Text = "" + TraineeForPL.LessonsPassed;
+
+        }
+
+        private void Minus_Click(object sender, RoutedEventArgs e)
+        {
+            if(TraineeForPL.LessonsPassed>=1)
+            TraineeForPL.LessonsPassed--;
+            lessonsPassedTextBox.Text = "" + TraineeForPL.LessonsPassed;
+        }
+        #endregion
+
+        #region comboboxes
+        private void TraineeGenderComboBox_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            if(traineeGenderComboBox.SelectedItem == null)
+            {
+                GenderErrors.Text = "Warning. Field is empty.";
+                GenderErrors.Foreground = Brushes.Orange;
+                traineeGenderComboBox.BorderBrush = Brushes.Orange;
+
+            }
+
+            else
+            {
+
+                GenderErrors.Text = "";
+                GenderErrors.Foreground = Brushes.Black;
+                traineeGenderComboBox.BorderBrush = Brushes.Black;
+            }
+
+        }
+        
+
+        private void TraineecarComboBox_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (traineecarComboBox.SelectedItem == null)
+            {
+                CarTypeErrors.Text = "Warning. Field is empty.";
+                CarTypeErrors.Foreground = Brushes.Orange;
+                traineecarComboBox.BorderBrush = Brushes.Orange;
+
+            }
+
+            else
+            {
+
+                CarTypeErrors.Text = "";
+                CarTypeErrors.Foreground = Brushes.Black;
+                traineecarComboBox.BorderBrush = Brushes.Black;
+            }
+        }
+
+        private void TraineeGearComboBox_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (traineeGearComboBox.SelectedItem == null)
+            {
+                GearTypeErrors.Text = "Warning. Field is empty.";
+                GearTypeErrors.Foreground = Brushes.Orange;
+                traineeGearComboBox.BorderBrush = Brushes.Orange;
+
+            }
+
+            else
+            {
+
+                GearTypeErrors.Text = "";
+                GearTypeErrors.Foreground = Brushes.Black;
+                traineeGearComboBox.BorderBrush = Brushes.Black;
+            }
+        }
+        #endregion
+
+
+        private void DateOfBirthDatePicker_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

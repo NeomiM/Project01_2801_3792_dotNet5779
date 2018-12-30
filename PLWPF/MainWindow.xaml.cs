@@ -26,7 +26,7 @@ namespace PLWPF
         public MainWindow()
         {
             InitializeComponent();
-            mainBL =IBL_imp.Instance;
+            mainBL = IBL_imp.Instance;
 
         }
 

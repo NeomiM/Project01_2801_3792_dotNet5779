@@ -241,15 +241,15 @@ namespace BL
         public void IsText(string text)
         {
             if (text == ""|| text==null)
-                throw new Exception("ERROR. Field is empty.");
+                throw new Exception("Warning. Field is empty.");
             if (!Regex.IsMatch(text, @"^[a-zA-Z]+$"))
-                throw new Exception("ERROR. Text must not include numbers.");
+                throw new Exception("Error. Text must not include numbers.");
         }
 
         public void IsNumber(string number)
         {
             if (number == ""||number == null)
-                throw new Exception("ERROR. Field is empty.");
+                throw new Exception("Warning. Field is empty.");
 
             foreach (char c in number)
             {
@@ -262,6 +262,8 @@ namespace BL
         {
             //try
             //{
+            if (id == null)
+                throw new Exception("ERROR. Field is empty.");
             IsNumber(id);
             int idcheck;
             if (id.Length > 9)
@@ -408,18 +410,16 @@ namespace BL
            }
         public bool CheckEmail(string email)
         {
-            //try
-            //{
-                var eAddress = new System.Net.Mail.MailAddress(email);
-                if(eAddress.Address != email)
-                    throw new Exception("ERROR. Invalid email address");
+            try
+            {
+                new System.Net.Mail.MailAddress(email);
                 return true;
-            //}
-            //catch(Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //    return false;
-            //}
+            }
+            catch (Exception e)
+            {
+                throw new Exception("ERROR. Invalid email address");
+                return false;
+            }
         }
 
         #endregion

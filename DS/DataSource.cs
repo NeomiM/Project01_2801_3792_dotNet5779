@@ -70,7 +70,7 @@ namespace DS
 
             #region three testers
 
-            Tester tester=new Tester();
+            Tester tester = new Tester();
             tester.DateOfBirth = time;
             tester.FirstName = "Neomi";
             tester.TesterId = "328772801";

@@ -1,0 +1,60 @@
+﻿<Window x:Class="PLWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PLWPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <!--<Grid>-->
+    <DockPanel LastChildFill="True">
+        <StackPanel x:Name="leftButtons" DockPanel.Dock="Left" MinWidth="150" MinHeight="100" Background="Bisque">
+            <Button Name="TestersManagement" Content="Manage Testers" HorizontalAlignment="Stretch" Margin="15,60,15,30" VerticalAlignment="Stretch" Click="ManageTesters_Click"/>
+            <Button Name="TraineesManagement" Content="Manage Trainees" HorizontalAlignment="Stretch" Margin="15,60,15,30" VerticalAlignment="Stretch" Click="ManageTrainees_Click"/>
+            <Button Name="TestsManagement" Content="Manage Tests" HorizontalAlignment="Stretch" Margin="15,60,15,30" VerticalAlignment="Stretch" Click="ManageTests_Click"/>
+        </StackPanel>
+        <StackPanel x:Name="righrButtons" DockPanel.Dock="Right" MinWidth="150" MinHeight="100" Background="Bisque">
+            <Button Name="ValidableTesters" Content="Valid Testers" HorizontalAlignment="Stretch" Margin="15,40,15,40" VerticalAlignment="Stretch" Click="ValidableTesters_Click"/>
+            <Button Name="TestsByDate" Content="Tests By date" HorizontalAlignment="Stretch" Margin="15,40,15,30" VerticalAlignment="Stretch"/>
+            <Button Name="TraineesByTesters" Content="Trainees by testers" HorizontalAlignment="Stretch" Margin="15,40,15,40" VerticalAlignment="Stretch" Click="TraineesByTesters_Click"/>
+            <Button Name="TestersByCarType"  Content="Testers By car type" HorizontalAlignment="Stretch" Margin="15,40,15,40" VerticalAlignment="Stretch" Click="TestersByCarType_Click"/>
+        </StackPanel>
+        <StackPanel x:Name="middle" DockPanel.Dock="Right" Background="Azure">
+            <Image Height="200" Width="200" Source="image.png" Margin="0,100,0,100"/>
+        </StackPanel>
+
+
+    </DockPanel>
+
+    <!--<StackPanel x:Name="rightButtonsSlot" DockPanel.Dock="Right" MinWidth="60" MinHeight="100" Background="Bisque">
+
+
+        </StackPanel>
+        <StackPanel x:Name="leftButtonsSlot" DockPanel.Dock="Left" MinWidth="60" MinHeight="100" Background="Bisque">
+
+            <Button x:Name="ValidableTesters" Content="Validable Testers"  HorizontalAlignment="Stretch" Margin="15,60,15,30" VerticalAlignment="Stretch" Click="AddTrainee_Click"/>
+            <Button x:Name="TestsByDate" Content="Tests By date" HorizontalAlignment="Stretch" Margin="15,30,15,30" VerticalAlignment="Stretch" Click="UpdateTrainee_Click"/>
+            <Button x:Name="TraineesByTesters" Content="Trainees by testers" HorizontalAlignment="stretch" Margin="15,30,15,60" VerticalAlignment="Stretch" Click="DeleteTrainee_Click"/>
+
+        </StackPanel>-->
+
+    <!--<Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="199*"/>
+            <ColumnDefinition Width="389*"/>
+            <ColumnDefinition Width="204*"/>
+        </Grid.ColumnDefinitions>
+        <Button Name="TestersManagement" Content="Manage Testers" Grid.Row="0" Grid.Column="0" Margin="30" Click="ManageTesters_Click"/>
+        <Button Name="TraineesManagement" Content="Manage Trainees" Grid.Row="1" Grid.Column="0" Margin="30" Click="ManageTrainees_Click"/>
+        <Button Name="TestsManagement" Content="Manage Tests" Grid.Row="2" Grid.Column="0" Margin="30" Click="ManageTests_Click"/>
+        <Button Name="ValidableTesters" Content="Validable Testers" Grid.Row="0" Grid.Column="2" Margin="30" Click="ValidableTesters_Click"/>
+        <Button Name="TestsByDate" Content="Tests By date" Grid.Row="1" Grid.Column="2" Margin="30"/>
+        <Button Name="TraineesByTesters" Content="Trainees by testers" Grid.Row="1" Grid.Column="2" Margin="30" Click="TraineesByTesters_Click"/>
+        <Button Name="TestersByCarType"  Content="Testers By car type" Grid.Row="2" Grid.Column="2" Margin="30" Click="TestersByCarType_Click"/>-->
+
+    <!--</Grid>-->
+</Window>

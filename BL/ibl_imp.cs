@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net.Mail;
 using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Windows;
 using BE;
 using DAL;
 
@@ -16,27 +20,68 @@ using DAL;
 
 namespace BL
 {
-    public class ibl_imp: IBL
-    {
 
-        DAL.Idal dal=new DAL.DalImp();
+    public class FactoryBL
+    {
+        public static IBL getDAL(string typeDAL)
+        {
+            return IBL_imp.Instance;
+        }
+    }
+    public class IBL_imp: IBL
+    {
         DateTime now = DateTime.Today;
-        //fuctions for tester
+
+        #region Singleton
+        private static readonly IBL_imp instance = new IBL_imp();
+
+        public static IBL_imp Instance
+        {
+            get { return instance; }
+        }
+        #endregion
+        static Idal MyDal;
+
+        #region Constructor
+
+        private IBL_imp() { }
+
+        static IBL_imp()
+        {
+            string TypeDAL = ConfigurationSettings.AppSettings.Get("TypeDS");
+            MyDal = FactoryDAL.getDAL(TypeDAL);
+        }
+
+        private Idal dal = Dal_imp.Instance;
+
+        #endregion
 
         #region Functions for Tester
 
 
+
         public void AddTester(Tester T)
         {
-            bool[] checkAll =
+            try
+            {
+                bool[] checkAll =
                 { CheckId(T.TesterId),
-                   CheckAge(T.DateOfBirth,"Tester"),
-                   TesterNotInSystem(T.TesterId),
+                    CheckAge(T.DateOfBirth,"Tester"),
+                    TesterNotInSystem(T.TesterId),
                     CheckEmail(T.Email)};
 
-            bool clear = checkAll.All(x => x);
-            if (clear)
-                dal.AddTester(T);
+                bool clear = checkAll.All(x => x);
+                if (!clear)
+                    throw new Exception("Tester Not Added");
+
+               dal.AddTester(T);
+                
+            }
+            catch(Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
 
 
         }
@@ -72,16 +117,26 @@ namespace BL
 
         public void AddTrainee(Trainee T)
         {
-            bool[] checkAll = {
+            try
+            {
+                bool[] checkAll =
+                {
                     CheckId(T.TraineeId),
                     CheckAge(T.DateOfBirth, "Trainee"),
                     TraineeNotInSystem(T.TraineeId),
-                    CheckEmail(T.Email) };
+                    CheckEmail(T.Email)
+            };
+                
 
-            bool clear = checkAll.All(x => x);
-            if (clear)
-                dal.AddTrainee(T);
+                bool clear = checkAll.All(x => x);
+                if (clear)
+                 dal.AddTrainee(T);
         }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+}
 
         public void DeleteTrainee(Trainee T)
         {
@@ -181,20 +236,46 @@ namespace BL
             return dal.GetListOfTests();
         }
 
+
+
         #endregion
 
 
         #region Checks for people
 
+        public void IsText(string text)
+        {
+            if (text == ""|| text==null)
+                throw new Exception("Warning. Field is empty.");
+            if (!Regex.IsMatch(text, @"^[a-zA-Z]+$"))
+                throw new Exception("Error. Text must not include numbers.");
+        }
+
+        public void IsNumber(string number)
+        {
+            if (number == ""||number == null)
+                throw new Exception("Warning. Field is empty.");
+
+            foreach (char c in number)
+            {
+                if (c < '0' || c > '9')
+                    throw new Exception("ERROR. Text must only include numbers.");
+            }
+        }
+
         public bool CheckId(string id)
         {
-            try
-            {
-                int idcheck;
-                if (!int.TryParse(id, out idcheck))
-                    throw new Exception("ERROR. Id must only contain numbers.");
+            //try
+            //{
+            if (id == null|| id=="")
+                throw new Exception("ERROR. Field is empty.");
+            IsNumber(id);
+            int idcheck;
+            if (id.Length > 9)
+                throw new Exception("ERROR. Id is too long.");
                 if (id.Length < 8)
                     throw new Exception("ERROR. Not enough numbers in id.");
+
                 string tempId = id;
                 //check if it's all numbers- 8/9 numbers
                 if (tempId.Length == 8)
@@ -225,12 +306,12 @@ namespace BL
                     }
                     else throw new Exception("ERROR. Id is invalid.");
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+        //}
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //        return false;
+        //    }
 
             return false;
         }
@@ -336,14 +417,13 @@ namespace BL
         {
             try
             {
-                var eAddress = new System.Net.Mail.MailAddress(email);
-                if(eAddress.Address != email)
-                    throw new Exception("ERROR. Invalid email address");
+                if (email != "" ||email != null)
+                  new System.Net.Mail.MailAddress(email);
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                //throw new Exception("ERROR. Invalid email address");
                 return false;
             }
         }
@@ -474,9 +554,6 @@ namespace BL
                     }
                 }
                 throw new Exception("ERROR. Potential testers have passed their max amount of tests in a week");
-
-
-                return testerFound;
             }
             catch (Exception e)
             {
@@ -518,7 +595,6 @@ namespace BL
         public bool HasntPassedMaxTests(Tester T,DateTime DateOfTest)
         {
             List < Test > tests= dal.GetListOfTests();
-            DateTime time;
             //gets the date for the beginning of the week
             int diff = (7 + (DateOfTest.DayOfWeek - DayOfWeek.Sunday)) % 7;
             DateTime weekDay = DateOfTest.AddDays(-1 * diff).Date;
@@ -582,10 +658,14 @@ namespace BL
             return filteredTesters;
         }
         
-        public List<Test> AllTestsThat(Func<Test, bool> predicate)
+        public List<Test> AllTestsThat(Func<Test, bool> predicate=null)
         {
-            List<Test> testlsList = dal.GetListOfTests();
-            var all = from test in testlsList
+            List<Test> testsList = dal.GetListOfTests();
+
+            if (predicate == null)
+                return testsList;
+
+            var all = from test in testsList
                 where predicate(test)
                 select new {test};
             return (List<Test>) all;
@@ -716,4 +796,6 @@ namespace BL
         #endregion
 
     }
+
+
 }

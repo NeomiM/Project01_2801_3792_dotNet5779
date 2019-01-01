@@ -11,7 +11,7 @@ namespace BE
         private string _traineeId;
         private string _sirname;
         private string _firstName;
-        private DateTime _dateOfBirth;
+        private DateTime _dateOfBirth=DateTime.Now.AddYears(-1*(int)BE.Configuration.MinAgeOFTrainee);
         private Gender _traineeGender;
         private string _phoneNumber;
         private Address _traineeAddress;
@@ -19,7 +19,7 @@ namespace BE
         private GearType _traineeGear;
         private string _drivingSchool;
         private string _drivingTeacher;
-        private int _lessonsPassed;
+        private int _lessonsPassed=0;
         //things i added
         private string _email;
 

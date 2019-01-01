@@ -9,7 +9,7 @@ using BE;
 //by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace BL
 {
-    interface IBL
+    public interface IBL
     {
         #region fuctions for tester, trainee and test
         //functions for tester
@@ -31,6 +31,9 @@ namespace BL
         List<Test> GetListOfTests();
 
         #region  checks for trainer and trainee
+
+        void IsText(string text);
+        void IsNumber(string number);
         bool CheckId(string id);
         /// <summary>
         /// Checks if the person is the right age to to something
@@ -117,7 +120,7 @@ namespace BL
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>returns a list of all thats that the predicate returns true</returns>
-        List<Test> AllTestsThat(Func<Test,bool> predicate);
+        List<Test> AllTestsThat(Func<Test,bool> predicate=null);
         /// <summary>
         /// 
         /// </summary>

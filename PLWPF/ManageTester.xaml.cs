@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using BE;
 using BL;
 
+
+
 namespace PLWPF
 {
     /// <summary>
@@ -33,6 +35,7 @@ namespace PLWPF
             Save.IsEnabled = false;
             dateOfBirthDatePicker.DisplayDateEnd = DateTime.Now.AddYears((int)BE.Configuration.MinAgeOFTester);
             dateOfBirthDatePicker.DisplayDateStart = DateTime.Now.AddYears((int)BE.Configuration.MaxAgeOFTester);
+            dataGrid2D.DataContext = TesterForPL.Schedule;
         }
 
         #region manage buttons

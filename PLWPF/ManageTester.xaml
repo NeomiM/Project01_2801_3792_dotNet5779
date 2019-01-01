@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+
         xmlns:local="clr-namespace:PLWPF"
         xmlns:BE="clr-namespace:BE;assembly=BE" x:Class="PLWPF.TestersWindow"
         mc:Ignorable="d"
-        Title="TestersWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="TestersWindow" Height="450" Width="883.2" Loaded="Window_Loaded">
     <Window.Resources>
         <CollectionViewSource x:Key="testerViewSource" d:DesignSource="{d:DesignInstance {x:Type BE:Tester}, CreateList=True}"/>
     </Window.Resources>
@@ -19,6 +20,7 @@
             <Button x:Name="AddTester" Content="Add Tester"  HorizontalAlignment="Stretch" Margin="15,60,15,30" VerticalAlignment="Stretch" Click="AddTester_Click"/>
             <Button x:Name="UpdateTester" Content="Update Tester" HorizontalAlignment="Stretch" Margin="15,30,15,30" VerticalAlignment="Stretch" Click="UpdateTester_Click"/>
             <Button x:Name="DeleteTester" Content="Delete Tester" HorizontalAlignment="stretch" Margin="15,30,15,60" VerticalAlignment="Stretch" Click="DeleteTester_Click"/>
+           
         </StackPanel>
 
         <DockPanel x:Name="TesterInfoSlot" DockPanel.Dock="Right" Background="Azure">

@@ -7,7 +7,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:BE="clr-namespace:BE;assembly=BE" x:Class="PLWPF.ManageTrainee"
         mc:Ignorable="d"
-        Title="ManageTrainee" Height="481.2" Width="800" Loaded="Window_Loaded">
+        Title="ManageTrainee" Height="543.333" Width="788.673" Loaded="Window_Loaded">
     <Window.Resources>
         <CollectionViewSource x:Key="traineeViewSource" d:DesignSource="{d:DesignInstance {x:Type BE:Trainee}, CreateList=True}"/>
         <ObjectDataProvider x:Key="GenderEnum"
@@ -17,12 +17,16 @@
                 <x:Type TypeName="BE:Gender"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
     </Window.Resources>
     <!--add, update,delete-->
     <DockPanel LastChildFill="True">
-        <StackPanel x:Name="backButtonSlot" DockPanel.Dock="Top" Background="AliceBlue">
-            <Button x:Name="BackToMainMenue" Content="Back To Main Menue" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="BackToMainMenue_Click"/>
-        </StackPanel>
+        <WrapPanel x:Name="backButtonSlot" DockPanel.Dock="Top" Background="AliceBlue">
+            <Button x:Name="BackToMainMenue" Content="Back To Main Menue" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="BackToMainMenue_Click" Height="31"/>
+            <ComboBox x:Name="TraineseComboBox" SelectionChanged="TraineeComboBox_OnSelectionChanged" ItemsSource="{Binding TraineeListForPL}"
+                      IsTextSearchEnabled="True" 
+                      TextSearch.TextPath="TraineeId" Margin="0.4,4,0,5.6" Height="23" Width="336"/>
+        </WrapPanel>
         <StackPanel x:Name="sideButtonsSlot" DockPanel.Dock="Left" MinWidth="60" MinHeight="100" Background="Bisque">
 
             <Button x:Name="AddTrainee" Content="Add Trainee"  HorizontalAlignment="Stretch" Margin="15,60,15,30" VerticalAlignment="Stretch" Click="AddTrainee_Click"/>
@@ -30,79 +34,88 @@
             <Button x:Name="DeleteTrainee" Content="Delete Trainee" HorizontalAlignment="stretch" Margin="15,30,15,60" VerticalAlignment="Stretch" Click="DeleteTrainee_Click"/>
 
         </StackPanel>
-        <DockPanel x:Name="TraineeInfoSlot" DockPanel.Dock="Right" Background="Azure">
-<WrapPanel>
-                <ComboBox Name="TraineeComboBox" ItemsSource="{Binding TraineeListForPL}"
-              IsTextSearchEnabled="True" 
-              TextSearch.TextPath="TraineeId" Height="32" Width="310"/>
-    <Grid x:Name="TraineeGrid" VerticalAlignment="Top" Margin="0,8,0,-0.2" HorizontalAlignment="Left" DataContext="{StaticResource traineeViewSource}" Height="393" Width="586">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="137.6"/>
-                        <ColumnDefinition Width="25.6"/>
-                    </Grid.ColumnDefinitions>
-                    <Label VerticalAlignment="Center" Grid.Row="3" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Date Of Birth:" Height="26" Width="82"/>
-                    <DatePicker x:Name="dateOfBirthDatePicker"  VerticalAlignment="Center" SelectedDate="{Binding DateOfBirth, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="3" Margin="3.4,4.6,0,4.2" HorizontalAlignment="Left" Grid.Column="1" Height="24" Width="120"/>
-                    <Label VerticalAlignment="Center" Grid.Row="7" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Driving School:" Height="26" Width="90"/>
-                    <TextBox x:Name="drivingSchoolTextBox" LostKeyboardFocus="DrivingSchoolTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding DrivingSchool, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="7" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
-                    <Label VerticalAlignment="Center" Grid.Row="8" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Driving Teacher:" Height="26" Width="94"/>
-                    <TextBox x:Name="drivingTeacherTextBox" LostKeyboardFocus="DrivingTeacherTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding DrivingTeacher, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="8" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
-                    <Label VerticalAlignment="Center" Grid.Row="6" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Email:" Height="26" Width="42"/>
-                    <TextBox x:Name="emailTextBox" GotKeyboardFocus="EmailTextBox_OnGotKeyboardFocus" LostKeyboardFocus="EmailTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true ,UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
-                    <Label VerticalAlignment="Center" Grid.Row="1" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="First Name:" Height="26" Width="70"/>
-                    <TextBox x:Name="firstNameTextBox" LostKeyboardFocus="FirstNameTextBox_OnLostKeyboardFocus" GotKeyboardFocus="FirstNameTextBox_OnGotKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding FirstName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="1" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1" />
-                    <Label VerticalAlignment="Center" Grid.Row="11" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Lessons Passed:" Height="26" Width="93"/>
-                    <TextBlock x:Name="lessonsPassedTextBox" Background="White" Width="94" VerticalAlignment="Center" Grid.Row="11" Margin="3.4,4.2,0,3.8" Height="24" HorizontalAlignment="Left" Grid.Column="1" Text="{Binding LessonsPassed, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
-                    <Label VerticalAlignment="Center" Grid.Row="5" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Phone Number:" Height="26" Width="93"/>
-                    <TextBox x:Name="phoneNumberTextBox" GotKeyboardFocus="PhoneNumberTextBox_OnGotKeyboardFocus" LostKeyboardFocus="PhoneNumberTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding PhoneNumber, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="5" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
-                    <Label VerticalAlignment="Center" Grid.Row="2" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Sirname:" Height="26" Width="56"/>
-                    <TextBox x:Name="sirnameTextBox" GotKeyboardFocus="SirnameTextBox_OnGotKeyboardFocus" LostKeyboardFocus="SirnameTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding Sirname,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="2" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
-                    <Label VerticalAlignment="Center" Grid.Row="9" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Car Type:" Height="26" Width="58"/>
-                    <ComboBox x:Name="traineecarComboBox" MouseLeave="TraineecarComboBox_OnMouseLeave" SelectedItem="{Binding CarType, UpdateSourceTrigger=PropertyChanged}" Width="120" VerticalAlignment="Center" Grid.Row="9" Margin="3.4,5,0,5"  Height="22" HorizontalAlignment="Left"  Grid.Column="1">
-                    </ComboBox>
-                    <Label VerticalAlignment="Center" Grid.Row="10" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Gear Type:" Height="26" Width="66"/>
-                    <ComboBox x:Name="traineeGearComboBox" MouseLeave="TraineeGearComboBox_OnMouseLeave" Width="120" VerticalAlignment="Center" Grid.Row="10" Margin="3.4,5,0,5" SelectedItem="{Binding GearType}" Height="22" HorizontalAlignment="Left" Grid.Column="1">
-                    </ComboBox>
-                    <Label VerticalAlignment="Center" Grid.Row="4" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Gender:" Height="26" Width="51"/>
-                    <ComboBox x:Name="traineeGenderComboBox" MouseLeave="TraineeGenderComboBox_OnMouseLeave" VerticalAlignment="Top" Grid.Row="4" Margin="3.4,5.8,15,0"  Height="22" SelectedItem="{Binding Gender ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" />
-                    <Label Name="TraineeIDLabel" VerticalAlignment="Center" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Trainee Id:" Height="26" Width="64"/>
-                    <TextBox x:Name="traineeIdTextBox" Text="{Binding TraineeId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Width="120" VerticalAlignment="Center" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1" GotKeyboardFocus="TraineeIdTextBox_OnGotKeyboardFocus" LostKeyboardFocus="TraineeIdTextBox_OnLostKeyboardFocus"/>
-                    <TextBlock x:Name="IdErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="0"/>
-                    <TextBlock x:Name="NameErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="1"/>
-                    <TextBlock x:Name="SirNameErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="2"/>
-                    <TextBlock x:Name="PhoneNumberErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="5"/>
-                    <TextBlock x:Name="EmailErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="6"/>
-                    <TextBlock x:Name="DateErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="3"/>
+        <DockPanel x:Name="TraineeInfoSlot" DockPanel.Dock="Right" Background="Azure" Margin="0,-0.2,0,0.4">
 
-                    <TextBlock x:Name="GenderErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="4"/>
-                    <TextBlock x:Name="DrivingSchoolErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="7"/>
-                    <TextBlock x:Name="DrivingTeacherErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="8"/>
-                    <TextBlock x:Name="CarTypeErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="9"/>
-                    <TextBlock x:Name="GearTypeErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="10"/>
+            <Grid x:Name="TraineeGrid" VerticalAlignment="Top" Margin="0,8,0,0" HorizontalAlignment="Left" DataContext="{StaticResource traineeViewSource}" Height="482" Width="563">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
 
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="137.6"/>
+                    <ColumnDefinition Width="25.6"/>
+                </Grid.ColumnDefinitions>
+                <Label VerticalAlignment="Center" Grid.Row="3" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Date Of Birth:" Height="26" Width="82"/>
+                <DatePicker x:Name="dateOfBirthDatePicker"  VerticalAlignment="Center" SelectedDate="{Binding DateOfBirth, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="3" Margin="3.4,4.6,0,4.2" HorizontalAlignment="Left" Grid.Column="1" Height="24" Width="120"/>
+                <Label VerticalAlignment="Center" Grid.Row="7" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Driving School:" Height="26" Width="90"/>
+                <TextBox x:Name="drivingSchoolTextBox" LostKeyboardFocus="DrivingSchoolTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding DrivingSchool, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="7" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+                <Label VerticalAlignment="Center" Grid.Row="8" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Driving Teacher:" Height="26" Width="94"/>
+                <TextBox x:Name="drivingTeacherTextBox" LostKeyboardFocus="DrivingTeacherTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding DrivingTeacher, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="8" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+                <Label VerticalAlignment="Center" Grid.Row="6" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Email:" Height="26" Width="42"/>
+                <TextBox x:Name="emailTextBox" GotKeyboardFocus="EmailTextBox_OnGotKeyboardFocus" LostKeyboardFocus="EmailTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true ,UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+                <Label VerticalAlignment="Center" Grid.Row="1" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="First Name:" Height="26" Width="70"/>
+                <TextBox x:Name="firstNameTextBox" LostKeyboardFocus="FirstNameTextBox_OnLostKeyboardFocus" GotKeyboardFocus="FirstNameTextBox_OnGotKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding FirstName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="1" Margin="3.4,4.2,0,4.6" Height="24" HorizontalAlignment="Left" Grid.Column="1" />
+                <Label VerticalAlignment="Center" Grid.Row="12" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Lessons Passed:" Height="26" Width="93"/>
+                <TextBlock x:Name="lessonsPassedTextBox" Background="White" Width="94" VerticalAlignment="Center" Grid.Row="12" Margin="3.4,4.2,0,3.8" Height="24" HorizontalAlignment="Left" Grid.Column="1" Text="{Binding LessonsPassed,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                <Label VerticalAlignment="Center" Grid.Row="5" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Phone Number:" Height="26" Width="93"/>
+                <TextBox x:Name="phoneNumberTextBox" GotKeyboardFocus="PhoneNumberTextBox_OnGotKeyboardFocus" LostKeyboardFocus="PhoneNumberTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding PhoneNumber, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="5" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+                <Label VerticalAlignment="Center" Grid.Row="2" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Sirname:" Height="26" Width="56"/>
+                <TextBox x:Name="sirnameTextBox" GotKeyboardFocus="SirnameTextBox_OnGotKeyboardFocus" LostKeyboardFocus="SirnameTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding Sirname,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="2" Margin="3.4,4.4,0,4.4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
+                <Label VerticalAlignment="Center" Grid.Row="9" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Car Type:" Height="26" Width="58"/>
+                <ComboBox x:Name="traineecarComboBox" MouseLeave="TraineecarComboBox_OnMouseLeave" SelectedItem="{Binding CarType, UpdateSourceTrigger=PropertyChanged}" Width="120" VerticalAlignment="Center" Grid.Row="9" Margin="3.4,5,0,5"  Height="22" HorizontalAlignment="Left"  Grid.Column="1">
+                </ComboBox>
+                <Label VerticalAlignment="Center" Grid.Row="10" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Gear Type:" Height="26" Width="66"/>
+                <ComboBox x:Name="traineeGearComboBox" MouseLeave="TraineeGearComboBox_OnMouseLeave" Width="120" VerticalAlignment="Center" Grid.Row="10" Margin="3.4,5,0,5" SelectedItem="{Binding GearType}" Height="22" HorizontalAlignment="Left" Grid.Column="1">
+                </ComboBox>
+                <Label VerticalAlignment="Center" Grid.Row="4" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Gender:" Height="26" Width="51"/>
+                <ComboBox x:Name="traineeGenderComboBox" MouseLeave="TraineeGenderComboBox_OnMouseLeave" VerticalAlignment="Top" Grid.Row="4" Margin="3.4,5.8,15,0"  Height="22" SelectedItem="{Binding Gender ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" />
+                <Label Name="TraineeIDLabel" VerticalAlignment="Center" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Trainee Id:" Height="26" Width="64"/>
+                <TextBox x:Name="traineeIdTextBox" Text="{Binding TraineeId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Width="120" VerticalAlignment="Center" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1" GotKeyboardFocus="TraineeIdTextBox_OnGotKeyboardFocus" LostKeyboardFocus="TraineeIdTextBox_OnLostKeyboardFocus"/>
+                <TextBlock x:Name="IdErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="0"/>
+                <TextBlock x:Name="NameErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="1"/>
+                <TextBlock x:Name="SirNameErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="2"/>
+                <TextBlock x:Name="PhoneNumberErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="5"/>
+                <TextBlock x:Name="EmailErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="6"/>
+                <TextBlock x:Name="DateErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="3"/>
 
-                    <Button x:Name="Save" Content="Save"  Grid.Column="2" HorizontalAlignment="Center" Margin="21,1.2,-112.6,1.8" Grid.Row="11" VerticalAlignment="Center" Width="118" Height="29" Click="Save_Click"/>
-                    <RepeatButton x:Name="plus" Content="+" Interval="100" HorizontalContentAlignment="center" VerticalContentAlignment="Top" Grid.Column="1" HorizontalAlignment="right" Margin="0,0,0,15.8" Grid.Row="11" VerticalAlignment="Bottom" Width="36" Height="16" RenderTransformOrigin="0.496,0.731" Click="Plus_On_Click"/>
-                    <RepeatButton x:Name="minus" Content="-" Interval="100" Grid.Column="1" HorizontalAlignment="right" Margin="0,0,0,-0.2" Grid.Row="11" VerticalAlignment="Bottom" Width="36" Height="16" Click="Minus_Click" />
+                <TextBlock x:Name="GenderErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="4"/>
+                <TextBlock x:Name="DrivingSchoolErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="7"/>
+                <TextBlock x:Name="DrivingTeacherErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="8"/>
+                <TextBlock x:Name="CarTypeErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="9"/>
+                <TextBlock x:Name="GearTypeErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="10"/>
 
 
-                </Grid>
+                <Label Content="Address:" Grid.Row="11" Grid.Column="0"  VerticalAlignment="Center"  Margin="3,3,0,3" HorizontalAlignment="Left" Height="26" Width="94"/>
 
-            </WrapPanel>
+                <TextBox x:Name="City" Grid.Column="1" GotKeyboardFocus="City_OnGotKeyboardFocus" LostKeyboardFocus="City_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding Address.City, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="11" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left"/>
+                <TextBox x:Name="Street" Grid.Column="2" GotKeyboardFocus="Street_OnGotKeyboardFocus" LostKeyboardFocus="Street_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding Address.Street, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="11" Margin="0,7.4,-93.6,7" Height="24" HorizontalAlignment="Left" />
+                <TextBox x:Name="BuidingNumber" LostKeyboardFocus="DrivingTeacherTextBox_OnLostKeyboardFocus" Width="40" VerticalAlignment="Center" Text="{Binding Address.BuildingNumber, Mode=TwoWay, NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=true}" Grid.Row="11" Margin="125,8.4,-138.6,7.6" Height="24" HorizontalAlignment="Left" Grid.Column="2"/>
+                <TextBlock x:Name="AddressErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="12"/>
+
+                <Button x:Name="Save" Content="Save"  Grid.Column="2" HorizontalAlignment="Center" Margin="21,1.2,-112.6,1.8" Grid.Row="13" VerticalAlignment="Center" Width="118" Height="29" Click="Save_Click"/>
+                <RepeatButton x:Name="plus" Content="+" Interval="100" HorizontalContentAlignment="center" VerticalContentAlignment="Top" Grid.Column="1" HorizontalAlignment="right" Margin="0,0,0,15.8" Grid.Row="12" VerticalAlignment="Bottom" Width="36" Height="16" RenderTransformOrigin="0.496,0.731" Click="Plus_On_Click"/>
+                <RepeatButton x:Name="minus" Content="-" Interval="100" Grid.Column="1" HorizontalAlignment="right" Margin="0,0,0,-0.2" Grid.Row="12" VerticalAlignment="Bottom" Width="36" Height="16" Click="Minus_Click" />
+                <ComboBox Name="TraineeComboBox" SelectionChanged="TraineeComboBox_OnSelectionChanged" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding TraineeListForPL}"
+                  IsTextSearchEnabled="True" 
+                  TextSearch.TextPath="TraineeId" Margin="0.4,4,0,5.6"/>
+
+            </Grid>
+
+
 
         </DockPanel>
     </DockPanel>

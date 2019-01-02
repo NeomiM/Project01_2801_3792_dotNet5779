@@ -34,6 +34,9 @@ namespace PLWPF
             TraineeGrid.Visibility = Visibility.Hidden;
             bl = IBL_imp.Instance;
             TraineeForPL = new Trainee();
+            //City.DataContext = TraineeForPL.TraineeAddress.City;
+            //Street.DataContext = TraineeForPL.TraineeAddress.Street;
+            //BuidingNumber.DataContext = TraineeForPL.TraineeAddress.BuildingNumber;
             this.TraineeGrid.DataContext = TraineeForPL;
             this.TraineeComboBox.DataContext = TraineeListForPL;
             this.traineeGenderComboBox.ItemsSource = Enum.GetValues(typeof(BE.Gender));
@@ -52,8 +55,12 @@ namespace PLWPF
         #region manage buttons
         private void AddTrainee_Click(object sender, RoutedEventArgs e)
         {
-
+            TraineeForPL=new Trainee();
+            TraineeGrid.DataContext = TraineeForPL;
+            IdErrors.Text = "";
+            traineeIdTextBox.Visibility = Visibility.Visible;
             TraineeGrid.Visibility = Visibility.Visible;
+            TraineeComboBox.Visibility = Visibility.Hidden;
             TraineeGrid.IsEnabled = true;
             Save.Content = "Check";
         }
@@ -62,13 +69,21 @@ namespace PLWPF
         {
             try
             {
+                TraineeForPL = new Trainee();
+                TraineeComboBox.SelectedItem = null;
+                TraineeGrid.DataContext = TraineeForPL;
+                IdErrors.Text = "First Select ID";
+                IdErrors.Foreground=Brushes.DarkBlue;
                 TraineeListForPL = bl.GetListOfTrainees();
+                TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x=>x.TraineeId);
                 if (TraineeListForPL.Count==0)
                     throw new Exception("There are no trainees to update.");
                 TraineeGrid.Visibility = Visibility.Visible;
-                TraineeGrid.IsEnabled = false;
+                TraineeGrid.IsEnabled = true;
                
                 Save.Content = "Check";
+                TraineeComboBox.Visibility = Visibility.Visible;
+                traineeIdTextBox.Visibility = Visibility.Hidden;
 
             }
             catch (Exception exception)
@@ -81,7 +96,12 @@ namespace PLWPF
         {
             try
             {
+                TraineeForPL = new Trainee();
+                TraineeGrid.DataContext = TraineeForPL;
+                TraineeGrid.IsEnabled = false;
+                IdErrors.Text = "First Select ID";
                 TraineeListForPL = bl.GetListOfTrainees();
+                TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
                 if (TraineeListForPL.Count == 0)
                     throw new Exception("There are no trainees to update.");
             }
@@ -98,6 +118,7 @@ namespace PLWPF
             System.Windows.Data.CollectionViewSource traineeViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("traineeViewSource")));
             // Load data by setting the CollectionViewSource.Source property:
             // traineeViewSource.Source = [generic data source]
+           
         }
 
 
@@ -107,10 +128,11 @@ namespace PLWPF
             {
                 try
                 {
+                    TraineeForPL.TraineeAddress = new Address(Street.Text, BuidingNumber.Text, City.Text);
                     bl.AddTrainee(TraineeForPL);
-                    TraineeForPL = new Trainee();
+                    //TraineeForPL = new Trainee();
                     TraineeGrid.Visibility = Visibility.Hidden;
-                    this.TraineeGrid.DataContext = TraineeForPL;
+                    //this.TraineeGrid.DataContext = TraineeForPL;
                     MessageBox.Show("Trainee saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
 
@@ -121,13 +143,28 @@ namespace PLWPF
                 }
 
             }
+            if (Save.Content == "Update")
+            {
+                TraineeForPL.TraineeAddress = new Address(Street.Text, BuidingNumber.Text, City.Text);
+                
+                bl.UpdateTrainee(TraineeForPL);
+                //TraineeForPL = new Trainee();
+                TraineeGrid.Visibility = Visibility.Hidden;
+                //this.TraineeGrid.DataContext = TraineeForPL;
+                MessageBox.Show("Trainee saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                //TraineeComboBox.SelectedItem = null;
+            }
 
             if (Save.Content == "Check")
             {
 
-                if(noErrors())
+                if (noErrors() && TraineeComboBox.Visibility == Visibility.Hidden)
                 {
                     Save.Content = "Add";
+                }
+                else if (noErrors())
+                {
+                    Save.Content = "Update";
                 }
                 else
                 {
@@ -136,10 +173,18 @@ namespace PLWPF
                 }
             }
 
+           
+
         }
 
         #region id checks
-
+        private void TraineeComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            IdErrors.Text = "";
+            string id = (string)TraineeComboBox.SelectedItem;
+            TraineeForPL = bl.GetListOfTrainees().FirstOrDefault(a => a.TraineeId == id);
+            this.TraineeGrid.DataContext = TraineeForPL;
+        }
         private void TraineeIdTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             try
@@ -264,6 +309,67 @@ namespace PLWPF
         }
         #endregion
 
+        #region address
+        private void City_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                bl.IsText(City.Text);
+
+                AddressErrors.Text = "";
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("ERROR"))
+                {
+                    AddressErrors.Foreground = Brushes.Red;
+                    City.BorderBrush = Brushes.Red;
+
+                }
+                else
+                {
+                    AddressErrors.Foreground = Brushes.Orange;
+                    City.BorderBrush = Brushes.Orange;
+                }
+                AddressErrors.Text = ex.Message;
+
+            }
+        }
+        private void Street_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                bl.IsText(Street.Text);
+                AddressErrors.Text = "";
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("ERROR"))
+                {
+                    AddressErrors.Foreground = Brushes.Red;
+                    Street.BorderBrush = Brushes.Red;
+
+                }
+                else
+                {
+                    AddressErrors.Foreground = Brushes.Orange;
+                    Street.BorderBrush = Brushes.Orange;
+                }
+                AddressErrors.Text = ex.Message;
+
+            }
+        }
+        private void City_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            City.BorderBrush=Brushes.Black;
+            
+        }
+        private void Street_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+         Street.BorderBrush = Brushes.Black;
+            
+        }
+        #endregion
         #region driving teacher and driving school
 
         private void DrivingSchoolTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -458,6 +564,8 @@ namespace PLWPF
                 if (DrivingSchoolErrors.Text.Contains("ERROR"))
                     throw new Exception();
                 if (DrivingTeacherErrors.Text.Contains("ERROR"))
+                    throw new Exception();
+                if(AddressErrors.Text.Contains("ERROR"))
                     throw new Exception();
                 return true;
             }

@@ -10,12 +10,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using BE;
 using BL;
+using MessageBox = System.Windows.MessageBox;
+using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace PLWPF
 {
@@ -55,7 +58,9 @@ namespace PLWPF
         #region manage buttons
         private void AddTrainee_Click(object sender, RoutedEventArgs e)
         {
-            TraineeForPL=new Trainee();
+            TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
+            TraineeForPL =new Trainee();
+            openAll();
             TraineeGrid.DataContext = TraineeForPL;
             IdErrors.Text = "";
             traineeIdTextBox.Visibility = Visibility.Visible;
@@ -71,6 +76,7 @@ namespace PLWPF
             {
                 TraineeForPL = new Trainee();
                 TraineeComboBox.SelectedItem = null;
+                closeAlmostAll();
                 TraineeGrid.DataContext = TraineeForPL;
                 IdErrors.Text = "First Select ID";
                 IdErrors.Foreground=Brushes.DarkBlue;
@@ -96,9 +102,13 @@ namespace PLWPF
         {
             try
             {
+                Save.Content = "Delete";
                 TraineeForPL = new Trainee();
+                TraineeGrid.Visibility = Visibility.Visible;
+                TraineeComboBox.Visibility = Visibility.Visible;
+                TraineeComboBox.SelectedItem = null;
                 TraineeGrid.DataContext = TraineeForPL;
-                TraineeGrid.IsEnabled = false;
+                closeAlmostAll();
                 IdErrors.Text = "First Select ID";
                 TraineeListForPL = bl.GetListOfTrainees();
                 TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
@@ -155,12 +165,50 @@ namespace PLWPF
                 //TraineeComboBox.SelectedItem = null;
             }
 
+            if (Save.Content == "Delete")
+            {
+                MessageBoxResult dialogResult = MessageBox.Show("Are you sure you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                if (dialogResult == MessageBoxResult.Yes)
+                {
+                    bl.DeleteTrainee(TraineeForPL);
+                    TraineeGrid.Visibility = Visibility.Hidden;
+                    MessageBox.Show("Trainee successfully deleted.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    TraineeForPL = new Trainee();
+                    TraineeGrid.DataContext = TraineeForPL;
+                }
+                else if (dialogResult == MessageBoxResult.No)
+                {
+                    TraineeForPL = new Trainee();
+                    TraineeGrid.DataContext = TraineeForPL;
+                    TraineeGrid.Visibility = Visibility.Hidden;
+                    MessageBox.Show("Trainee not deleted.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+
+                }
+            }
+
             if (Save.Content == "Check")
             {
 
                 if (noErrors() && TraineeComboBox.Visibility == Visibility.Hidden)
                 {
-                    Save.Content = "Add";
+                    if (bl.TraineeInSystem(TraineeForPL.TraineeId))
+                    {
+                        MessageBoxResult dialogResult = MessageBox.Show("Trainee alredy exists in the system! Do you want to update?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                        if (dialogResult == MessageBoxResult.Yes)
+                        {
+                            TraineeComboBox.Visibility = Visibility.Visible;
+                            TraineeComboBox.SelectedValue = (object)TraineeForPL.TraineeId;
+                            TraineeForPL = bl.GetListOfTrainees()
+                                .FirstOrDefault(x => x.TraineeId == traineeIdTextBox.Text);
+                        }
+                        else if (dialogResult == MessageBoxResult.No)
+                        {
+                            TraineeForPL=new Trainee();
+                            TraineeGrid.DataContext = TraineeForPL;
+                        }
+                        
+                    }
+                    else Save.Content = "Add";
                 }
                 else if (noErrors())
                 {
@@ -178,9 +226,18 @@ namespace PLWPF
         }
 
         #region id checks
+        private void TraineeIdTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
         private void TraineeComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             IdErrors.Text = "";
+            if (Save.Content == "Check")
+            {
+                openAll();
+            }
+
             string id = (string)TraineeComboBox.SelectedItem;
             TraineeForPL = bl.GetListOfTrainees().FirstOrDefault(a => a.TraineeId == id);
             this.TraineeGrid.DataContext = TraineeForPL;
@@ -191,11 +248,29 @@ namespace PLWPF
             {
                 bl.CheckId(TraineeForPL.TraineeId);
                 //make a check if in system- make a messege box option for update/delete then "select" the combox option.
-               
+                if (bl.TraineeInSystem(TraineeForPL.TraineeId))
+                {
+                    MessageBoxResult dialogResult =
+                        MessageBox.Show("Trainee alredy exists in the system! Do you want to update?", "Warning",
+                            MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                    if (dialogResult == MessageBoxResult.Yes)
+                    {
+                        TraineeComboBox.Visibility = Visibility.Visible;
+                        TraineeComboBox.SelectedValue = (object) TraineeForPL.TraineeId;
+                        TraineeForPL = bl.GetListOfTrainees()
+                            .FirstOrDefault(x => x.TraineeId == traineeIdTextBox.Text);
+                    }
+                    else if (dialogResult == MessageBoxResult.No)
+                    {
+                        TraineeForPL = new Trainee();
+                        TraineeGrid.DataContext = TraineeForPL;
+                    }
+
+                }
             }
             catch (Exception ex)
             {
-                
+
                 IdErrors.Text = ex.Message;
                 IdErrors.Foreground = Brushes.Red;
                 traineeIdTextBox.BorderBrush = Brushes.Red;
@@ -577,5 +652,46 @@ namespace PLWPF
             
         }
 
+        public void closeAlmostAll()
+        {
+            traineeIdTextBox.IsEnabled = false;
+            firstNameTextBox.IsEnabled = false;
+            sirnameTextBox.IsEnabled = false;
+            dateOfBirthDatePicker.IsEnabled = false;
+            traineeGenderComboBox.IsEnabled = false;
+            phoneNumberTextBox.IsEnabled = false;
+            emailTextBox.IsEnabled = false;
+            drivingSchoolTextBox.IsEnabled = false;
+            drivingTeacherTextBox.IsEnabled = false;
+            traineecarComboBox.IsEnabled = false;
+            traineeGearComboBox.IsEnabled = false;
+            City.IsEnabled = false;
+            Street.IsEnabled = false;
+            BuidingNumber.IsEnabled = false;
+            plus.IsEnabled = false;
+            minus.IsEnabled = false;
+        }
+
+        public void openAll()
+        {
+            traineeIdTextBox.IsEnabled = true;
+            firstNameTextBox.IsEnabled = true;
+            sirnameTextBox.IsEnabled = true;
+            dateOfBirthDatePicker.IsEnabled = true;
+            traineeGenderComboBox.IsEnabled = true; 
+            phoneNumberTextBox.IsEnabled = true;
+            emailTextBox.IsEnabled = true; 
+            drivingSchoolTextBox.IsEnabled = true; 
+            drivingTeacherTextBox.IsEnabled = true; 
+            traineecarComboBox.IsEnabled = true; 
+            traineeGearComboBox.IsEnabled = true; 
+            City.IsEnabled = true; 
+            Street.IsEnabled = true; 
+            BuidingNumber.IsEnabled = true; 
+            plus.IsEnabled = true; 
+            minus.IsEnabled = true; 
+        }
+
+       
     }
 }

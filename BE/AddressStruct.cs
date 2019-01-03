@@ -9,13 +9,19 @@ namespace BE
     public struct Address
     {
         private string _street;
-        private int _buildingNumber;
+        private string _buildingNumber;
         private string _city;
 
         public string Street { get => _street; set => _street = value; }
-        public int BuildingNumber { get => _buildingNumber; set => _buildingNumber = value; }
-        private string City { get => _city; set => _city = value; }
+        public string BuildingNumber { get => _buildingNumber; set => _buildingNumber = value; }
+        public string City { get => _city; set => _city = value; }
 
+        public Address(string st,string bn, string c)
+        {
+            _street = st;
+            _buildingNumber = bn;
+            _city = c;
+        }
 
         public override string ToString()
         {

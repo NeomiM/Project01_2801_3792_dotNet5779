@@ -31,8 +31,7 @@ BE
 
  Neomi: add functions: find tester by: id, (). returns a tester or sends an error
  trainee window.
-in change id text in add:
- make a check if in system- make a messege box option for update/delete then "select" the combox option.
+
 
  Beila:
  tester window.

@@ -386,7 +386,7 @@ namespace BL
                 List<Trainee> traineeList = dal.GetListOfTrainees();
                 if (traineeList.Any(x=>x.TraineeId==TraineeId))
                 {
-                 throw new Exception("ERROR. The trainee is alredy in the system.");
+                 throw new Exception("ERROR. The trainee is already in the system.");
                 }
                 return true;
             }
@@ -682,7 +682,20 @@ namespace BL
             return (List<Test>) all;
 
         }
-        
+
+        public List<Trainee> AllTraineesThat(Func<Trainee, bool> predicate = null)
+        {
+            List<Trainee> traineeList = dal.GetListOfTrainees();
+
+            if (predicate == null)
+                return traineeList;
+
+            var all = from trainee in traineeList
+                      where predicate(trainee)
+                select new { trainee };
+            return (List<Trainee>)all;
+        }
+
         public int NumberOfTests(Trainee T)
         {
             List<Test> testList = dal.GetListOfTests();

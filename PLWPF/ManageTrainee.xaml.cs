@@ -106,9 +106,11 @@ namespace PLWPF
                 TraineeForPL = new Trainee();
                 TraineeGrid.Visibility = Visibility.Visible;
                 TraineeComboBox.Visibility = Visibility.Visible;
+                traineeIdTextBox.Visibility = Visibility.Hidden;
                 TraineeComboBox.SelectedItem = null;
                 TraineeGrid.DataContext = TraineeForPL;
                 closeAlmostAll();
+                Save.IsEnabled = false;
                 IdErrors.Text = "First Select ID";
                 TraineeListForPL = bl.GetListOfTrainees();
                 TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
@@ -173,11 +175,13 @@ namespace PLWPF
                     bl.DeleteTrainee(TraineeForPL);
                     TraineeGrid.Visibility = Visibility.Hidden;
                     MessageBox.Show("Trainee successfully deleted.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    traineeIdTextBox.Visibility = Visibility.Visible;
                     TraineeForPL = new Trainee();
                     TraineeGrid.DataContext = TraineeForPL;
                 }
                 else if (dialogResult == MessageBoxResult.No)
                 {
+                    traineeIdTextBox.Visibility = Visibility.Visible;
                     TraineeForPL = new Trainee();
                     TraineeGrid.DataContext = TraineeForPL;
                     TraineeGrid.Visibility = Visibility.Hidden;
@@ -197,6 +201,7 @@ namespace PLWPF
                         if (dialogResult == MessageBoxResult.Yes)
                         {
                             TraineeComboBox.Visibility = Visibility.Visible;
+                            traineeIdTextBox.Visibility = Visibility.Hidden;
                             TraineeComboBox.SelectedValue = (object)TraineeForPL.TraineeId;
                             TraineeForPL = bl.GetListOfTrainees()
                                 .FirstOrDefault(x => x.TraineeId == traineeIdTextBox.Text);
@@ -236,8 +241,9 @@ namespace PLWPF
             if (Save.Content == "Check")
             {
                 openAll();
+                
             }
-
+            Save.IsEnabled = true;
             string id = (string)TraineeComboBox.SelectedItem;
             TraineeForPL = bl.GetListOfTrainees().FirstOrDefault(a => a.TraineeId == id);
             this.TraineeGrid.DataContext = TraineeForPL;
@@ -256,6 +262,7 @@ namespace PLWPF
                     if (dialogResult == MessageBoxResult.Yes)
                     {
                         TraineeComboBox.Visibility = Visibility.Visible;
+                        traineeIdTextBox.Visibility = Visibility.Hidden;
                         TraineeComboBox.SelectedValue = (object) TraineeForPL.TraineeId;
                         TraineeForPL = bl.GetListOfTrainees()
                             .FirstOrDefault(x => x.TraineeId == traineeIdTextBox.Text);

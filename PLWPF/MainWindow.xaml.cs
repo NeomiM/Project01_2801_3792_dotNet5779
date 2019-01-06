@@ -30,7 +30,7 @@ namespace PLWPF
             mainBL = IBL_imp.Instance;
 
         }
-
+        
         private void ManageTesters_Click(object sender, RoutedEventArgs e)
         {
             TestersWindow win = new TestersWindow();
@@ -47,9 +47,9 @@ namespace PLWPF
         {
 
         }
-        private void ValidableTesters_Click(object sender, RoutedEventArgs e)
+        private void ValidTrainees_Click(object sender, RoutedEventArgs e)
         {
-
+            new validTrainees().Show();
         }
 
         private void TraineesByTesters_Click(object sender, RoutedEventArgs e)

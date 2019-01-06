@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PLWPF"
         xmlns:BE="clr-namespace:BE;assembly=BE" x:Class="PLWPF.validTrainees"
         mc:Ignorable="d"
-        Title="validTrainees" Height="450" Width="935.6" Loaded="Window_Loaded">
+        Title="Passed Trainees" Height="450" Width="935.6" Loaded="Window_Loaded">
     <Window.Resources>
         <CollectionViewSource x:Key="traineeViewSource" d:DesignSource="{d:DesignInstance {x:Type BE:Trainee}, CreateList=True}"/>
     </Window.Resources>

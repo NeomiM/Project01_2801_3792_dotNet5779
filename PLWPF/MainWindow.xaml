@@ -14,7 +14,7 @@
             <Button Name="TestsManagement" Content="Manage Tests" HorizontalAlignment="Stretch" Margin="15,60,15,30" VerticalAlignment="Stretch" Click="ManageTests_Click"/>
         </StackPanel>
         <StackPanel x:Name="righrButtons" DockPanel.Dock="Right" MinWidth="150" MinHeight="100" Background="Bisque">
-            <Button Name="ValidTrainees" Content="Valid Trainees" HorizontalAlignment="Stretch" Margin="15,40,15,40" VerticalAlignment="Stretch" Click="ValidTrainees_Click"/>
+            <Button Name="ValidTrainees" Content="Passed Trainees" HorizontalAlignment="Stretch" Margin="15,40,15,40" VerticalAlignment="Stretch" Click="ValidTrainees_Click"/>
             <Button Name="TestsByDate" Content="Tests By date" HorizontalAlignment="Stretch" Margin="15,40,15,30" VerticalAlignment="Stretch"/>
             <Button Name="TraineesByTesters" Content="Trainees by testers" HorizontalAlignment="Stretch" Margin="15,40,15,40" VerticalAlignment="Stretch" Click="TraineesByTesters_Click"/>
             <Button Name="TestersByCarType"  Content="Testers By car type" HorizontalAlignment="Stretch" Margin="15,40,15,40" VerticalAlignment="Stretch" Click="TestersByCarType_Click"/>

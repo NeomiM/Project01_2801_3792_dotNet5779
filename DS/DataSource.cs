@@ -30,6 +30,7 @@ namespace DS
             test.TestDate = time;
             test.TesterId = "328772801";
             test.TraineeId = "328772801";
+            test.TestPassed = true;
 
             Test test2 = new Test();
             test2.CheckMirrors = true;
@@ -46,6 +47,7 @@ namespace DS
             test2.TestDate = time;
             test2.TesterId = "319185997";
             test2.TraineeId = "319185997";
+            test2.TestPassed = false;
 
             Test test3 = new Test();
             test3.CheckMirrors = true;
@@ -61,6 +63,7 @@ namespace DS
             test3.TestDate = time;
             test3.TesterId = "205823792";
             test3.TraineeId = "205823792";
+            test3.TestPassed = true;
 
             _testList.Add(test);
             _testList.Add(test2);
@@ -95,11 +98,14 @@ namespace DS
             trainee.DateOfBirth = time;
             trainee.FirstName = "Neomi";
             trainee.TraineeId = "328772801";
+            trainee.LessonsPassed = (int)Configuration.MinAmmountOfLessons+1;
 
             Trainee trainee1 = new Trainee();
             trainee1.DateOfBirth = time;
             trainee1.FirstName = "Beila";
             trainee1.TraineeId = "205823792";
+            trainee1.LessonsPassed = (int)Configuration.MinAmmountOfLessons + 1;
+
 
             Trainee trainee2 = new Trainee();
             trainee2.DateOfBirth = time;

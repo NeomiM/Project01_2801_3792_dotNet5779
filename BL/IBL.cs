@@ -141,6 +141,8 @@ namespace BL
         /// <returns>returns a list of tests that happen on that date</returns>
         List<Test> TestsByDate();
 
+        List<Trainee> readyTrainees();
+
         #endregion
 
         #region grouping functions

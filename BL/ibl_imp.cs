@@ -692,8 +692,8 @@ namespace BL
 
             var all = from trainee in traineeList
                       where predicate(trainee)
-                select new { trainee };
-            return (List<Trainee>)all;
+                select trainee;
+            return all.ToList();
         }
 
         public int NumberOfTests(Trainee T)
@@ -709,7 +709,7 @@ namespace BL
         {
             List<Test> testList = dal.GetListOfTests();
             var tests = from test in testList
-                where test.TestPassed
+                where test.TestPassed && test.TraineeId==T.TraineeId
                 select test;
             if (tests.Any())
                 return true;
@@ -724,7 +724,14 @@ namespace BL
             return (List<Test>) tests;
         }
 
-        
+        public List<Trainee> readyTrainees()
+        {
+            List<Trainee> trainees = GetListOfTrainees();
+            var filter = from trainee in trainees
+                where !CanGetLicence(trainee) && trainee.LessonsPassed >= Configuration.MinAmmountOfLessons
+                select trainee;
+            return trainees.ToList();
+        }
 
         #endregion
 

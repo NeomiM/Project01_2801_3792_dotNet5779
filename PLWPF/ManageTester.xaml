@@ -40,84 +40,91 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
-                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <Button x:Name="Save" Content="Save" Grid.Column="2" HorizontalAlignment="Center" Margin="22,0.2,-113.6,2.8" Grid.Row="11" VerticalAlignment="Center" Width="118" Height="29" Click="Save_Click"/>
+                <Button x:Name="Save" Content="Save" Grid.Column="2" Margin="22,0.2,-113.6,2.8" Grid.Row="11" VerticalAlignment="Center" Width="118" Height="29" Click="Save_Click"/>
 
                 <!--Fields-->
                 <Label Content="Tester Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
-                <TextBox x:Name="testerIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0" Text="{Binding TesterId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" LostKeyboardFocus="testerIdTextBox_LostKeyboardFocus" GotKeyboardFocus="testerIdTextBox_GotKeyboardFocus"/>
+                <TextBox x:Name="testerIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="0" Text="{Binding TesterId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" LostFocus="TesterIdTextBox_LostFocus" GotFocus="TesterIdTextBox_GotFocus"/>
                 <ComboBox Name="TesterComboBox" SelectionChanged="TesterComboBox_OnSelectionChanged" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding TesterListForPL}"
                   IsTextSearchEnabled="True" 
                   TextSearch.TextPath="TesterId" Height="auto" Width="120" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="3"/>
 
                 <Label Content="First Name:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
-                <TextBox x:Name="firstNameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="1" Text="{Binding FirstName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" LostKeyboardFocus="firstNameTextBox_LostKeyboardFocus" GotKeyboardFocus="firstNameTextBox_GotKeyboardFocus"/>
+                <TextBox x:Name="firstNameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="1" Text="{Binding FirstName, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" GotFocus="FirstNameTextBox_GotFocus"/>
 
-                <Label Content="Sirname:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
-                <TextBox x:Name="sirnameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" Text="{Binding Sirname, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" LostKeyboardFocus="sirnameTextBox_LostKeyboardFocus" GotKeyboardFocus="sirnameTextBox_GotKeyboardFocus"/>
+                <Label Content="Last Name:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+                <TextBox x:Name="sirnameTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" Text="{Binding Sirname, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" GotFocus="SirnameTextBox_GotFocus"/>
 
                 <Label Content="Date Of Birth:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
                 <DatePicker x:Name="dateOfBirthDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="3" SelectedDate="{Binding DateOfBirth, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center"/>
 
                 <Label Content="Tester Gender:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
-                <ComboBox x:Name="testerGenderComboBox" Grid.Column="1" SelectedItem="{Binding TesterGender}" HorizontalAlignment="Left" Height="Auto" Margin="3" Grid.Row="4" VerticalAlignment="Center" Width="120"/>
+                <ComboBox x:Name="testerGenderComboBox" Grid.Column="1" SelectedItem="{Binding Gender ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="Auto" Margin="3" Grid.Row="4" VerticalAlignment="Center" Width="120"/>
 
                 <Label Content="Phone Number:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
-                <TextBox x:Name="phoneNumberTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="5" Text="{Binding PhoneNumber, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" LostKeyboardFocus="phoneNumberTextBox_LostKeyboardFocus"/>
+                <TextBox x:Name="phoneNumberTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="5" Text="{Binding PhoneNumber, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" GotFocus="PhoneNumberTextBox_GotFocus"/>
 
                 <Label Content="Email:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="6" VerticalAlignment="Center"/>
-                <TextBox x:Name="emailTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="6" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                <TextBox x:Name="emailTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="6" Text="{Binding Email, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" LostFocus="EmailTextBox_LostFocus" GotFocus="EmailTextBox_GotFocus"/>
 
                 <Label Content="Testercar:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center"/>
-                <ComboBox x:Name="testercarComboBox" Grid.Column="1"  HorizontalAlignment="Left" Height="Auto" SelectedItem="{Binding Testercar}" Margin="3" Grid.Row="7" VerticalAlignment="Center" Width="120"/>
+                <ComboBox x:Name="testercarComboBox" Grid.Column="1"  HorizontalAlignment="Left" Height="Auto" SelectedItem="{Binding CarType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="3" Grid.Row="7" VerticalAlignment="Center" Width="120"/>
 
                 <Label Content="Max Distance For Test:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="8" VerticalAlignment="Center"/>
-                <TextBox x:Name="maxDistanceForTestTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="8" Text="{Binding MaxDistanceForTest, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                <TextBox x:Name="maxDistanceForTestTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="8" Text="{Binding MaxDistanceForTest, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" GotFocus="MaxDistanceForTestTextBox_GotFocus"/>
 
                 <Label Content="Years Of Experience:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="9" VerticalAlignment="Center"/>
-                <TextBox x:Name="yearsOfExperienceTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="9" Text="{Binding YearsOfExperience, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                <TextBox x:Name="yearsOfExperienceTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="9" Text="{Binding YearsOfExperience, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" GotFocus="YearsOfExperienceTextBox_GotFocus"/>
 
-                <Label Content="Max Tests Ina Week:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="10" VerticalAlignment="Center"/>
-                <TextBox x:Name="maxTestsInaWeekTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="10" Text="{Binding MaxTestsInaWeek, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                <Label Content="Max Tests In A Week:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="10" VerticalAlignment="Center"/>
+                <TextBox x:Name="maxTestsInaWeekTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="10" Text="{Binding MaxTestsInaWeek, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120" GotFocus="MaxTestsInaWeekTextBox_GotFocus"/>
+
+                <Label Content="Schedule:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="11" VerticalAlignment="Center"/>
+                <Grid x:Name="scheduleGrid" Grid.Column="1" Grid.Row="11" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3" Width="120" GotFocus="ScheduleGrid_GotFocus">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25.908"/>
+                        <RowDefinition Height="0.092"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="dayLabel" Content="Sunday" Grid.Row="0" Grid.Column="1" Width="60" Margin="13,0" Grid.RowSpan="2"/>
+                    <Button x:Name="nextDayButton" Content="&gt;" Grid.Row="0" Grid.Column="2" Click="NextDayButton_Click"/>
+                    <Button x:Name="previousDayButton" Content="&lt;" Grid.Row="0" Grid.Column="0" Click="PreviousDayButton_Click"/>
+
+                    <ListBox x:Name="schedualListBox" SelectionMode="Multiple" Grid.Column="1" Grid.Row="2" MouseLeave="SchedualListBox_MouseLeave">
+                        <ListBox.Items>
+                            <ListBoxItem Content="9:00-10:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem Content="10:00-11:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem Content="11:00-12:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem Content="12:00-13:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem Content="13:00-14:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem Content="14:00-15:00" HorizontalAlignment="Center"/>
+                        </ListBox.Items>
+                    </ListBox>
+                    
+
+                </Grid>
+
 
                 <!--Errors-->
                 <TextBlock x:Name="IdErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="0"/>
                 <TextBlock x:Name="NameErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="1"/>
                 <TextBlock x:Name="SirNameErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="2"/>
+                <TextBlock x:Name="GenderError" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="4"/>
                 <TextBlock x:Name="PhoneNumberErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="5"/>
                 <TextBlock x:Name="EmailErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="6"/>
-                <TextBlock x:Name="yearsOfExperienceErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="6"/>
-                <Expander x:Name="schedualExpander" Header="Schedual" HorizontalAlignment="Left" Grid.Row="11" VerticalAlignment="Center">
-                    <Grid Background="AliceBlue" Height="auto">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="3*"/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*"/>
-                            <ColumnDefinition Width="83*"/>
-                            <ColumnDefinition Width="12*"/>
-                        </Grid.ColumnDefinitions>
+                <TextBlock x:Name="CarError" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="7"/>
+                <TextBlock x:Name="DistanceError" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="8"/>
+                <TextBlock x:Name="ExperienceErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="9"/>
+                <TextBlock x:Name="MaxTestsError" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="10"/>
+                <TextBlock x:Name="ScheduleError" Width="328" VerticalAlignment="Top"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="11"/>
 
-                        <Label x:Name="dayLabel" Content="Sunday" Grid.Row="0" Grid.Column="1"/>
-                        <Button x:Name="nextDayButton" Content="+" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Width="12" Height="26" VerticalAlignment="Top" Click="NextDayButton_Click"/>
-                        <Button x:Name="previousDayButton" Content="-" Grid.Row="0" Grid.Column="0"/>
-                        
-                        <ListBox x:Name="schedualListBox" SelectionMode="Multiple" Grid.Column="1" Grid.Row="1" SelectionChanged="SchedualListBox_SelectionChanged">
-                            <ListBox.Items>
-                                <ListBoxItem Content="9:00=10:00"/>
-                                <ListBoxItem Content="10:00-11:00"/>
-                                <ListBoxItem Content="11:00-12:00"/>
-                                <ListBoxItem Content="12:00-13:00"/>
-                                <ListBoxItem Content="13:00-14:00"/>
-                                <ListBoxItem Content="14:00-15:00"/>
-                            </ListBox.Items>
-                        </ListBox>
-
-                    </Grid>
-
-                </Expander>
             </Grid>
 
         </DockPanel>

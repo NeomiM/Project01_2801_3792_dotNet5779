@@ -81,6 +81,9 @@ namespace DS
             tester.FirstName = "Beila";
             tester.TesterId = "205823792";
             tester1.Testercar = CarType.MediumTruck;
+            tester1._schedual[0, 1] = true;
+            tester1._schedual[2, 2] = true;
+            tester1._schedual[3, 3] = true;
 
             Tester tester2 = new Tester();
             tester2.DateOfBirth = time;
@@ -105,6 +108,7 @@ namespace DS
             trainee1.DateOfBirth = time;
             trainee1.FirstName = "Beila";
             trainee1.TraineeId = "205823792";
+            
 
             Trainee trainee2 = new Trainee();
             trainee2.DateOfBirth = time;

@@ -15,6 +15,12 @@ using System.Windows.Shapes;
 using BE;
 using BL;
 
+
+
+/*
+ * to find out:
+ selections items to previues day
+     */
 namespace PLWPF
 {
     /// <summary>
@@ -25,14 +31,20 @@ namespace PLWPF
         private BL.IBL bl;
         private BE.Tester TesterForPL;
         private List<Tester> TesterListForPL;
+        string winCondition;
         //lists for schedule
+        bool[] SundayArr = new bool[6];
+        bool[] MondayArr = new bool[6];
+        bool[] TuesdayArr = new bool[6];
+        bool[] WednesdayArr = new bool[6];
+        bool[] ThursdayArr = new bool[6];
         List<int> SundayHours = new List<int>();
         List<int> MondayHours = new List<int>();
         List<int> TuesdayHours = new List<int>();
         List<int> WednesdayHours = new List<int>();
         List<int> ThursdayHours = new List<int>();
         bool[,] hoursFromSchedualArr = new bool[5, 6];
-        string winCondition;
+        bool notAllIsFalse = false;
         public TestersWindow()
         {
             InitializeComponent();
@@ -40,7 +52,8 @@ namespace PLWPF
             bl = IBL_imp.Instance;
             TesterForPL = new Tester();
             this.TesterGrid.DataContext = TesterForPL;
-            Save.IsEnabled = false;
+            this.TesterComboBox.DataContext = TesterListForPL;
+            //Save.IsEnabled = false;
             //manage calendar
             dateOfBirthDatePicker.DisplayDateEnd = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MinAgeOFTester);
             dateOfBirthDatePicker.DisplayDateStart = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MaxAgeOFTester);
@@ -56,8 +69,6 @@ namespace PLWPF
             //for letters only
             this.sirnameTextBox.PreviewTextInput += TextBox_PreviewTextInputLetters;
             this.firstNameTextBox.PreviewTextInput += TextBox_PreviewTextInputLetters;
-            
-
         }
 
         #region manage buttons
@@ -141,7 +152,7 @@ namespace PLWPF
                 try
                 {
                     //TesterForPL.TesterAddress = new Address(Street.Text, BuidingNumber.Text, City.Text);
-                    TesterForPL.setSchedual(SundayHours, MondayHours, TuesdayHours, WednesdayHours, ThursdayHours);
+                    TesterForPL.setSchedual(SundayArr, MondayArr, TuesdayArr, WednesdayArr, ThursdayArr);
                     bl.AddTester(TesterForPL);
                     TesterGrid.Visibility = Visibility.Hidden;
                     MessageBox.Show("Tester saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -186,6 +197,74 @@ namespace PLWPF
 
             if (Save.Content == "Check")
             {
+                //empty filed
+                if (string.IsNullOrWhiteSpace(firstNameTextBox.Text))
+                {
+                    NameErrors.Text = "Worning. Filed is empty";
+                    NameErrors.Foreground = Brushes.Orange;
+                    firstNameTextBox.BorderBrush = Brushes.Orange;
+                }
+                if (string.IsNullOrWhiteSpace(sirnameTextBox.Text))
+                {
+                    SirNameErrors.Text = "Worning. Filed is empty";
+                    SirNameErrors.Foreground = Brushes.Orange;
+                    sirnameTextBox.BorderBrush = Brushes.Orange;
+                }
+                if (testerGenderComboBox.SelectedItem == null)
+                {
+                    GenderError.Text = "Warning. No item selected";
+                    GenderError.Foreground = Brushes.Orange;
+                    testerGenderComboBox.BorderBrush = Brushes.Orange;
+                }
+                if (string.IsNullOrWhiteSpace(phoneNumberTextBox.Text))
+                {
+                    PhoneNumberErrors.Text = "Worning. Filed is empty";
+                    PhoneNumberErrors.Foreground = Brushes.Orange;
+                    phoneNumberTextBox.BorderBrush = Brushes.Orange;
+                }
+                if (string.IsNullOrWhiteSpace(phoneNumberTextBox.Text))
+                {
+                    PhoneNumberErrors.Text = "Worning. Filed is empty";
+                    PhoneNumberErrors.Foreground = Brushes.Orange;
+                    phoneNumberTextBox.BorderBrush = Brushes.Orange;
+                }
+                if (string.IsNullOrWhiteSpace(emailTextBox.Text))
+                {
+                    EmailErrors.Text = "Worning. Filed is empty";
+                    EmailErrors.Foreground = Brushes.Orange;
+                    emailTextBox.BorderBrush = Brushes.Orange;
+                }
+                if (testercarComboBox.SelectedItem == null)
+                {
+                    CarError.Text = "Warning. No item selected";
+                    CarError.Foreground = Brushes.Orange;
+                    testercarComboBox.BorderBrush = Brushes.Orange;
+                }
+                if (maxDistanceForTestTextBox.Text == "0" || maxDistanceForTestTextBox.Text == null)
+                {
+                    DistanceError.Text = "Worning. Filed is empty";
+                    DistanceError.Foreground = Brushes.Orange;
+                    maxDistanceForTestTextBox.BorderBrush = Brushes.Orange;
+                }
+                if (yearsOfExperienceTextBox.Text == "0" || yearsOfExperienceTextBox.Text == null)
+                {
+                    ExperienceErrors.Text = "Worning. Filed is empty";
+                    ExperienceErrors.Foreground = Brushes.Orange;
+                    yearsOfExperienceTextBox.BorderBrush = Brushes.Orange;
+                }
+                if (maxTestsInaWeekTextBox.Text == "0" || maxTestsInaWeekTextBox.Text == null)
+                {
+                    MaxTestsError.Text = "Worning. Filed is empty";
+                    MaxTestsError.Foreground = Brushes.Orange;
+                    maxTestsInaWeekTextBox.BorderBrush = Brushes.Orange;
+                }
+                if(!SundayHours.Any() && !MondayHours.Any() && !TuesdayHours.Any() && !WednesdayHours.Any() && !ThursdayHours.Any())
+                {
+                    ScheduleError.Text = "Warning, No times selected";
+                    ScheduleError.Foreground = Brushes.Orange;
+                }
+
+
 
                 if (noErrors() && TesterComboBox.Visibility == Visibility.Hidden)
                 {
@@ -235,7 +314,10 @@ namespace PLWPF
             maxDistanceForTestTextBox.IsEnabled = false;
             yearsOfExperienceTextBox.IsEnabled = false;
             maxTestsInaWeekTextBox.IsEnabled = false;
-            schedualExpander.IsEnabled = false;
+            //schedualListBox.IsEnabled = false;
+            //nextDayButton.IsEnabled = false;
+            //previousDayButton.IsEnabled = false;
+            scheduleGrid.IsEnabled = false;
         }
 
         public void openAll()
@@ -251,7 +333,7 @@ namespace PLWPF
             maxDistanceForTestTextBox.IsEnabled = true;
             yearsOfExperienceTextBox.IsEnabled = true;
             maxTestsInaWeekTextBox.IsEnabled = true;
-            schedualExpander.IsEnabled = true;
+            scheduleGrid.IsEnabled = true;
         }
 
         public bool noErrors()
@@ -271,8 +353,6 @@ namespace PLWPF
                     throw new Exception();
                 if (EmailErrors.Text.Contains("ERROR"))
                     throw new Exception();
-                if (yearsOfExperienceErrors.Text.Contains("ERROR"))
-                    throw new Exception();
                 return true;
             }
             catch (Exception exception)
@@ -284,7 +364,7 @@ namespace PLWPF
         //for numbers only
         private void TextBox_PreviewTextInputNumbers(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = new Regex("[^0-9]+").IsMatch(e.Text);
+            e.Handled = new Regex("^[a-zA-Z]+$").IsMatch(e.Text);
         }
 
         //for numbers only
@@ -294,12 +374,6 @@ namespace PLWPF
         }
         #endregion
 
-        //check errors
-        #region check id
-        private void TesterIdTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
         private void TesterComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             IdErrors.Text = "";
@@ -312,127 +386,18 @@ namespace PLWPF
             TesterForPL = bl.GetListOfTesters().FirstOrDefault(a => a.TesterId == id);
             {//schedual
                 hoursFromSchedualArr = TesterForPL.getSchedual();
-                for(int i = 0; i < 5; i++)
+                for (int i = 0; i < 6; i++)//put selections hour for sunday
                 {
-                    if (hoursFromSchedualArr[0,i])
+                    if (hoursFromSchedualArr[i, 0])
                     {
                         schedualListBox.SelectedIndex = i;
                     }
                 }
-                
+
             }
             this.TesterGrid.DataContext = TesterForPL;
         }
 
-        private void testerIdTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            try
-            {
-                bl.CheckId(TesterForPL.TesterId);
-            }
-            catch
-            {
-                IdErrors.Text = "";
-                IdErrors.Foreground = Brushes.Red;
-                testerIdTextBox.BorderBrush = Brushes.Red;
-            }
-        }
-
-        private void testerIdTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            IdErrors.Text = "";
-            IdErrors.Foreground = Brushes.Black;
-            testerIdTextBox.BorderBrush = Brushes.Black;
-        }
-        #endregion
-
-        #region check names
-        private void firstNameTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            try
-            {
-                bl.IsText(TesterForPL.FirstName);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("ERROR"))
-                {
-                    NameErrors.Foreground = Brushes.Red;
-                    firstNameTextBox.BorderBrush = Brushes.Red;
-
-                }
-                else
-                {
-                    NameErrors.Foreground = Brushes.Orange;
-                    firstNameTextBox.BorderBrush = Brushes.Orange;
-                }
-                NameErrors.Text = ex.Message;
-
-            }
-        }
-
-        private void firstNameTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            NameErrors.Text = ";";
-            NameErrors.Foreground = Brushes.Black;
-            firstNameTextBox.BorderBrush = Brushes.Black;
-        }
-
-        private void sirnameTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            try
-            {
-                bl.IsText(TesterForPL.Sirname);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("ERROR"))
-                {
-                    SirNameErrors.Foreground = Brushes.Red;
-                    sirnameTextBox.BorderBrush = Brushes.Red;
-
-                }
-                else
-                {
-                    SirNameErrors.Foreground = Brushes.Orange;
-                    sirnameTextBox.BorderBrush = Brushes.Orange;
-                }
-
-                SirNameErrors.Text = ex.Message;
-
-            }
-        }
-        private void sirnameTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            SirNameErrors.Text = "";
-            SirNameErrors.Foreground = Brushes.Black;
-            sirnameTextBox.BorderBrush = Brushes.Black;
-        }
-        #endregion
-
-        #region check phone number
-        private void phoneNumberTextBox_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            try
-            {
-                bl.IsNumber(TesterForPL.PhoneNumber);
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("ERROR"))
-                {
-                    PhoneNumberErrors.Foreground = Brushes.Red;
-                    phoneNumberTextBox.BorderBrush = Brushes.Red;
-                }
-                else
-                {
-                    PhoneNumberErrors.Foreground = Brushes.Orange;
-                    phoneNumberTextBox.BorderBrush = Brushes.Orange;
-                }
-                PhoneNumberErrors.Text = ex.Message;
-            }
-        }
-        #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -443,45 +408,81 @@ namespace PLWPF
         }
 
         #region Schedual
-        #endregion
         private void NextDayButton_Click(object sender, RoutedEventArgs e)
         {
+            
             if(winCondition == "add")
             {
-                switch (dayLabel.Content)//change the Label
+                switch (dayLabel.Content)
                 {
 
                     case "Sunday":
-                        dayLabel.Content = "Monday";
+                        dayLabel.Content = "Monday";//change the label
+                        for (int i = 0; i < 6; i++)//show previes selections
+                        {
+                            if (MondayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+
                         break;
 
                     case "Monday":
                         dayLabel.Content = "Tuesday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (TuesdayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
                         break;
 
                     case "Tuesday":
                         dayLabel.Content = "Wednesday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (WednesdayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
                         break;
 
                     case "Wednesday":
                         dayLabel.Content = "Thursday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (ThursdayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
                         break;
 
                     case "Thursday":
                         dayLabel.Content = "Sunday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (SundayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
                         break;
                 }
             }
-            else
+            else//update or delete
             {
                 switch (dayLabel.Content)//change the Label
                 {
 
                     case "Sunday":
                         dayLabel.Content = "Monday";
-                        for (int i = 0; i < 5; i++)
+                        for (int i = 0; i < 6; i++)
                         {
-                            if (hoursFromSchedualArr[1, i])
+                            if (hoursFromSchedualArr[i, 1])
                             {
                                 schedualListBox.SelectedIndex = i;
                             }
@@ -491,9 +492,9 @@ namespace PLWPF
 
                     case "Monday":
                         dayLabel.Content = "Tuesday";
-                        for (int i = 0; i < 5; i++)
+                        for (int i = 0; i < 6; i++)
                         {
-                            if (hoursFromSchedualArr[2, i])
+                            if (hoursFromSchedualArr[i, 2])
                             {
                                 schedualListBox.SelectedIndex = i;
                             }
@@ -502,9 +503,9 @@ namespace PLWPF
 
                     case "Tuesday":
                         dayLabel.Content = "Wednesday";
-                        for (int i = 0; i < 5; i++)
+                        for (int i = 0; i < 6; i++)
                         {
-                            if (hoursFromSchedualArr[3, i])
+                            if (hoursFromSchedualArr[i, 3])
                             {
                                 schedualListBox.SelectedIndex = i;
                             }
@@ -513,9 +514,9 @@ namespace PLWPF
 
                     case "Wednesday":
                         dayLabel.Content = "Thursday";
-                        for (int i = 0; i < 5; i++)
+                        for (int i = 0; i < 6; i++)
                         {
-                            if (hoursFromSchedualArr[4, i])
+                            if (hoursFromSchedualArr[i, 4])
                             {
                                 schedualListBox.SelectedIndex = i;
                             }
@@ -524,11 +525,11 @@ namespace PLWPF
 
                     case "Thursday":
                         dayLabel.Content = "Sunday";
-                        for (int i = 0; i < 5; i++)
+                        for (int i = 0; i < 6; i++)
                         {
-                            if (hoursFromSchedualArr[5, i])
+                            if (hoursFromSchedualArr[i, 0])
                             {
-                                schedualListBox.SelectedIndex = i;
+                                schedualListBox.SelectedIndex += i;
                             }
                         }
                         break;
@@ -536,51 +537,286 @@ namespace PLWPF
             }
         }
 
-        private void SchedualListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SchedualListBox_MouseLeave(object sender, MouseEventArgs e)
         {
             switch (dayLabel.Content)//change the hours in list
             {
-
                 case "Sunday":
-                    SundayHours.Clear();
-                    foreach (object SelectedItem in schedualListBox.SelectedItems)
+                    notAllIsFalse = SundayArr.Any(x => x);
+                    if (notAllIsFalse)//if there is values from previous time we delete it
+                        Array.Clear(SundayArr, 0, SundayArr.Length);
+                    foreach (ListBoxItem SelectedItem in schedualListBox.SelectedItems)
                     {
-                        SundayHours.Add(schedualListBox.Items.IndexOf(SelectedItem));
+                        SundayArr[schedualListBox.Items.IndexOf(SelectedItem)] = true;
                     }
                     break;
 
                 case "Monday":
-                    MondayHours.Clear();
-                    foreach (object SelectedItem in schedualListBox.SelectedItems)
+                    notAllIsFalse = MondayArr.Any(x => x);
+                    if (notAllIsFalse)
+                        Array.Clear(MondayArr, 0, MondayArr.Length);
+                    foreach (ListBoxItem SelectedItem in schedualListBox.SelectedItems)
                     {
-                        MondayHours.Add(schedualListBox.Items.IndexOf(SelectedItem));
+                        MondayArr[schedualListBox.Items.IndexOf(SelectedItem)] = true;
                     }
                     break;
 
                 case "Tuesday":
-                    TuesdayHours.Clear();
-                    foreach (object SelectedItem in schedualListBox.SelectedItems)
+                    notAllIsFalse = TuesdayArr.Any(x => x);
+                    if (notAllIsFalse)
+                        Array.Clear(TuesdayArr, 0, TuesdayArr.Length);
+                    foreach (ListBoxItem SelectedItem in schedualListBox.SelectedItems)
                     {
-                        TuesdayHours.Add(schedualListBox.Items.IndexOf(SelectedItem));
+                        TuesdayArr[schedualListBox.Items.IndexOf(SelectedItem)] = true;
                     }
                     break;
 
                 case "Wednesday":
-                    WednesdayHours.Clear();
-
-                    foreach (object SelectedItem in schedualListBox.SelectedItems)
+                    notAllIsFalse = WednesdayArr.Any(x => x);
+                    if (notAllIsFalse)
+                        Array.Clear(WednesdayArr, 0, WednesdayArr.Length);
+                    foreach (ListBoxItem SelectedItem in schedualListBox.SelectedItems)
                     {
-                        WednesdayHours.Add(schedualListBox.Items.IndexOf(SelectedItem));
+                        WednesdayArr[schedualListBox.Items.IndexOf(SelectedItem)] = true;
                     }
                     break;
 
                 case "Thursday":
-                    ThursdayHours.Clear();
-                    foreach (object SelectedItem in schedualListBox.SelectedItems)
+                    notAllIsFalse = ThursdayArr.Any(x => x);
+                    if (notAllIsFalse)
+                        Array.Clear(ThursdayArr, 0, ThursdayArr.Length);
+                    foreach (ListBoxItem SelectedItem in schedualListBox.SelectedItems)
                     {
-                        ThursdayHours.Add(schedualListBox.Items.IndexOf(SelectedItem));
+                        ThursdayArr[schedualListBox.Items.IndexOf(SelectedItem)] = true;
                     }
                     break;
+            }
+        }
+        #endregion
+
+        #region checks
+        //id
+        private void TesterIdTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                bl.CheckId(TesterForPL.TesterId);
+                if(bl.TesterInSystem(TesterForPL.TesterId))
+                {
+                    throw new Exception("ERROR. Tester exist in system");
+                }
+            }
+            catch(Exception ex)
+            {
+                IdErrors.Text = ex.Message;
+                IdErrors.Foreground = Brushes.Red;
+                testerIdTextBox.BorderBrush = Brushes.Red;
+            }
+        }
+
+        private void TesterIdTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            IdErrors.Text = "";
+            IdErrors.Foreground = Brushes.Black;
+            testerIdTextBox.BorderBrush = Brushes.Black;
+        }
+
+        //first name
+        private void FirstNameTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            NameErrors.Text = "";
+            NameErrors.Foreground = Brushes.Black;
+            firstNameTextBox.BorderBrush = Brushes.Black;
+        }
+
+        //last name
+        private void SirnameTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SirNameErrors.Text = "";
+            SirNameErrors.Foreground = Brushes.Black;
+            sirnameTextBox.BorderBrush = Brushes.Black;
+        }
+
+        //phon number
+        private void PhoneNumberTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            PhoneNumberErrors.Text = "";
+            PhoneNumberErrors.Foreground = Brushes.Black;
+            phoneNumberTextBox.BorderBrush = Brushes.Black;
+        }
+
+        //email
+        private void EmailTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!bl.CheckEmail(TesterForPL.Email))
+            {
+                EmailErrors.Text = "ERROR. Invalid Email";
+                EmailErrors.Foreground = Brushes.Red;
+                emailTextBox.BorderBrush = Brushes.Red;
+            }
+        }
+
+        private void EmailTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            EmailErrors.Text = "";
+            EmailErrors.Foreground = Brushes.Black;
+            emailTextBox.BorderBrush = Brushes.Black;
+        }
+
+        private void MaxDistanceForTestTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            DistanceError.Text = "";
+            DistanceError.Foreground = Brushes.Black;
+            maxDistanceForTestTextBox.BorderBrush = Brushes.Black;
+        }
+
+        private void YearsOfExperienceTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            ExperienceErrors.Text = "";
+            ExperienceErrors.Foreground = Brushes.Black;
+            yearsOfExperienceTextBox.BorderBrush = Brushes.Black;
+        }
+
+        private void MaxTestsInaWeekTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            MaxTestsError.Text = "";
+            MaxTestsError.Foreground = Brushes.Black;
+            maxTestsInaWeekTextBox.BorderBrush = Brushes.Black;
+        }
+
+        private void ScheduleGrid_GotFocus(object sender, RoutedEventArgs e)
+        {
+            ScheduleError.Text = "";
+            ScheduleError.Foreground = Brushes.Black;
+        }
+
+
+
+        #endregion
+
+        private void PreviousDayButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (winCondition == "add")
+            {
+                switch (dayLabel.Content)
+                {
+
+                    case "Sunday":
+                        dayLabel.Content = "Thursday";//change the label
+                        for (int i = 0; i < 6; i++)//show previes selection
+                        {
+                            if (ThursdayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }      
+                        break;
+
+                    case "Monday":
+                        dayLabel.Content = "Sunday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (SundayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }                        
+                        break;
+
+                    case "Tuesday":
+                        dayLabel.Content = "Monday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (MondayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }                        
+                        break;
+
+                    case "Wednesday":
+                        dayLabel.Content = "Tuesday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (TuesdayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+
+                    case "Thursday":
+                        dayLabel.Content = "Wednesday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (WednesdayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+                }
+            }
+            else//update or delete
+            {
+                switch (dayLabel.Content)//change the Label
+                {
+
+                    case "Sunday":
+                        dayLabel.Content = "Thursday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hoursFromSchedualArr[i, 4])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }                     
+                        break;
+
+                    case "Monday":
+                        dayLabel.Content = "Sunday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hoursFromSchedualArr[i, 0])
+                            {
+                                schedualListBox.SelectedIndex += i;
+                            }
+                        }                        
+                        break;
+
+                    case "Tuesday":
+                        dayLabel.Content = "Monday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hoursFromSchedualArr[i, 1])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }                        
+                        break;
+
+                    case "Wednesday":
+                        dayLabel.Content = "Tuesday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hoursFromSchedualArr[i, 2])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+
+                    case "Thursday":
+                        dayLabel.Content = "Wednesday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hoursFromSchedualArr[i, 3])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+                }
             }
         }
     }

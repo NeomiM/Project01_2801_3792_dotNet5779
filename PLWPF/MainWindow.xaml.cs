@@ -33,8 +33,7 @@ namespace PLWPF
 
         private void ManageTesters_Click(object sender, RoutedEventArgs e)
         {
-            TestersWindow win = new TestersWindow();
-            win.ShowDialog();
+            new TestersWindow().ShowDialog();
 
         }
 
@@ -59,7 +58,12 @@ namespace PLWPF
 
         private void TestersByCarType_Click(object sender, RoutedEventArgs e)
         {
+            new TestersByCarType().ShowDialog();
+        }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            new Window1().ShowDialog();
         }
     }
 }

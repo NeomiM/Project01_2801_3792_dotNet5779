@@ -74,16 +74,21 @@ namespace DS
             tester.DateOfBirth = time;
             tester.FirstName = "Neomi";
             tester.TesterId = "328772801";
+            tester.Testercar = CarType.HeavyTruck;
 
             Tester tester1 = new Tester();
             tester.DateOfBirth = time;
             tester.FirstName = "Beila";
             tester.TesterId = "205823792";
+            tester1.Testercar = CarType.MediumTruck;
 
             Tester tester2 = new Tester();
             tester2.DateOfBirth = time;
             tester2.FirstName = "Elisha";
             tester2.TesterId = "319185997";
+            tester2.Testercar = CarType.Private;
+            
+
             _testerList.Add(tester);
             _testerList.Add(tester1);
             _testerList.Add(tester2);

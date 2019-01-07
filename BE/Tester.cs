@@ -18,6 +18,7 @@ namespace BE
         private string _phoneNumber;
 
         internal Address _testerAdress;
+        public bool[,] _schedual = new bool[5,6];
         private int _yearsOfExperience;
         private int _maxTestsInaWeek;
 
@@ -46,9 +47,30 @@ namespace BE
         public double MaxDistanceForTest { get => _maxDistanceForTest; set => _maxDistanceForTest = value; }
 
         public CarType Testercar { get => _testercar; set => _testercar = value; }
-        public bool[,] Schedule { get; set; } = new bool[5, 6];
+        //public bool[,] Schedule { get; set; } = new bool[5, 6];
         public string Email { get => _email; set => _email = value; }
+        //public bool[,] Schedual { get => _schedual; set => _schedual = value; }
+        public void setSchedual(List<int> list1, List<int> list2, List<int> list3, List<int> list4, List<int> list5)
+        {
+            foreach(int variable in list1)
+                _schedual[0, variable] = true;
 
+            foreach (int variable in list2)
+                _schedual[1, variable] = true;
+
+            foreach (int variable in list3)
+                _schedual[2, variable] = true;
+
+            foreach (int variable in list4)
+                _schedual[3, variable] = true;
+
+            foreach (int variable in list5)
+                _schedual[4, variable] = true;
+        }
+        public bool[,] getSchedual()
+        {
+            return _schedual;
+        }
 
         #endregion
 

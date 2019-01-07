@@ -644,8 +644,8 @@ namespace BL
                 foreach (Tester t in testerlist)
                 {
 
-                    var row = Enumerable.Range(0, t.Schedule.GetLength(1))
-                        .Select(x => t.Schedule[dayOfWeek, x])
+                    var row = Enumerable.Range(0, t._schedual.GetLength(1))
+                        .Select(x => t._schedual[dayOfWeek - 2, x])
                         .ToArray();
                     bool noOtherTest =
                         testlist.Where(x => x.TestDate == dateAndHour.Date && x.TesterId == t.TesterId)

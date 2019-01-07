@@ -128,7 +128,7 @@ namespace BL
             };
                 
 
-                bool clear = checkAll.All(x => x);
+                bool clear = checkAll.All(x => x==true);
                 if (clear)
                  dal.AddTrainee(T);
         }
@@ -720,8 +720,8 @@ namespace BL
         public List<Test> TestsByDate()
         {
             List<Test> testList = dal.GetListOfTests();
-            var tests = testList.OrderBy(x => x.TestDate);
-            return (List<Test>) tests;
+            var tests =testList.OrderByDescending(x => x.DateAndHourOfTest);
+            return tests.ToList();
         }
 
         public List<Trainee> readyTrainees()

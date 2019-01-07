@@ -68,6 +68,7 @@ namespace PLWPF
             TraineeComboBox.Visibility = Visibility.Hidden;
             TraineeGrid.IsEnabled = true;
             Save.Content = "Check";
+            Save.IsEnabled = true;
         }
 
         private void UpdateTrainee_Click(object sender, RoutedEventArgs e)
@@ -75,6 +76,7 @@ namespace PLWPF
             try
             {
                 TraineeForPL = new Trainee();
+                Save.IsEnabled = false;
                 TraineeComboBox.SelectedItem = null;
                 closeAlmostAll();
                 TraineeGrid.DataContext = TraineeForPL;

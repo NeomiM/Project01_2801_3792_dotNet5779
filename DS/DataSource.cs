@@ -18,7 +18,7 @@ namespace DS
             Test test = new Test();
             test.CheckMirrors = true;
             DateTime time = DateTime.Today;
-            test.DateAndHourOfTest = time;
+            test.DateAndHourOfTest = DateTime.Today;
             test.ImediateStop = true;
             test.KeptDistance = true;
             test.KeptRightofPresidence = true;
@@ -34,8 +34,8 @@ namespace DS
 
             Test test2 = new Test();
             test2.CheckMirrors = true;
-            DateTime time2 = DateTime.Today;
-            test2.DateAndHourOfTest = time;
+            DateTime time2 = DateTime.Today.AddDays(5);
+            test2.DateAndHourOfTest = DateTime.Today.AddDays(5);
             test2.ImediateStop = true;
             test2.KeptDistance = true;
             test2.KeptRightofPresidence = true;
@@ -50,8 +50,9 @@ namespace DS
             test2.TestPassed = false;
 
             Test test3 = new Test();
+            test3.TestDate = DateTime.Today.AddDays(-5);
             test3.CheckMirrors = true;
-            test3.DateAndHourOfTest = time;
+            test3.DateAndHourOfTest = DateTime.Today.AddDays(-5);
             test3.ImediateStop = true;
             test3.KeptDistance = true;
             test3.KeptRightofPresidence = true;
@@ -94,11 +95,11 @@ namespace DS
 
             #region three trainees
 
-            Trainee trainee = new Trainee();
-            trainee.DateOfBirth = time;
-            trainee.FirstName = "Neomi";
-            trainee.TraineeId = "328772801";
-            trainee.LessonsPassed = (int)Configuration.MinAmmountOfLessons+1;
+            //Trainee trainee = new Trainee();
+            //trainee.DateOfBirth = time;
+            //trainee.FirstName = "Neomi";
+            //trainee.TraineeId = "328772801";
+            //trainee.LessonsPassed = (int)Configuration.MinAmmountOfLessons+1;
 
             Trainee trainee1 = new Trainee();
             trainee1.DateOfBirth = time;
@@ -112,7 +113,7 @@ namespace DS
             trainee2.FirstName = "Elisha";
             trainee2.TraineeId = "319185997";
 
-            _traineeList.Add(trainee);
+         //   _traineeList.Add(trainee);
             _traineeList.Add(trainee1);
             _traineeList.Add(trainee2);
             #endregion

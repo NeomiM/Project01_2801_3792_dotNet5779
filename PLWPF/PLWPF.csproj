@@ -60,6 +60,9 @@
     <Compile Include="TestsByDate.xaml.cs">
       <DependentUpon>TestsByDate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TraineeByTeacher.xaml.cs">
+      <DependentUpon>TraineeByTeacher.xaml</DependentUpon>
+    </Compile>
     <Compile Include="validTrainees.xaml.cs">
       <DependentUpon>validTrainees.xaml</DependentUpon>
     </Compile>
@@ -84,6 +87,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TestsByDate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TraineeByTeacher.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

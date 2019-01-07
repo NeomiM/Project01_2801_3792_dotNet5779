@@ -52,14 +52,19 @@ namespace PLWPF
             new validTrainees().Show();
         }
 
-        private void TraineesByTesters_Click(object sender, RoutedEventArgs e)
+        private void TraineesByTeachers_Click(object sender, RoutedEventArgs e)
         {
-
+            new TraineeByTeacher().Show();
         }
 
         private void TestersByCarType_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void TestsByDate_Click(object sender, RoutedEventArgs e)
+        {
+            new TestsByDate().Show();
         }
     }
 }

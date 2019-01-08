@@ -45,17 +45,14 @@ namespace PLWPF
 
         private void ManageTests_Click(object sender, RoutedEventArgs e)
         {
-
+            new ManageTest().ShowDialog();
         }
         private void ValidTrainees_Click(object sender, RoutedEventArgs e)
         {
             new validTrainees().Show();
         }
 
-        private void TraineesByTeachers_Click(object sender, RoutedEventArgs e)
-        {
-            new TraineeByTeacher().Show();
-        }
+        
 
         private void TestersByCarType_Click(object sender, RoutedEventArgs e)
         {

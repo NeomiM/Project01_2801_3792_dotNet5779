@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace PLWPF
 {
     /// <summary>
-    /// Interaction logic for TraineeByTester.xaml
+    /// Interaction logic for ManageTest.xaml
     /// </summary>
-    public partial class TraineeByTeacher : Window
+    public partial class ManageTest : Window
     {
-        public TraineeByTeacher()
+        public ManageTest()
         {
             InitializeComponent();
         }

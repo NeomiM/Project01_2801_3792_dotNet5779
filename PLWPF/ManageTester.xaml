@@ -101,7 +101,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label x:Name="dayLabel" Content="Sunday" Grid.Row="0" Grid.Column="1" Width="60" Margin="13,0"/>
-                    <Button x:Name="nextDayButton" Content="&gt;" Grid.Row="0" Grid.Column="2" Click="NextDayButton_Click"/>
+                    <Button x:Name="nextDayButton" Content="&gt;" Grid.Row="0" Grid.Column="2" Click="NextDayButton_Click" HorizontalAlignment="Left" Width="17"/>
                     <Button x:Name="previousDayButton" Content="&lt;" Grid.Row="0" Grid.Column="0" Click="PreviousDayButton_Click"/>
 
                     <ListBox x:Name="schedualListBox" SelectionMode="Multiple" Grid.Column="1" Grid.Row="2" MouseLeave="SchedualListBox_MouseLeave" Grid.RowSpan="2">

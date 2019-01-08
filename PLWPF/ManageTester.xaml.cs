@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+//using System.Windows.Forms;
 using BE;
 using BL;
 
@@ -41,11 +42,12 @@ namespace PLWPF
         //List<int> TuesdayHours = new List<int>();
         //List<int> WednesdayHours = new List<int>();
         //List<int> ThursdayHours = new List<int>();
-        bool[,] hoursFromSchedualArr = new bool[5, 6];
+        bool[,] hoursFromSchedualArr = new bool[6, 5];
         bool notAllIsFalse = false;
         public TestersWindow()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             TesterGrid.Visibility = Visibility.Hidden;
             bl = IBL_imp.Instance;
             TesterForPL = new Tester();
@@ -199,13 +201,13 @@ namespace PLWPF
                 //empty filed
                 if (string.IsNullOrWhiteSpace(firstNameTextBox.Text))
                 {
-                    NameErrors.Text = "Worning. Filed is empty";
+                    NameErrors.Text = "Warning. Filed is empty";
                     NameErrors.Foreground = Brushes.Orange;
                     firstNameTextBox.BorderBrush = Brushes.Orange;
                 }
                 if (string.IsNullOrWhiteSpace(sirnameTextBox.Text))
                 {
-                    SirNameErrors.Text = "Worning. Filed is empty";
+                    SirNameErrors.Text = "Warning. Filed is empty";
                     SirNameErrors.Foreground = Brushes.Orange;
                     sirnameTextBox.BorderBrush = Brushes.Orange;
                 }
@@ -217,19 +219,19 @@ namespace PLWPF
                 }
                 if (string.IsNullOrWhiteSpace(phoneNumberTextBox.Text))
                 {
-                    PhoneNumberErrors.Text = "Worning. Filed is empty";
+                    PhoneNumberErrors.Text = "Warning. Filed is empty";
                     PhoneNumberErrors.Foreground = Brushes.Orange;
                     phoneNumberTextBox.BorderBrush = Brushes.Orange;
                 }
                 if (string.IsNullOrWhiteSpace(phoneNumberTextBox.Text))
                 {
-                    PhoneNumberErrors.Text = "Worning. Filed is empty";
+                    PhoneNumberErrors.Text = "Warning. Filed is empty";
                     PhoneNumberErrors.Foreground = Brushes.Orange;
                     phoneNumberTextBox.BorderBrush = Brushes.Orange;
                 }
                 if (string.IsNullOrWhiteSpace(emailTextBox.Text))
                 {
-                    EmailErrors.Text = "Worning. Filed is empty";
+                    EmailErrors.Text = "Warning. Filed is empty";
                     EmailErrors.Foreground = Brushes.Orange;
                     emailTextBox.BorderBrush = Brushes.Orange;
                 }
@@ -241,31 +243,31 @@ namespace PLWPF
                 }
                 if (maxDistanceForTestTextBox.Text == "0" || maxDistanceForTestTextBox.Text == null)
                 {
-                    DistanceError.Text = "Worning. Filed is empty";
+                    DistanceError.Text = "Warning. Filed is empty";
                     DistanceError.Foreground = Brushes.Orange;
                     maxDistanceForTestTextBox.BorderBrush = Brushes.Orange;
                 }
                 if (yearsOfExperienceTextBox.Text == "0" || yearsOfExperienceTextBox.Text == null)
                 {
-                    ExperienceErrors.Text = "Worning. Filed is empty";
+                    ExperienceErrors.Text = "Warning. Filed is empty";
                     ExperienceErrors.Foreground = Brushes.Orange;
                     yearsOfExperienceTextBox.BorderBrush = Brushes.Orange;
                 }
                 if (maxTestsInaWeekTextBox.Text == "0" || maxTestsInaWeekTextBox.Text == null)
                 {
-                    MaxTestsError.Text = "Worning. Filed is empty";
+                    MaxTestsError.Text = "Warning. Filed is empty";
                     MaxTestsError.Foreground = Brushes.Orange;
                     maxTestsInaWeekTextBox.BorderBrush = Brushes.Orange;
                 }
                 if(string.IsNullOrWhiteSpace(City.Text))
                 {
-                    AddressErrors.Text = "Worning. Filed is empty";
+                    AddressErrors.Text = "Warning. Filed is empty";
                     AddressErrors.Foreground = Brushes.Orange;
                     City.BorderBrush = Brushes.Orange;
                 }
                 if (string.IsNullOrWhiteSpace(Street.Text))
                 {
-                    AddressErrors.Text = "Worning. Filed is empty";
+                    AddressErrors.Text = "Warning. Filed is empty";
                     AddressErrors.Foreground = Brushes.Orange;
                     Street.BorderBrush = Brushes.Orange;
                 }
@@ -430,12 +432,18 @@ namespace PLWPF
         #region Schedual
         private void NextDayButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            if(winCondition == "add")
+            foreach(object ob in schedualListBox.Items)
             {
-                switch (dayLabel.Content)
-                {
 
+            }
+            foreach (ListBoxItem SelectedItem in schedualListBox.SelectedItems)
+            {
+                SelectedItem.IsSelected = false;
+            }
+            if (winCondition == "add")
+            {                
+                switch (dayLabel.Content)
+                {                    
                     case "Sunday":
                         dayLabel.Content = "Monday";//change the label
                         for (int i = 0; i < 6; i++)//show previes selections

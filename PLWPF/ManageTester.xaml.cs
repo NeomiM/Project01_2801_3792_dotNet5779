@@ -15,12 +15,10 @@ using System.Windows.Shapes;
 using BE;
 using BL;
 
-
-
 /*
- * to find out:
+ to find out:
  selections items to previues day
-     */
+ */
 namespace PLWPF
 {
     /// <summary>
@@ -38,11 +36,11 @@ namespace PLWPF
         bool[] TuesdayArr = new bool[6];
         bool[] WednesdayArr = new bool[6];
         bool[] ThursdayArr = new bool[6];
-        List<int> SundayHours = new List<int>();
-        List<int> MondayHours = new List<int>();
-        List<int> TuesdayHours = new List<int>();
-        List<int> WednesdayHours = new List<int>();
-        List<int> ThursdayHours = new List<int>();
+        //List<int> SundayHours = new List<int>();
+        //List<int> MondayHours = new List<int>();
+        //List<int> TuesdayHours = new List<int>();
+        //List<int> WednesdayHours = new List<int>();
+        //List<int> ThursdayHours = new List<int>();
         bool[,] hoursFromSchedualArr = new bool[5, 6];
         bool notAllIsFalse = false;
         public TestersWindow()
@@ -69,6 +67,7 @@ namespace PLWPF
             //for letters only
             this.sirnameTextBox.PreviewTextInput += TextBox_PreviewTextInputLetters;
             this.firstNameTextBox.PreviewTextInput += TextBox_PreviewTextInputLetters;
+            this.City.PreviewTextInput += TextBox_PreviewTextInputLetters;
         }
 
         #region manage buttons
@@ -258,11 +257,26 @@ namespace PLWPF
                     MaxTestsError.Foreground = Brushes.Orange;
                     maxTestsInaWeekTextBox.BorderBrush = Brushes.Orange;
                 }
-                if(!SundayHours.Any() && !MondayHours.Any() && !TuesdayHours.Any() && !WednesdayHours.Any() && !ThursdayHours.Any())
+                if(string.IsNullOrWhiteSpace(City.Text))
+                {
+                    AddressErrors.Text = "Worning. Filed is empty";
+                    AddressErrors.Foreground = Brushes.Orange;
+                    City.BorderBrush = Brushes.Orange;
+                }
+                if (string.IsNullOrWhiteSpace(Street.Text))
+                {
+                    AddressErrors.Text = "Worning. Filed is empty";
+                    AddressErrors.Foreground = Brushes.Orange;
+                    Street.BorderBrush = Brushes.Orange;
+                }
+                if (!SundayArr.Any(x => x) && !MondayArr.Any(x => x) && !TuesdayArr.Any(x => x) && !WednesdayArr.Any(x => x) && !ThursdayArr.Any(x => x))//if schedule is empty
                 {
                     ScheduleError.Text = "Warning, No times selected";
                     ScheduleError.Foreground = Brushes.Orange;
                 }
+                
+
+
 
 
 
@@ -317,6 +331,9 @@ namespace PLWPF
             //schedualListBox.IsEnabled = false;
             //nextDayButton.IsEnabled = false;
             //previousDayButton.IsEnabled = false;
+            City.IsEnabled = false;
+            Street.IsEnabled = false;
+            BuidingNumber.IsEnabled = false;
             scheduleGrid.IsEnabled = false;
         }
 
@@ -333,6 +350,9 @@ namespace PLWPF
             maxDistanceForTestTextBox.IsEnabled = true;
             yearsOfExperienceTextBox.IsEnabled = true;
             maxTestsInaWeekTextBox.IsEnabled = true;
+            City.IsEnabled = true;
+            Street.IsEnabled = true;
+            BuidingNumber.IsEnabled = true;
             scheduleGrid.IsEnabled = true;
         }
 
@@ -537,6 +557,132 @@ namespace PLWPF
             }
         }
 
+        private void PreviousDayButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (winCondition == "add")
+            {
+                switch (dayLabel.Content)
+                {
+
+                    case "Sunday":
+                        dayLabel.Content = "Thursday";//change the label
+                        for (int i = 0; i < 6; i++)//show previes selection
+                        {
+                            if (ThursdayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+
+                    case "Monday":
+                        dayLabel.Content = "Sunday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (SundayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+
+                    case "Tuesday":
+                        dayLabel.Content = "Monday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (MondayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+
+                    case "Wednesday":
+                        dayLabel.Content = "Tuesday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (TuesdayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+
+                    case "Thursday":
+                        dayLabel.Content = "Wednesday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (WednesdayArr[i])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+                }
+            }
+            else//update or delete
+            {
+                switch (dayLabel.Content)//change the Label
+                {
+
+                    case "Sunday":
+                        dayLabel.Content = "Thursday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hoursFromSchedualArr[i, 4])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+
+                    case "Monday":
+                        dayLabel.Content = "Sunday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hoursFromSchedualArr[i, 0])
+                            {
+                                schedualListBox.SelectedIndex += i;
+                            }
+                        }
+                        break;
+
+                    case "Tuesday":
+                        dayLabel.Content = "Monday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hoursFromSchedualArr[i, 1])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+
+                    case "Wednesday":
+                        dayLabel.Content = "Tuesday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hoursFromSchedualArr[i, 2])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+
+                    case "Thursday":
+                        dayLabel.Content = "Wednesday";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (hoursFromSchedualArr[i, 3])
+                            {
+                                schedualListBox.SelectedIndex = i;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
         private void SchedualListBox_MouseLeave(object sender, MouseEventArgs e)
         {
             switch (dayLabel.Content)//change the hours in list
@@ -690,134 +836,56 @@ namespace PLWPF
             ScheduleError.Foreground = Brushes.Black;
         }
 
+        #region address
+        private void City_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                bl.IsText(City.Text);
 
+                AddressErrors.Text = "";
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("ERROR"))
+                {
+                    AddressErrors.Foreground = Brushes.Red;
+                    City.BorderBrush = Brushes.Red;
+
+                }
+                AddressErrors.Text = ex.Message;
+            }
+        }
+        private void Street_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            try
+            {
+                bl.IsText(Street.Text);
+                AddressErrors.Text = "";
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("ERROR"))
+                {
+                    AddressErrors.Foreground = Brushes.Red;
+                    Street.BorderBrush = Brushes.Red;
+
+                }
+                AddressErrors.Text = ex.Message;
+            }
+        }
+        private void City_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            City.BorderBrush = Brushes.Black;
+
+        }
+        private void Street_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            Street.BorderBrush = Brushes.Black;
+        }
+        #endregion
 
         #endregion
 
-        private void PreviousDayButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (winCondition == "add")
-            {
-                switch (dayLabel.Content)
-                {
-
-                    case "Sunday":
-                        dayLabel.Content = "Thursday";//change the label
-                        for (int i = 0; i < 6; i++)//show previes selection
-                        {
-                            if (ThursdayArr[i])
-                            {
-                                schedualListBox.SelectedIndex = i;
-                            }
-                        }      
-                        break;
-
-                    case "Monday":
-                        dayLabel.Content = "Sunday";
-                        for (int i = 0; i < 6; i++)
-                        {
-                            if (SundayArr[i])
-                            {
-                                schedualListBox.SelectedIndex = i;
-                            }
-                        }                        
-                        break;
-
-                    case "Tuesday":
-                        dayLabel.Content = "Monday";
-                        for (int i = 0; i < 6; i++)
-                        {
-                            if (MondayArr[i])
-                            {
-                                schedualListBox.SelectedIndex = i;
-                            }
-                        }                        
-                        break;
-
-                    case "Wednesday":
-                        dayLabel.Content = "Tuesday";
-                        for (int i = 0; i < 6; i++)
-                        {
-                            if (TuesdayArr[i])
-                            {
-                                schedualListBox.SelectedIndex = i;
-                            }
-                        }
-                        break;
-
-                    case "Thursday":
-                        dayLabel.Content = "Wednesday";
-                        for (int i = 0; i < 6; i++)
-                        {
-                            if (WednesdayArr[i])
-                            {
-                                schedualListBox.SelectedIndex = i;
-                            }
-                        }
-                        break;
-                }
-            }
-            else//update or delete
-            {
-                switch (dayLabel.Content)//change the Label
-                {
-
-                    case "Sunday":
-                        dayLabel.Content = "Thursday";
-                        for (int i = 0; i < 6; i++)
-                        {
-                            if (hoursFromSchedualArr[i, 4])
-                            {
-                                schedualListBox.SelectedIndex = i;
-                            }
-                        }                     
-                        break;
-
-                    case "Monday":
-                        dayLabel.Content = "Sunday";
-                        for (int i = 0; i < 6; i++)
-                        {
-                            if (hoursFromSchedualArr[i, 0])
-                            {
-                                schedualListBox.SelectedIndex += i;
-                            }
-                        }                        
-                        break;
-
-                    case "Tuesday":
-                        dayLabel.Content = "Monday";
-                        for (int i = 0; i < 6; i++)
-                        {
-                            if (hoursFromSchedualArr[i, 1])
-                            {
-                                schedualListBox.SelectedIndex = i;
-                            }
-                        }                        
-                        break;
-
-                    case "Wednesday":
-                        dayLabel.Content = "Tuesday";
-                        for (int i = 0; i < 6; i++)
-                        {
-                            if (hoursFromSchedualArr[i, 2])
-                            {
-                                schedualListBox.SelectedIndex = i;
-                            }
-                        }
-                        break;
-
-                    case "Thursday":
-                        dayLabel.Content = "Wednesday";
-                        for (int i = 0; i < 6; i++)
-                        {
-                            if (hoursFromSchedualArr[i, 3])
-                            {
-                                schedualListBox.SelectedIndex = i;
-                            }
-                        }
-                        break;
-                }
-            }
-        }
     }
 }

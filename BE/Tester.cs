@@ -13,7 +13,7 @@ namespace BE
         private string _testerId;
         private string _sirname;
         private string _firstName;
-        private DateTime _dateOfBirth;
+        private DateTime _dateOfBirth = DateTime.Now.AddYears(-1*(int)BE.Configuration.MaxAgeOFTester);
         private Gender _testerGender;
         private string _phoneNumber;
 

@@ -22,17 +22,18 @@
     <!--add, update,delete-->
     <DockPanel LastChildFill="True">
         <WrapPanel x:Name="backButtonSlot" DockPanel.Dock="Top" Background="AliceBlue">
-            <Button x:Name="BackToMainMenue" Content="Back To Main Menue" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="BackToMainMenue_Click" Height="29"/>
+            <Button x:Name="BackToMainMenue" Content="Back To Main Menue" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="BackToMainMenue_Click" Height="22"/>
         </WrapPanel>
-        <StackPanel x:Name="sideButtonsSlot" DockPanel.Dock="Left" MinWidth="60" MinHeight="100" Background="Bisque">
+
+<StackPanel x:Name="sideButtonsSlot" DockPanel.Dock="Left" MinWidth="60" MinHeight="100" Background="Bisque">
 
             <Button x:Name="AddTrainee" Content="Add Trainee"  HorizontalAlignment="Stretch" Margin="15,60,15,30" VerticalAlignment="Stretch" Click="AddTrainee_Click"/>
             <Button x:Name="UpdateTrainee" Content="Update Trainee" HorizontalAlignment="Stretch" Margin="15,30,15,30" VerticalAlignment="Stretch" Click="UpdateTrainee_Click"/>
             <Button x:Name="DeleteTrainee" Content="Delete Trainee" HorizontalAlignment="stretch" Margin="15,30,15,60" VerticalAlignment="Stretch" Click="DeleteTrainee_Click"/>
 
         </StackPanel>
-        <DockPanel x:Name="TraineeInfoSlot" DockPanel.Dock="Right" Background="Azure" Margin="0,-0.2,0,0.4">
 
+<DockPanel x:Name="TraineeInfoSlot" DockPanel.Dock="Right" Background="Azure" Margin="0,-0.2,0,0.4">
             <Grid x:Name="TraineeGrid" VerticalAlignment="Top" Margin="0,8,0,0" HorizontalAlignment="Left" DataContext="{StaticResource traineeViewSource}" Height="482" Width="563">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

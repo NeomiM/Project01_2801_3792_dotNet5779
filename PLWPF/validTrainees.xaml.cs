@@ -24,6 +24,7 @@ namespace PLWPF
         public validTrainees()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             bl = IBL_imp.Instance;
             traineeDataGrid.DataContext = bl.AllTraineesThat(bl.CanGetLicence);
             

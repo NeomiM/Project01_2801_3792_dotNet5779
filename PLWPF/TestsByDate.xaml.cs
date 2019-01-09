@@ -27,6 +27,7 @@ namespace PLWPF
         public TestsByDate()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             bl = IBL_imp.Instance;
             testDataGrid.DataContext = bl.TestsByDate();
            

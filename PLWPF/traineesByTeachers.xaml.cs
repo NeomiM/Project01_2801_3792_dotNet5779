@@ -27,16 +27,14 @@ namespace PLWPF
         public traineesByTeachers()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             bl = IBL_imp.Instance;
             IEnumerable<IGrouping<string, Trainee>> TraineesByTeachers = bl.TraineesByTeachers(true);
-            //  IEnumerable<string> teachers=from item in bl.GetListOfTrainees() select item.DrivingTeacher ;
             foreach (var teachergroup in TraineesByTeachers)
             {
                 var teacher = teachergroup.Key;
                 TeacherComboBox.Items.Add((string)teacher);
             }
-            //List<string> DrivingTeachers= (List<string>)(from item in TraineesByTeachers select item.Key.ToString());
-           // TeacherComboBox.DataContext = DrivingTeachers;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -55,8 +53,6 @@ namespace PLWPF
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var trainees = bl.TraineesByTeachers(true).Single(g => g.Key == (string)TeacherComboBox.SelectedItem);
-            ////IEnumerable < IGrouping<string, Trainee>> trainees =
-            ////    bl.TraineesByTeachers(true).Where(x => x.Key == (string) TeacherComboBox.SelectedItem);
             traineeDataGrid.DataContext = trainees;
         }
     }

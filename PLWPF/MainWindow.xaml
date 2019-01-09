@@ -21,6 +21,7 @@
         </StackPanel>
         <StackPanel x:Name="middle" DockPanel.Dock="Right" Background="Azure">
             <Image Height="200" Width="200" Source="image.png" Margin="0,100,0,100"/>
+            <Button Content="Button" Width="75" Click="Button_Click"/>
         </StackPanel>
 
 

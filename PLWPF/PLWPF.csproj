@@ -64,8 +64,9 @@
     <Compile Include="ManageTest.xaml.cs">
       <DependentUpon>ManageTest.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManageTester.xaml.cs" />
-
+    <Compile Include="ManageTester.xaml.cs" >
+    <DependentUpon>ManageTester.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Schedule.xaml.cs">
       <DependentUpon>Schedule.xaml</DependentUpon>
     </Compile>

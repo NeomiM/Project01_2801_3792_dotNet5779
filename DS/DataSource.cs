@@ -95,25 +95,27 @@ namespace DS
 
             #region three trainees
 
-            //Trainee trainee = new Trainee();
-            //trainee.DateOfBirth = time;
-            //trainee.FirstName = "Neomi";
-            //trainee.TraineeId = "328772801";
-            //trainee.LessonsPassed = (int)Configuration.MinAmmountOfLessons+1;
+            Trainee trainee = new Trainee();
+            trainee.DateOfBirth = time;
+            trainee.FirstName = "Neomi";
+            trainee.TraineeId = "328772801";
+            trainee.LessonsPassed = (int)Configuration.MinAmmountOfLessons + 1;
+            trainee.DrivingTeacher = "Shalom";
 
             Trainee trainee1 = new Trainee();
             trainee1.DateOfBirth = time;
             trainee1.FirstName = "Beila";
             trainee1.TraineeId = "205823792";
             trainee1.LessonsPassed = (int)Configuration.MinAmmountOfLessons + 1;
-
+            trainee1.DrivingTeacher = "Shalom";
 
             Trainee trainee2 = new Trainee();
             trainee2.DateOfBirth = time;
             trainee2.FirstName = "Elisha";
             trainee2.TraineeId = "319185997";
+            trainee2.DrivingTeacher = "Yosi";
 
-         //   _traineeList.Add(trainee);
+            _traineeList.Add(trainee);
             _traineeList.Add(trainee1);
             _traineeList.Add(trainee2);
             #endregion

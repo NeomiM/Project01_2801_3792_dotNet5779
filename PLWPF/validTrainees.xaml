@@ -14,7 +14,7 @@
         <WrapPanel x:Name="backButtonSlot" DockPanel.Dock="Top" Background="AliceBlue">
             <Button x:Name="BackToMainMenue" Content="Back To Main Menue" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="BackToMainMenue_Click" Height="22"/>
         </WrapPanel>
-        <DataGrid x:Name="traineeDataGrid"  Background="Azure" DockPanel.Dock="Bottom" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" Width="931">
+        <DataGrid x:Name="traineeDataGrid"  Margin="0" Background="Azure" DockPanel.Dock="Bottom" IsReadOnly="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" >
             <DataGrid.Resources>
                 <Style BasedOn="{StaticResource {x:Type DataGridColumnHeader}}" TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="BorderBrush" Value="Black"/>

@@ -63,5 +63,10 @@ namespace PLWPF
         {
             new TestsByDate().Show();
         }
+
+        private void TraineesByTesters_OnClick(object sender, RoutedEventArgs e)
+        {
+            new traineesByTeachers().Show();
+        }
     }
 }

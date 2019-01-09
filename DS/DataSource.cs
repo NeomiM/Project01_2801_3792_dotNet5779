@@ -78,24 +78,16 @@ namespace DS
             tester.DateOfBirth = time;
             tester.FirstName = "Neomi";
             tester.TesterId = "328772801";
-            tester.Testercar = CarType.HeavyTruck;
 
             Tester tester1 = new Tester();
             tester.DateOfBirth = time;
             tester.FirstName = "Beila";
             tester.TesterId = "205823792";
-            tester1.Testercar = CarType.MediumTruck;
-            tester1._schedual[0, 1] = true;
-            tester1._schedual[2, 2] = true;
-            tester1._schedual[3, 3] = true;
 
             Tester tester2 = new Tester();
             tester2.DateOfBirth = time;
             tester2.FirstName = "Elisha";
             tester2.TesterId = "319185997";
-            tester2.Testercar = CarType.Private;
-            
-
             _testerList.Add(tester);
             _testerList.Add(tester1);
             _testerList.Add(tester2);
@@ -115,7 +107,7 @@ namespace DS
             trainee1.FirstName = "Beila";
             trainee1.TraineeId = "205823792";
             trainee1.LessonsPassed = (int)Configuration.MinAmmountOfLessons + 1;
-            trainee1.DrivingTeacher = "Shalom;
+            trainee1.DrivingTeacher = "Shalom";
 
             Trainee trainee2 = new Trainee();
             trainee2.DateOfBirth = time;

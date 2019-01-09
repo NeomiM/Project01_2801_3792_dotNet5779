@@ -22,7 +22,29 @@
         </StackPanel> 
         <DataGrid x:Name="traineeDataGrid" Background="Azure" AutoGenerateColumns="False" IsReadOnly="True" EnableRowVirtualization="True"  DockPanel.Dock="Right"  ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="0,0,0,0">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn x:Name="dateOfBirthColumn" Header="Date Of Birth" Width="SizeToHeader">
+                    <DataGridTemplateColumn x:Name="traineeIdColumn" Header="Trainee Id" Width="SizeToHeader">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding TraineeId}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="firstNameColumn" Header="First Name" Width="SizeToHeader">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding FirstName}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="sirnameColumn" Header="Sirname" Width="SizeToHeader">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Sirname}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                     <DataGridTemplateColumn x:Name="dateOfBirthColumn" Header="Date Of Birth" Width="SizeToHeader">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding DateOfBirth}"/>
@@ -36,31 +58,11 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn x:Name="drivingTeacherColumn" Header="Driving Teacher" Width="SizeToHeader">
-                        <DataGridTemplateColumn.CellTemplate>
+                    
+                <DataGridTemplateColumn x:Name="drivingTeacherColumn" Header="Driving Teacher" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding DrivingTeacher}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn x:Name="emailColumn" Header="Email" Width="SizeToHeader">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Email}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn x:Name="firstNameColumn" Header="First Name" Width="SizeToHeader">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding FirstName}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn x:Name="lessonsPassedColumn" Header="Lessons Passed" Width="SizeToHeader">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding LessonsPassed}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -71,10 +73,18 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn x:Name="sirnameColumn" Header="Sirname" Width="SizeToHeader">
+
+                 <DataGridTemplateColumn x:Name="emailColumn" Header="Email" Width="SizeToHeader">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Sirname}"/>
+                                <TextBlock Text="{Binding Email}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn x:Name="lessonsPassedColumn" Header="Lessons Passed" Width="SizeToHeader">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding LessonsPassed}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -99,13 +109,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn x:Name="traineeIdColumn" Header="Trainee Id" Width="SizeToHeader">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding TraineeId}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                  
                 </DataGrid.Columns>
             </DataGrid>
 

@@ -16,6 +16,7 @@ namespace BE
         private DateTime _dateOfBirth;
         private Gender _testerGender;
         private string _phoneNumber;
+        public bool[,] _schedual = new bool[6, 5];
 
         internal Address _testerAdress;
         private int _yearsOfExperience;

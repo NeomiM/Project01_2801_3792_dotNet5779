@@ -33,7 +33,8 @@ namespace PLWPF
         
         private void ManageTesters_Click(object sender, RoutedEventArgs e)
         {
-            new TestersWindow().ShowDialog();
+            TestersWindow win = new TestersWindow();
+            win.ShowDialog();
 
         }
 
@@ -66,7 +67,6 @@ namespace PLWPF
         private void TraineesByTesters_OnClick(object sender, RoutedEventArgs e)
         {
             new traineesByTeachers().Show();
-
         }
     }
 }

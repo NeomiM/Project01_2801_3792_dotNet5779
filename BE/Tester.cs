@@ -13,12 +13,11 @@ namespace BE
         private string _testerId;
         private string _sirname;
         private string _firstName;
-        private DateTime _dateOfBirth = DateTime.Now.AddYears(-1*(int)BE.Configuration.MaxAgeOFTester);
+        private DateTime _dateOfBirth;
         private Gender _testerGender;
         private string _phoneNumber;
 
         internal Address _testerAdress;
-        public bool[,] _schedual = new bool[6,5];
         private int _yearsOfExperience;
         private int _maxTestsInaWeek;
 
@@ -47,31 +46,9 @@ namespace BE
         public double MaxDistanceForTest { get => _maxDistanceForTest; set => _maxDistanceForTest = value; }
 
         public CarType Testercar { get => _testercar; set => _testercar = value; }
-        //public bool[,] Schedule { get; set; } = new bool[5, 6];
+        public bool[,] Schedule { get; set; } = new bool[5, 6];
         public string Email { get => _email; set => _email = value; }
-        //public bool[,] Schedual { get => _schedual; set => _schedual = value; }
-        public void setSchedual(bool[] day1, bool[] day2, bool[] day3, bool[] day4, bool[] day5)
-        {
-            for (int i = 0; i < 6; i++)
-                if (day1[i])
-                    _schedual[0, i] = true;
-            for (int i = 0; i < 6; i++)
-                if (day2[i])
-                    _schedual[1, i] = true;
-            for (int i = 0; i < 6; i++)
-                if (day3[i])
-                    _schedual[2, i] = true;
-            for (int i = 0; i < 6; i++)
-                if (day4[i])
-                    _schedual[3, i] = true;
-            for (int i = 0; i < 6; i++)
-                if (day5[i])
-                    _schedual[4, i] = true;
-        }
-        public bool[,] getSchedual()
-        {
-            return _schedual;
-        }
+
 
         #endregion
 

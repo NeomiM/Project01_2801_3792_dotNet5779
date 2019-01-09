@@ -75,9 +75,9 @@
     <Compile Include="trySchedule.xaml.cs">
       <DependentUpon>trySchedule.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Window1.xaml.cs">
+ <!--   <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
-
+-->
     <Compile Include="TestsByDate.xaml.cs">
       <DependentUpon>TestsByDate.xaml</DependentUpon>
     </Compile>
@@ -125,7 +125,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Window1.xaml">
+    <!--   <Page Include="Window1.xaml">-->
 
     <Page Include="TestsByDate.xaml">
       <SubType>Designer</SubType>

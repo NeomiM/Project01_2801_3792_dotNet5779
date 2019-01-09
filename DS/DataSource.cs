@@ -115,7 +115,7 @@ namespace DS
             trainee1.FirstName = "Beila";
             trainee1.TraineeId = "205823792";
             trainee1.LessonsPassed = (int)Configuration.MinAmmountOfLessons + 1;
-            trainee1.DrivingTeacher = "Shalom;
+            trainee1.DrivingTeacher = "Shalom";
 
             Trainee trainee2 = new Trainee();
             trainee2.DateOfBirth = time;

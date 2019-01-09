@@ -49,7 +49,28 @@ namespace BE
         public bool[,] Schedule { get; set; } = new bool[5, 6];
         public string Email { get => _email; set => _email = value; }
 
-
+        public void setSchedual(bool[] day1, bool[] day2, bool[] day3, bool[] day4, bool[] day5)
+        {
+            for (int i = 0; i < 6; i++)
+                if (day1[i])
+                    _schedual[0, i] = true;
+            for (int i = 0; i < 6; i++)
+                if (day2[i])
+                    _schedual[1, i] = true;
+            for (int i = 0; i < 6; i++)
+                if (day3[i])
+                    _schedual[2, i] = true;
+            for (int i = 0; i < 6; i++)
+                if (day4[i])
+                    _schedual[3, i] = true;
+            for (int i = 0; i < 6; i++)
+                if (day5[i])
+                    _schedual[4, i] = true;
+        }
+        public bool[,] getSchedual()
+        {
+            return _schedual;
+        }
         #endregion
 
         public override string ToString()
@@ -74,5 +95,6 @@ namespace BE
 
             return sb.ToString();
         }
+
     }
 }

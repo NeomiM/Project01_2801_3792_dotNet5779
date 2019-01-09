@@ -273,39 +273,39 @@ namespace BL
             int idcheck;
             if (id.Length > 9)
                 throw new Exception("ERROR. Id is too long.");
-                if (id.Length < 8)
-                    throw new Exception("ERROR. Not enough numbers in id.");
+            if (id.Length < 8)
+                throw new Exception("ERROR. Not enough numbers in id.");
 
-                string tempId = id;
-                //check if it's all numbers- 8/9 numbers
-                if (tempId.Length == 8)
-                    tempId = "0" + tempId;//adding '0' to id begining
-                if (tempId.Length == 9)
+            string tempId = id;
+            //check if it's all numbers- 8/9 numbers
+            if (tempId.Length == 8)
+                tempId = "0" + tempId;//adding '0' to id begining
+            if (tempId.Length == 9)
+            {
+                int sum = 0;
+                int calulate = 0;
+                for (int i = 0; i < 9; i++)
                 {
-                    int sum = 0;
-                    int calulate = 0;
-                    for (int i = 0; i < 9; i++)
+                    if (i % 2 == 0)//Multiplying the double places by 1
                     {
-                        if (i % 2 == 0)//Multiplying the double places by 1
-                        {
-                            calulate = 1 * (int)Char.GetNumericValue(tempId[i]);
-                        }
-                        else //if(i % 2 != 0) Multiplying the double places by 2
-                        {
-                            calulate = 2 * (int)Char.GetNumericValue(tempId[i]);
-                        }
-                        if (calulate >= 10)
-                        {
-                            calulate = 1 + (calulate % 10);//tens digit (can only be 1) + Unity digit
-                        }
-                        sum += calulate;
+                        calulate = 1 * (int)Char.GetNumericValue(tempId[i]);
                     }
-                    if (sum % 10 == 0)
+                    else //if(i % 2 != 0) Multiplying the double places by 2
                     {
-                        return true;
+                        calulate = 2 * (int)Char.GetNumericValue(tempId[i]);
                     }
-                    else throw new Exception("ERROR. Id is invalid.");
+                    if (calulate >= 10)
+                    {
+                        calulate = 1 + (calulate % 10);//tens digit (can only be 1) + Unity digit
+                    }
+                    sum += calulate;
                 }
+                if (sum % 10 == 0)
+                {
+                    return true;
+                }
+                else throw new Exception("ERROR. Id is invalid.");
+            }
         //}
         //    catch (Exception e)
         //    {
@@ -653,8 +653,8 @@ namespace BL
                 foreach (Tester t in testerlist)
                 {
 
-                    var row = Enumerable.Range(0, t.Schedule.GetLength(1))
-                        .Select(x => t.Schedule[dayOfWeek, x])
+                    var row = Enumerable.Range(0, t._schedual.GetLength(1))
+                        .Select(x => t._schedual[dayOfWeek - 2, x])
                         .ToArray();
                     //no other tests in that hour with the same tester 
                     bool noOtherTest =
@@ -829,6 +829,6 @@ namespace BL
         #endregion
 
     }
-
+   
 
 }

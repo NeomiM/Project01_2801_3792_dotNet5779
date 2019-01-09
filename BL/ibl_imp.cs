@@ -128,7 +128,7 @@ namespace BL
             };
                 
 
-                bool clear = checkAll.All(x => x);
+                bool clear = checkAll.All(x => x==true);
                 if (clear)
                  dal.AddTrainee(T);
         }
@@ -248,7 +248,7 @@ namespace BL
             if (text == ""|| text==null)
                 throw new Exception("Warning. Field is empty.");
             if (!Regex.IsMatch(text, @"^[a-zA-Z]+$"))
-                throw new Exception("Error. Text must not include numbers.");
+                throw new Exception("ERROR. Text must not include numbers.");
         }
 
         public void IsNumber(string number)
@@ -386,7 +386,7 @@ namespace BL
                 List<Trainee> traineeList = dal.GetListOfTrainees();
                 if (traineeList.Any(x=>x.TraineeId==TraineeId))
                 {
-                 throw new Exception("ERROR. The trainee is alredy in the system.");
+                 throw new Exception("ERROR. The trainee is already in the system.");
                 }
                 return true;
             }
@@ -417,9 +417,16 @@ namespace BL
         {
             try
             {
-                if (email != "" ||email != null)
-                  new System.Net.Mail.MailAddress(email);
-                return true;
+
+                if (email == "" || email == null)
+                    return true;
+                else
+                {
+                    new System.Net.Mail.MailAddress(email);
+                    return true;
+                }
+
+               
             }
             catch (Exception e)
             {
@@ -519,7 +526,7 @@ namespace BL
                 //makes a list of all avialble hours for a test
                 List<Tester> filteredTesters = new List<Tester>();                
                 DateTime checkhour = T.TestDate;
-                checkhour = checkhour.AddHours(Configuration.StartOfWorkDay);
+                checkhour = checkhour.AddHours(Configuration.StartOfWorkDay-1);
                 for (int i = Configuration.StartOfWorkDay; i <= Configuration.EndOfWorkDay; i++)
                 {
                     checkhour = checkhour.AddHours(1);
@@ -528,8 +535,10 @@ namespace BL
                     {
                         availableHours.Add(i);
                     }
-                    else throw new Exception("ERROR. There are now available testers that day.");
+                    //else throw new Exception("ERROR. There are no available testers that day.");
                 }
+                if(availableHours.Count==0)
+                    throw new Exception("ERROR. There are no available testers that day.");
                 string hours = string.Join(",", availableHours);
                 filteredTesters =AvailableTesters(T.DateAndHourOfTest);
                 //check for any testers in that hour
@@ -633,7 +642,7 @@ namespace BL
             return testerlist;
         }
      
-        public List<Tester> AvailableTesters(DateTime dateAndHour)
+        public List<Tester> AvailableTesters(DateTime dateAndHour)//all available testers in that hour schedual and other test wise
         {
             List<Tester> testerlist = dal.GetListOfTesters();
             List<Test> testlist = dal.GetListOfTests();
@@ -647,10 +656,12 @@ namespace BL
                     var row = Enumerable.Range(0, t._schedual.GetLength(1))
                         .Select(x => t._schedual[dayOfWeek - 2, x])
                         .ToArray();
+                    //no other tests in that hour with the same tester 
                     bool noOtherTest =
                         testlist.Where(x => x.TestDate == dateAndHour.Date && x.TesterId == t.TesterId)
                         .All(delegate(Test x) { return x.DateAndHourOfTest.Hour != hour; });
                     //.All(x => x.DateAndHourOfTest.Hour != hour);
+                    //if the tester is available in that hour and doesnt have any other tests 
                     if (row[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
                         filteredTesters.Add(t);
 
@@ -671,7 +682,20 @@ namespace BL
             return (List<Test>) all;
 
         }
-        
+
+        public List<Trainee> AllTraineesThat(Func<Trainee, bool> predicate = null)
+        {
+            List<Trainee> traineeList = dal.GetListOfTrainees();
+
+            if (predicate == null)
+                return traineeList;
+
+            var all = from trainee in traineeList
+                      where predicate(trainee)
+                select trainee;
+            return all.ToList();
+        }
+
         public int NumberOfTests(Trainee T)
         {
             List<Test> testList = dal.GetListOfTests();
@@ -685,7 +709,7 @@ namespace BL
         {
             List<Test> testList = dal.GetListOfTests();
             var tests = from test in testList
-                where test.TestPassed
+                where test.TestPassed && test.TraineeId==T.TraineeId
                 select test;
             if (tests.Any())
                 return true;
@@ -696,8 +720,17 @@ namespace BL
         public List<Test> TestsByDate()
         {
             List<Test> testList = dal.GetListOfTests();
-            var tests = testList.OrderBy(x => x.TestDate);
-            return (List<Test>) tests;
+            var tests =testList.OrderByDescending(x => x.DateAndHourOfTest);
+            return tests.ToList();
+        }
+
+        public List<Trainee> readyTrainees()
+        {
+            List<Trainee> trainees = GetListOfTrainees();
+            var filter = from trainee in trainees
+                where !CanGetLicence(trainee) && trainee.LessonsPassed >= Configuration.MinAmmountOfLessons
+                select trainee;
+            return trainees.ToList();
         }
 
         #endregion

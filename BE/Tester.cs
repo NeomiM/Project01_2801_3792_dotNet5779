@@ -39,7 +39,7 @@ namespace BE
         public string Sirname { get => _sirname; set => _sirname = value; }
         public string FirstName { get => _firstName; set => _firstName = value; }
         public DateTime DateOfBirth { get => _dateOfBirth; set => _dateOfBirth = value; }
-        public Gender TesterGender { get => _testerGender; set => _testerGender = value; } //add enumsomehow
+        public Gender TesterGender { get => _testerGender; set => _testerGender = value; } 
         public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = value; }
         public int YearsOfExperience { get => _yearsOfExperience; set => _yearsOfExperience = value; }
         public int MaxTestsInaWeek { get => _maxTestsInaWeek; set => _maxTestsInaWeek = value; }

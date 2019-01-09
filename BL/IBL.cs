@@ -121,6 +121,8 @@ namespace BL
         /// <param name="predicate"></param>
         /// <returns>returns a list of all thats that the predicate returns true</returns>
         List<Test> AllTestsThat(Func<Test,bool> predicate=null);
+
+        List<Trainee> AllTraineesThat(Func<Trainee, bool> predicate= null);
         /// <summary>
         /// 
         /// </summary>
@@ -138,6 +140,9 @@ namespace BL
         /// </summary>
         /// <returns>returns a list of tests that happen on that date</returns>
         List<Test> TestsByDate();
+
+        List<Trainee> readyTrainees();
+
         #endregion
 
         #region grouping functions

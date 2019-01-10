@@ -726,11 +726,33 @@ namespace BL
 
         public List<Trainee> readyTrainees()
         {
-            List<Trainee> trainees = GetListOfTrainees();
+
+                List<Trainee> trainees = GetListOfTrainees();
             var filter = from trainee in trainees
                 where !CanGetLicence(trainee) && trainee.LessonsPassed >= Configuration.MinAmmountOfLessons
                 select trainee;
-            return trainees.ToList();
+            List<Trainee> filterbytime = filter.ToList();
+            foreach (Trainee train in filter)
+            {
+                var testTime = from item in AllTestsThat(x => x.TraineeId == train.TraineeId && x.CarType == train.Traineecar)
+                    select item.DateAndHourOfTest;
+                if (testTime.Any())
+                    if (testTime.Any(x => (now - x).TotalDays < 7))
+                        filterbytime.Remove(train);
+
+            }
+            return filterbytime;
+        }
+
+        public bool HasntPassedAnyTest(Trainee T)
+        {
+            List<Test> testList = dal.GetListOfTests();
+            var tests = from test in testList
+                where test.TestPassed && test.TraineeId == T.TraineeId
+                select test;
+            if (!tests.Any())
+                return true;
+            return false;
         }
 
         #endregion

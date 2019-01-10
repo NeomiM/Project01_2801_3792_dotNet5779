@@ -30,7 +30,7 @@
                                     <Label Name="TestId" Grid.Row="0" Grid.Column="0" Content="Test ID:"></Label>
                                         <TextBlock x:Name="testId" Grid.Row="0" Grid.Column="1" Background="White" Margin="0,5,0,5" Height="24"></TextBlock>
                                                <Label Name="Trainees" Grid.Row="1" Grid.Column="0" Content="Trainee:"></Label>
-                                    <ComboBox x:Name="TraineeComboBox" Grid.Row="1" Grid.Column="1"></ComboBox>
+                                        <ComboBox x:Name="TraineeComboBox" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding TraineeListForPL}"></ComboBox>
                                     <Label Name="InfoCarType" Grid.Row="2" Grid.Column="0" Content="Car Type:"></Label>
                                         <TextBlock x:Name="Cartype" Height="24" Grid.Row="2" Grid.Column="1" Background="White"  Margin="0,5,0,5"></TextBlock>
                                     <Label Name="Tester" Grid.Row="3" Grid.Column="0" Content="Tester:"></Label>

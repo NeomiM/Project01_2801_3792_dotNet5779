@@ -399,17 +399,17 @@ namespace PLWPF
             MaxTestsError.Text = "";
             AddressErrors.Text = "";
             ScheduleError.Text = "";
-            testerIdTextBox.BorderBrush = Brushes.Black;
-            firstNameTextBox.BorderBrush = Brushes.Black;
-            sirnameTextBox.BorderBrush = Brushes.Black;
-            phoneNumberTextBox.BorderBrush = Brushes.Black;
-            emailTextBox.BorderBrush = Brushes.Black;
-            maxTestsInaWeekTextBox.BorderBrush = Brushes.Black;
-            yearsOfExperienceTextBox.BorderBrush = Brushes.Black;
-            maxDistanceForTestTextBox.BorderBrush = Brushes.Black;
-            City.BorderBrush = Brushes.Black;
-            Street.BorderBrush = Brushes.Black;
-            BuidingNumber.BorderBrush = Brushes.Black;
+            testerIdTextBox.BorderBrush = Brushes.Gray;
+            firstNameTextBox.BorderBrush = Brushes.Gray;
+            sirnameTextBox.BorderBrush = Brushes.Gray;
+            phoneNumberTextBox.BorderBrush = Brushes.Gray;
+            emailTextBox.BorderBrush = Brushes.Gray;
+            maxTestsInaWeekTextBox.BorderBrush = Brushes.Gray;
+            yearsOfExperienceTextBox.BorderBrush = Brushes.Gray;
+            maxDistanceForTestTextBox.BorderBrush = Brushes.Gray;
+            City.BorderBrush = Brushes.Gray;
+            Street.BorderBrush = Brushes.Gray;
+            BuidingNumber.BorderBrush = Brushes.Gray;
         }
 
         //for numbers only

@@ -5,18 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PLWPF"
         mc:Ignorable="d"
-        Title="ManageTest" Height="450" Width="800">
-    <DockPanel LastChildFill="True">
-            <TabControl>
+        Title="Manage Tests" Height="527.855" Width="695.674">
+    <DockPanel LastChildFill="True" Background="AliceBlue">
+        <TabControl >
             <TabControl.Items>
-                <TabItem Header="tab 1">
+                <TabItem Header="Add Test">
                     <TabItem.Content>
-                        <StackPanel>
-                            <Button Content="this button is part of tab 1" />
-                        </StackPanel>
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Left" Background="Bisque">
+                                <Grid x:Name="TraineeGrid" Background="Bisque"  VerticalAlignment="Top" Margin="50,50,0,0" HorizontalAlignment="Stretch" Height="170" Width="284">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Name="TestId" Grid.Row="0" Grid.Column="0" Content="Test ID:"></Label>
+                                    <TextBlock x:Name="testId" Grid.Row="0" Grid.Column="1" Background="AliceBlue" Height="24"></TextBlock>
+                                    <Label Name="Trainees" Grid.Row="1" Grid.Column="0" Content="Trainee:"></Label>
+                                    <ComboBox x:Name="TraineeComboBox" Grid.Row="1" Grid.Column="1"></ComboBox>
+                                    <Label Name="InfoCarType" Grid.Row="2" Grid.Column="0" Content="Car Type:"></Label>
+                                    <TextBlock x:Name="Cartype" Grid.Row="2" Grid.Column="1" Background="AliceBlue" Margin="0,5,0,5"></TextBlock>
+                                    <Label Name="Tester" Grid.Row="3" Grid.Column="0" Content="Tester:"></Label>
+                                    <TextBlock x:Name="testerId" Grid.Row="3" Grid.Column="1" Background="AliceBlue" Margin="0,5,0,5"></TextBlock>
+                                    <Label Name="TestAddress" Grid.Row="4" Grid.Column="0"  Content="Test Address"></Label>
+                                    <TextBlock x:Name="testAddress" Margin="0,5,0,5" Grid.Row="4" Grid.Column="1" Width="150" Background="AliceBlue"></TextBlock>
+                                    <Label Name="TestDate" Grid.Row="5" Grid.Column="0" Content="Test Date and Hour:"></Label>
+                                    <TextBlock x:Name="testDateAndHour" Grid.Row="5" Grid.Column="1" Background="AliceBlue" Margin="0,5,0,5"></TextBlock>
+
+                                </Grid>
+                                <StackPanel Background="Bisque">
+                                    <GroupBox Header="Errors:" Background="AliceBlue" Margin="50,50,0,5" Height="100"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Background="Bisque" DockPanel.Dock="Right">
+                                <Calendar/>
+                                <Label Name="AvailableHours" HorizontalAlignment="Center" Content="Choose an Hour:"></Label>
+                                <ListBox Height="100" Width="100"/>
+                                <Button x:Name="Save" Height="30" Width="70" HorizontalAlignment="Right" Content="Add Test" Margin="0,20,10,0"/>
+
+                            </StackPanel>
+                        </DockPanel>
                     </TabItem.Content>
                 </TabItem>
-                <TabItem Header="tab 2">
+                <TabItem Header="Update Test">
                     <TabItem.Content>
                         <StackPanel>
                             <Button Content="this button is part of tab 2" />
@@ -25,5 +63,5 @@
                 </TabItem>
             </TabControl.Items>
         </TabControl>
-</DockPanel>
+    </DockPanel>
 </Window>

@@ -22,6 +22,9 @@ namespace PLWPF
         public ManageTests()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+
+
         }
     }
 }

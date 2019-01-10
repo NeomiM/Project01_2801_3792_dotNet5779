@@ -56,10 +56,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ManageTest.xaml.cs">
-      <DependentUpon>ManageTest.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ManageTester.xaml.cs" />
+    <Compile Include="ManageTests.xaml.cs">
+      <DependentUpon>ManageTests.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TestsByDate.xaml.cs">
       <DependentUpon>TestsByDate.xaml</DependentUpon>
     </Compile>
@@ -81,9 +81,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ManageTest.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="ManageTests.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ManageTrainee.xaml">
       <SubType>Designer</SubType>

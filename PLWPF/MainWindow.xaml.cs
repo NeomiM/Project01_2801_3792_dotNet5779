@@ -45,7 +45,7 @@ namespace PLWPF
 
         private void ManageTests_Click(object sender, RoutedEventArgs e)
         {
-            new ManageTest().ShowDialog();
+            new ManageTests().ShowDialog();
         }
         private void ValidTrainees_Click(object sender, RoutedEventArgs e)
         {

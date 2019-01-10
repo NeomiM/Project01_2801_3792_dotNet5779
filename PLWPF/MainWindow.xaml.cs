@@ -61,9 +61,5 @@ namespace PLWPF
             new TestersByCarType().ShowDialog();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            new Window1().ShowDialog();
-        }
     }
 }

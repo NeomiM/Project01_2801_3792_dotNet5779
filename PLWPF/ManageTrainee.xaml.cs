@@ -661,6 +661,7 @@ namespace PLWPF
 
         #endregion
 
+
         public bool noErrors()
         {
 
@@ -734,22 +735,6 @@ namespace PLWPF
             minus.IsEnabled = true;
         }
 
-        public void removewarnings()
-        {
-            IdErrors.Text = "";
-                NameErrors.Text = "";
-            SirNameErrors.Text = "";
-            PhoneNumberErrors.Text = "";
-            EmailErrors.Text = "";
-            DateErrors.Text = "";
-            GenderErrors.Text = "";
-            DrivingSchoolErrors.Text = "";
-            DrivingTeacherErrors.Text = "";
-            CarTypeErrors.Text = "";
-            GearTypeErrors.Text = "";
-            AddressErrors.Text = "";
-
-        }
 
     }
 }

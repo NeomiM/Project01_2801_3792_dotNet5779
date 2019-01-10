@@ -1,0 +1,29 @@
+﻿<Window x:Class="PLWPF.ManageTest"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PLWPF"
+        mc:Ignorable="d"
+        Title="ManageTest" Height="450" Width="800">
+    <DockPanel LastChildFill="True">
+            <TabControl>
+            <TabControl.Items>
+                <TabItem Header="tab 1">
+                    <TabItem.Content>
+                        <StackPanel>
+                            <Button Content="this button is part of tab 1" />
+                        </StackPanel>
+                    </TabItem.Content>
+                </TabItem>
+                <TabItem Header="tab 2">
+                    <TabItem.Content>
+                        <StackPanel>
+                            <Button Content="this button is part of tab 2" />
+                        </StackPanel>
+                    </TabItem.Content>
+                </TabItem>
+            </TabControl.Items>
+        </TabControl>
+</DockPanel>
+</Window>

@@ -13,12 +13,12 @@ namespace BE
         private string _testerId;
         private string _sirname;
         private string _firstName;
-        private DateTime _dateOfBirth = DateTime.Now.AddYears(-1*(int)BE.Configuration.MaxAgeOFTester);
+        private DateTime _dateOfBirth;
         private Gender _testerGender;
         private string _phoneNumber;
+        public bool[,] _schedual = new bool[6, 5];
 
         internal Address _testerAdress;
-        public bool[,] _schedual = new bool[6,5];
         private int _yearsOfExperience;
         private int _maxTestsInaWeek;
 
@@ -39,7 +39,7 @@ namespace BE
         public string Sirname { get => _sirname; set => _sirname = value; }
         public string FirstName { get => _firstName; set => _firstName = value; }
         public DateTime DateOfBirth { get => _dateOfBirth; set => _dateOfBirth = value; }
-        public Gender TesterGender { get => _testerGender; set => _testerGender = value; } //add enumsomehow
+        public Gender TesterGender { get => _testerGender; set => _testerGender = value; } 
         public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = value; }
         public int YearsOfExperience { get => _yearsOfExperience; set => _yearsOfExperience = value; }
         public int MaxTestsInaWeek { get => _maxTestsInaWeek; set => _maxTestsInaWeek = value; }
@@ -47,9 +47,9 @@ namespace BE
         public double MaxDistanceForTest { get => _maxDistanceForTest; set => _maxDistanceForTest = value; }
 
         public CarType Testercar { get => _testercar; set => _testercar = value; }
-        //public bool[,] Schedule { get; set; } = new bool[5, 6];
+        public bool[,] Schedule { get; set; } = new bool[5, 6];
         public string Email { get => _email; set => _email = value; }
-        //public bool[,] Schedual { get => _schedual; set => _schedual = value; }
+
         public void setSchedual(bool[] day1, bool[] day2, bool[] day3, bool[] day4, bool[] day5)
         {
             for (int i = 0; i < 6; i++)
@@ -72,7 +72,6 @@ namespace BE
         {
             return _schedual;
         }
-
         #endregion
 
         public override string ToString()
@@ -97,5 +96,6 @@ namespace BE
 
             return sb.ToString();
         }
+
     }
 }

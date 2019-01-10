@@ -27,14 +27,19 @@ namespace PLWPF
         public ManageTest()
         {
             InitializeComponent();
-            this.DataContext = TestForPL;
-           
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+
             bl = IBL_imp.Instance;
             TestForPL = new Test();
+            u_testIdComboBox.SelectedItem = null;
+            this.UpdateTab.DataContext = TestForPL;
+            this.u_testIdComboBox.DataContext = TestListForPL;
+           
+            
             u_testerIdTextBox.IsReadOnly = true;
             u_traineeIdTextBox.IsReadOnly = true;
-            //update ta
+
+            //update test
             try
             {
                 TestListForPL = bl.GetListOfTests();
@@ -43,14 +48,12 @@ namespace PLWPF
                     var id = test.TestId;
                     u_testIdComboBox.Items.Add(id.ToString());
                   }
-                //UpdateDockPanel.IsEnabled = false;
                 //closeAlmostAll();
                 u_testIdComboBox.IsEnabled = true;
                 //this.u_testIdComboBox.DataContext = TestListForPL.Select;
                 //u_testIdComboBox.ItemsSource = bl.GetListOfTests().Select(x => x.TestId).ToString();
                 if (TestListForPL.Count == 0)
                     throw new Exception("There are no Testers to update");
-                //UpdateDockPanel.IsEnabled = true;
                 
             }
             catch (Exception ex)
@@ -83,20 +86,20 @@ namespace PLWPF
             saveButton.IsEnabled = true;
         }
 
-        public bool ThereIsEmptyFiles()
+        public bool ThereNoEmptyFiles()
         {
-            bool allEmpty = true;
-            if (checkMirrorsCheckBox.IsChecked == false || checkMirrorsCheckBox.IsChecked == null) allEmpty = false;
-            if (imediateStopCheckBox.IsChecked == false || imediateStopCheckBox.IsChecked == null) allEmpty = false;
-            if (keptDistanceCheckBox.IsChecked == false || keptDistanceCheckBox.IsChecked == null) allEmpty = false;
-            if (keptRightofPresidenceCheckBox.IsChecked == false || keptRightofPresidenceCheckBox.IsChecked == null) allEmpty = false;
-            if (parkingCheckBox.IsChecked == false || parkingCheckBox.IsChecked == null) allEmpty = false;
-            if (reverseParkingCheckBox.IsChecked == false || reverseParkingCheckBox.IsChecked == null) allEmpty = false;
-            if (rightTurnCheckBox.IsChecked == false || rightTurnCheckBox.IsChecked == null) allEmpty = false;
-            if (stoppedAtcrossWalkCheckBox.IsChecked == false || stoppedAtcrossWalkCheckBox.IsChecked == null) allEmpty = false;
-            if (stoppedAtRedCheckBox.IsChecked == false || stoppedAtRedCheckBox.IsChecked == null) allEmpty = false;
-            if (usedSignalCheckBox.IsChecked == false || usedSignalCheckBox.IsChecked == null) allEmpty = false;
-            return allEmpty;
+            bool allfill = true;
+            if (checkMirrorsCheckBox.IsChecked == false || checkMirrorsCheckBox.IsChecked == null) allfill = false;
+            if (imediateStopCheckBox.IsChecked == false || imediateStopCheckBox.IsChecked == null) allfill = false;
+            if (keptDistanceCheckBox.IsChecked == false || keptDistanceCheckBox.IsChecked == null) allfill = false;
+            if (keptRightofPresidenceCheckBox.IsChecked == false || keptRightofPresidenceCheckBox.IsChecked == null) allfill = false;
+            if (parkingCheckBox.IsChecked == false || parkingCheckBox.IsChecked == null) allfill = false;
+            if (reverseParkingCheckBox.IsChecked == false || reverseParkingCheckBox.IsChecked == null) allfill = false;
+            if (rightTurnCheckBox.IsChecked == false || rightTurnCheckBox.IsChecked == null) allfill = false;
+            if (stoppedAtcrossWalkCheckBox.IsChecked == false || stoppedAtcrossWalkCheckBox.IsChecked == null) allfill = false;
+            if (stoppedAtRedCheckBox.IsChecked == false || stoppedAtRedCheckBox.IsChecked == null) allfill = false;
+            if (usedSignalCheckBox.IsChecked == false || usedSignalCheckBox.IsChecked == null) allfill = false;
+            return allfill;
         }
 
         #endregion
@@ -121,16 +124,12 @@ namespace PLWPF
 
         private void TestIdComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(saveButton.Content == "Check")
-            {
-                openAll();
-                //UpdateDockPanel.IsEnabled = true;
-            }
+            openAll();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if(!ThereIsEmptyFiles())
+            if(ThereNoEmptyFiles())
                 temp.Visibility = Visibility.Visible;
         }
     }

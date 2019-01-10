@@ -415,7 +415,7 @@ namespace PLWPF
                     AddressErrors.Foreground = Brushes.Orange;
                     City.BorderBrush = Brushes.Orange;
                 }
-                AddressErrors.Text = ex.Message;
+                //AddressErrors.Text = ex.Message;
 
             }
         }
@@ -491,14 +491,14 @@ namespace PLWPF
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("ERROR. Field is empty."))
-                {
-                    DrivingTeacherErrors.Foreground = Brushes.Orange;
-                    drivingTeacherTextBox.BorderBrush = Brushes.Orange;
-                    DrivingTeacherErrors.Text = "Warning. Field is empty.";
-                }
+                //if (ex.Message.Contains("ERROR. Field is empty."))
+                //{
+                //    DrivingTeacherErrors.Foreground = Brushes.Orange;
+                //    drivingTeacherTextBox.BorderBrush = Brushes.Orange;
+                //    DrivingTeacherErrors.Text = "Warning. Field is empty.";
+                //}
 
-                else if(ex.Message.Contains("ERROR"))
+                if(ex.Message.Contains("ERROR"))
                 {
                     DrivingTeacherErrors.Foreground = Brushes.Red;
                     drivingTeacherTextBox.BorderBrush = Brushes.Red;

@@ -31,19 +31,14 @@ namespace PLWPF
         private BE.Tester TesterForPL;
         private List<Tester> TesterListForPL;
         string winCondition;
-        //lists for schedule
+        //arrays for schedule
         bool[] SundayArr = new bool[6];
         bool[] MondayArr = new bool[6];
         bool[] TuesdayArr = new bool[6];
         bool[] WednesdayArr = new bool[6];
         bool[] ThursdayArr = new bool[6];
-        //List<int> SundayHours = new List<int>();
-        //List<int> MondayHours = new List<int>();
-        //List<int> TuesdayHours = new List<int>();
-        //List<int> WednesdayHours = new List<int>();
-        //List<int> ThursdayHours = new List<int>();
         bool[,] hoursFromSchedualArr = new bool[6, 5];
-        bool notAllIsFalse = false;
+
         public TestersWindow()
         {
             InitializeComponent();
@@ -80,6 +75,7 @@ namespace PLWPF
         }
         private void AddTester_Click(object sender, RoutedEventArgs e)
         {
+            removeWarnings();
             winCondition = "add";
             TesterComboBox.ItemsSource = bl.GetListOfTesters().Select(x => x.TesterId);
             TesterForPL = new Tester();
@@ -95,6 +91,7 @@ namespace PLWPF
 
         private void UpdateTester_Click(object sender, RoutedEventArgs e)
         {
+            removeWarnings();
             winCondition = "update";
             try
             {
@@ -124,6 +121,7 @@ namespace PLWPF
 
         private void DeleteTester_Click(object sender, RoutedEventArgs e)
         {
+            removeWarnings();
             winCondition = "delete";
             try
             {
@@ -271,6 +269,12 @@ namespace PLWPF
                     AddressErrors.Foreground = Brushes.Orange;
                     Street.BorderBrush = Brushes.Orange;
                 }
+                if (string.IsNullOrWhiteSpace(BuidingNumber.Text))
+                {
+                    AddressErrors.Text = "Warning. Filed is empty";
+                    AddressErrors.Foreground = Brushes.Orange;
+                    BuidingNumber.BorderBrush = Brushes.Orange;
+                }
                 if (!SundayArr.Any(x => x) && !MondayArr.Any(x => x) && !TuesdayArr.Any(x => x) && !WednesdayArr.Any(x => x) && !ThursdayArr.Any(x => x))//if schedule is empty
                 {
                     ScheduleError.Text = "Warning, No times selected";
@@ -313,6 +317,7 @@ namespace PLWPF
                                     "and fix errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            //removeWarnings();
         }
         #endregion
 
@@ -330,9 +335,6 @@ namespace PLWPF
             maxDistanceForTestTextBox.IsEnabled = false;
             yearsOfExperienceTextBox.IsEnabled = false;
             maxTestsInaWeekTextBox.IsEnabled = false;
-            //schedualListBox.IsEnabled = false;
-            //nextDayButton.IsEnabled = false;
-            //previousDayButton.IsEnabled = false;
             City.IsEnabled = false;
             Street.IsEnabled = false;
             BuidingNumber.IsEnabled = false;
@@ -383,6 +385,33 @@ namespace PLWPF
             }
         }
 
+        public void removeWarnings()
+        {
+            IdErrors.Text = "";
+            NameErrors.Text = "";
+            SirNameErrors.Text = "";
+            GenderError.Text = "";
+            PhoneNumberErrors.Text = "";
+            EmailErrors.Text = "";
+            CarError.Text = "";
+            DistanceError.Text = "";
+            ExperienceErrors.Text = "";
+            MaxTestsError.Text = "";
+            AddressErrors.Text = "";
+            ScheduleError.Text = "";
+            testerIdTextBox.BorderBrush = Brushes.Black;
+            firstNameTextBox.BorderBrush = Brushes.Black;
+            sirnameTextBox.BorderBrush = Brushes.Black;
+            phoneNumberTextBox.BorderBrush = Brushes.Black;
+            emailTextBox.BorderBrush = Brushes.Black;
+            maxTestsInaWeekTextBox.BorderBrush = Brushes.Black;
+            yearsOfExperienceTextBox.BorderBrush = Brushes.Black;
+            maxDistanceForTestTextBox.BorderBrush = Brushes.Black;
+            City.BorderBrush = Brushes.Black;
+            Street.BorderBrush = Brushes.Black;
+            BuidingNumber.BorderBrush = Brushes.Black;
+        }
+
         //for numbers only
         private void TextBox_PreviewTextInputNumbers(object sender, TextCompositionEventArgs e)
         {
@@ -396,29 +425,6 @@ namespace PLWPF
         }
         #endregion
 
-        private void TesterComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            IdErrors.Text = "";
-            if (Save.Content == "Check")
-            {
-                openAll();
-            }
-
-            string id = (string)TesterComboBox.SelectedItem;
-            TesterForPL = bl.GetListOfTesters().FirstOrDefault(a => a.TesterId == id);
-            {//schedual
-                hoursFromSchedualArr = TesterForPL.getSchedual();
-                for (int i = 0; i < 6; i++)//put selections hour for sunday
-                {
-                    if (hoursFromSchedualArr[i, 0])
-                    {
-                        schedualListBox.SelectedIndex = i;
-                    }
-                }
-
-            }
-            this.TesterGrid.DataContext = TesterForPL;
-        }
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -693,6 +699,7 @@ namespace PLWPF
 
         private void SchedualListBox_MouseLeave(object sender, MouseEventArgs e)
         {
+            bool notAllIsFalse = false;
             switch (dayLabel.Content)//change the hours in list
             {
                 case "Sunday":
@@ -749,7 +756,8 @@ namespace PLWPF
         #endregion
 
         #region checks
-        //id
+
+        #region id
         private void TesterIdTextBox_LostFocus(object sender, RoutedEventArgs e)
         {
             try
@@ -775,6 +783,32 @@ namespace PLWPF
             testerIdTextBox.BorderBrush = Brushes.Black;
         }
 
+        private void TesterComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            IdErrors.Text = "";
+            if (Save.Content == "Check")
+            {
+                openAll();
+            }
+
+            string id = (string)TesterComboBox.SelectedItem;
+            TesterForPL = bl.GetListOfTesters().FirstOrDefault(a => a.TesterId == id);
+            {//schedual
+                hoursFromSchedualArr = TesterForPL.getSchedual();
+                for (int i = 0; i < 6; i++)//put selections hour for sunday
+                {
+                    if (hoursFromSchedualArr[i, 0])
+                    {
+                        schedualListBox.SelectedIndex = i;
+                    }
+                }
+
+            }
+            this.TesterGrid.DataContext = TesterForPL;
+        }
+        #endregion
+
+        #region names
         //first name
         private void FirstNameTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -790,7 +824,9 @@ namespace PLWPF
             SirNameErrors.Foreground = Brushes.Black;
             sirnameTextBox.BorderBrush = Brushes.Black;
         }
+        #endregion
 
+        #region others
         //phon number
         private void PhoneNumberTextBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -843,57 +879,27 @@ namespace PLWPF
             ScheduleError.Text = "";
             ScheduleError.Foreground = Brushes.Black;
         }
+        #endregion
 
         #region address
-        private void City_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            try
-            {
-                bl.IsText(City.Text);
-
-                AddressErrors.Text = "";
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("ERROR"))
-                {
-                    AddressErrors.Foreground = Brushes.Red;
-                    City.BorderBrush = Brushes.Red;
-
-                }
-                AddressErrors.Text = ex.Message;
-            }
-        }
-        private void Street_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            try
-            {
-                bl.IsText(Street.Text);
-                AddressErrors.Text = "";
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("ERROR"))
-                {
-                    AddressErrors.Foreground = Brushes.Red;
-                    Street.BorderBrush = Brushes.Red;
-
-                }
-                AddressErrors.Text = ex.Message;
-            }
-        }
-        private void City_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void City_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             City.BorderBrush = Brushes.Black;
-
         }
-        private void Street_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+
+        private void Street_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             Street.BorderBrush = Brushes.Black;
         }
+
+        private void BuidingNumber_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            BuidingNumber.BorderBrush = Brushes.Black;
+        }
         #endregion
 
         #endregion
+
 
     }
 }

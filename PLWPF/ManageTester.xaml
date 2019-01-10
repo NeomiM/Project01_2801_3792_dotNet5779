@@ -106,12 +106,12 @@
 
                     <ListBox x:Name="schedualListBox" SelectionMode="Multiple" Grid.Column="1" Grid.Row="2" MouseLeave="SchedualListBox_MouseLeave" Grid.RowSpan="2">
                         <ListBox.Items>
-                            <ListBoxItem Content="9:00-10:00" HorizontalAlignment="Center"/>
-                            <ListBoxItem Content="10:00-11:00" HorizontalAlignment="Center"/>
-                            <ListBoxItem Content="11:00-12:00" HorizontalAlignment="Center"/>
-                            <ListBoxItem Content="12:00-13:00" HorizontalAlignment="Center"/>
-                            <ListBoxItem Content="13:00-14:00" HorizontalAlignment="Center"/>
-                            <ListBoxItem Content="14:00-15:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem x:Name="item0" Content="9:00-10:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem x:Name="item1" Content="10:00-11:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem x:Name="item2" Content="11:00-12:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem x:Name="item3" Content="12:00-13:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem x:Name="item4" Content="13:00-14:00" HorizontalAlignment="Center"/>
+                            <ListBoxItem x:Name="item5" Content="14:00-15:00" HorizontalAlignment="Center"/>
                         </ListBox.Items>
                     </ListBox>
 

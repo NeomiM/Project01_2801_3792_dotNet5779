@@ -64,7 +64,7 @@
                     <StackPanel DockPanel.Dock="Left" Background="Bisque" Width="326">
                         <Button Content="Back To Main Menu" Width="auto" HorizontalAlignment="Left" Click="Button_Click" Margin="10,10,0,0"/>
                         <GroupBox Header="Test Detils" Background="AliceBlue" Height="145" Width="216" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="50,26,0,0">
-                            <Grid x:Name="TestDetailsGrid" Height="116" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,7,-2,-3"  >
+                            <Grid x:Name="TestDetailsGrid" Height="116" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="4,7,0,0"  >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
@@ -85,7 +85,7 @@
                                         SelectedDate="{Binding TestDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
 
                                 <Label Content="Tester Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
-                                <TextBox x:Name="u_testerIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" DataContext="{StaticResource testViewSource}" 
+                                <TextBox x:Name="u_testerIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" 
                                      Text="{Binding TesterId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
 
                                 <Label Content="Trainee Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
@@ -111,7 +111,8 @@
                     </StackPanel>
 
                     <StackPanel Background="Bisque" DockPanel.Dock="Right">
-                        <GroupBox Background="AliceBlue" VerticalAlignment="Center" HorizontalAlignment="Center" Height="323" Width="200" Margin="0,60,0,2">
+                        <TextBlock x:Name="whatToDoTextBlock" Text="Click once to confirm and twice to disqualify:" Foreground="Blue" VerticalAlignment="Center" Width="240" Margin="23"/>
+                        <GroupBox Background="AliceBlue" VerticalAlignment="Center" HorizontalAlignment="Center" Height="323" Width="200" Margin="0,0,0,2">
                             <Grid x:Name="BoolItemsGrid" VerticalAlignment="Top" Margin="0,0,-2,-6" HorizontalAlignment="Stretch" Height="320">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -172,7 +173,7 @@
 
                             </Grid>
                         </GroupBox>
-                        <TextBlock x:Name="temp" Text="ERROR, Please fill all fields" Foreground="Red" VerticalAlignment="Center" Width="140" Margin="8" Visibility="Hidden"/>
+                        <TextBlock x:Name="warningTextBlock" Text="ERROR, Please fill all fields" Foreground="Red" VerticalAlignment="Center" Width="140" Margin="8" Visibility="Hidden"/>
                         <Button x:Name="saveButton" Content="Check" Width="75" Margin="10" Click="SaveButton_Click"/>
 
                     </StackPanel>

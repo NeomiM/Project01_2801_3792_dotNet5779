@@ -54,19 +54,19 @@ namespace BE
         {
             for (int i = 0; i < 6; i++)
                 if (day1[i])
-                    _schedual[0, i] = true;
+                    _schedual[i, 0] = true;
             for (int i = 0; i < 6; i++)
                 if (day2[i])
-                    _schedual[1, i] = true;
+                    _schedual[i, 1] = true;
             for (int i = 0; i < 6; i++)
                 if (day3[i])
-                    _schedual[2, i] = true;
+                    _schedual[i, 2] = true;
             for (int i = 0; i < 6; i++)
                 if (day4[i])
-                    _schedual[3, i] = true;
+                    _schedual[i, 3] = true;
             for (int i = 0; i < 6; i++)
                 if (day5[i])
-                    _schedual[4, i] = true;
+                    _schedual[i, 4] = true;
         }
         public bool[,] getSchedual()
         {

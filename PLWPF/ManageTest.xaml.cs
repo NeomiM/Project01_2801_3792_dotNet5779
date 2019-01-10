@@ -29,31 +29,23 @@ namespace PLWPF
             InitializeComponent();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
-            bl = IBL_imp.Instance;
-            TestForPL = new Test();
-            u_testIdComboBox.SelectedItem = null;
-            this.UpdateTab.DataContext = TestForPL;
-            this.u_testIdComboBox.DataContext = TestListForPL;
-           
-            
-            u_testerIdTextBox.IsReadOnly = true;
-            u_traineeIdTextBox.IsReadOnly = true;
-
             //update test
             try
             {
+                u_testerIdTextBox.IsReadOnly = true;
+                u_traineeIdTextBox.IsReadOnly = true;
+
+                bl = IBL_imp.Instance;
+                TestForPL = new Test();
                 TestListForPL = bl.GetListOfTests();
-                foreach (var test in TestListForPL)
-                {
-                    var id = test.TestId;
-                    u_testIdComboBox.Items.Add(id.ToString());
-                  }
-                //closeAlmostAll();
-                u_testIdComboBox.IsEnabled = true;
-                //this.u_testIdComboBox.DataContext = TestListForPL.Select;
-                //u_testIdComboBox.ItemsSource = bl.GetListOfTests().Select(x => x.TestId).ToString();
+                this.UpdateTab.DataContext = TestForPL;
+
+                this.u_testIdComboBox.ItemsSource = bl.GetListOfTests();
+                this.u_testIdComboBox.DisplayMemberPath = "TestId";                
+                this.u_testIdComboBox.DataContext = TestListForPL;                
                 if (TestListForPL.Count == 0)
                     throw new Exception("There are no Testers to update");
+                closeAlmostAll();
                 
             }
             catch (Exception ex)
@@ -63,10 +55,8 @@ namespace PLWPF
         }
 
         #region function
-
         public void closeAlmostAll()
         {
-            //TestDetailsGrid.IsEnabled = false;
             u_testerIdTextBox.IsEnabled = false;
             u_traineeIdTextBox.IsEnabled = false;
             u_commentsGroupBox.IsEnabled = false;
@@ -77,7 +67,6 @@ namespace PLWPF
 
         public void openAll()
         {
-            //TestDetailsGrid.IsEnabled = true;
             u_testerIdTextBox.IsEnabled = true;
             u_traineeIdTextBox.IsEnabled = true;
             u_commentsGroupBox.IsEnabled = true;
@@ -101,7 +90,6 @@ namespace PLWPF
             if (usedSignalCheckBox.IsChecked == false || usedSignalCheckBox.IsChecked == null) allfill = false;
             return allfill;
         }
-
         #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -125,12 +113,15 @@ namespace PLWPF
         private void TestIdComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             openAll();
+            this.u_testerIdTextBox.Text = TestForPL.TesterId;
+            this.u_traineeIdTextBox.Text = TestForPL.TraineeId;
+
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if(ThereNoEmptyFiles())
-                temp.Visibility = Visibility.Visible;
+            if(!ThereNoEmptyFiles())
+                warningTextBlock.Visibility = Visibility.Visible;
         }
     }
 }

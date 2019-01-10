@@ -679,7 +679,7 @@ namespace BL
             var all = from test in testsList
                 where predicate(test)
                 select new {test};
-            return (List<Test>) all;
+            return (List<Test>)all;
 
         }
 
@@ -729,14 +729,14 @@ namespace BL
 
                 List<Trainee> trainees = GetListOfTrainees();
             var filter = from trainee in trainees
-                where !CanGetLicence(trainee) && trainee.LessonsPassed >= Configuration.MinAmmountOfLessons
+                where HasntPassedAnyTest(trainee) && trainee.LessonsPassed >= Configuration.MinAmmountOfLessons
                 select trainee;
             List<Trainee> filterbytime = filter.ToList();
             foreach (Trainee train in filter)
             {
-                var testTime = from item in AllTestsThat(x => x.TraineeId == train.TraineeId && x.CarType == train.Traineecar)
-                    select item.DateAndHourOfTest;
-                if (testTime.Any())
+                var testTime = from item in GetListOfTests().Where(x => x.TraineeId == train.TraineeId && x.CarType == train.Traineecar)
+                               select item.DateAndHourOfTest;
+                if (testTime.Any()&&testTime.Count()>1)
                     if (testTime.Any(x => (now - x).TotalDays < 7))
                         filterbytime.Remove(train);
 

@@ -58,6 +58,7 @@ namespace PLWPF
         #region manage buttons
         private void AddTrainee_Click(object sender, RoutedEventArgs e)
         {
+            removewarnings();
             TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
             TraineeForPL =new Trainee();
             openAll();
@@ -75,6 +76,7 @@ namespace PLWPF
         {
             try
             {
+                removewarnings();
                 TraineeForPL = new Trainee();
                 Save.IsEnabled = false;
                 TraineeComboBox.SelectedItem = null;
@@ -104,6 +106,7 @@ namespace PLWPF
         {
             try
             {
+                removewarnings();
                 Save.Content = "Delete";
                 TraineeForPL = new Trainee();
                 TraineeGrid.Visibility = Visibility.Visible;
@@ -628,6 +631,7 @@ namespace PLWPF
         }
         #endregion
 
+        #region opens and closes
         public bool noErrors()
         {
 
@@ -701,6 +705,23 @@ namespace PLWPF
             minus.IsEnabled = true; 
         }
 
-       
+        public void removewarnings()
+        {
+            IdErrors.Text = "";
+            NameErrors.Text = "";
+            SirNameErrors.Text = "";
+            PhoneNumberErrors.Text = "";
+            EmailErrors.Text = "";
+            DateErrors.Text = "";
+            GenderErrors.Text = "";
+            DrivingSchoolErrors.Text = "";
+            DrivingTeacherErrors.Text = "";
+            CarTypeErrors.Text = "";
+            GearTypeErrors.Text = "";
+            AddressErrors.Text = "";
+
+
+        }
+        #endregion
     }
 }

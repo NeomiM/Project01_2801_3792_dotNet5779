@@ -29,7 +29,7 @@ namespace PLWPF
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             bl = IBL_imp.Instance;
             TraineeListForPL = bl.readyTrainees();
-            this.TraineeComboBox.DataContext = TraineeListForPL;
+            this.TraineeComboBox.ItemsSource = TraineeListForPL.Select(x=>x.TraineeId);
 
         }
     }

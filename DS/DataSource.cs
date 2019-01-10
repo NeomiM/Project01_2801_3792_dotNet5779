@@ -17,7 +17,7 @@ namespace DS
 
             Test test = new Test();
             test.CheckMirrors = true;
-            DateTime time = DateTime.Today;
+            DateTime time = DateTime.Today.AddDays(8);
             test.DateAndHourOfTest = DateTime.Today;
             test.ImediateStop = true;
             test.KeptDistance = true;
@@ -30,7 +30,8 @@ namespace DS
             test.TestDate = time;
             test.TesterId = "328772801";
             test.TraineeId = "328772801";
-            test.TestPassed = true;
+            test.TestPassed = false;
+            test.CarType = CarType.HeavyTruck;
 
             Test test2 = new Test();
             test2.CheckMirrors = true;
@@ -101,6 +102,8 @@ namespace DS
             trainee.TraineeId = "328772801";
             trainee.LessonsPassed = (int)Configuration.MinAmmountOfLessons + 1;
             trainee.DrivingTeacher = "Shalom";
+            trainee.LessonsPassed =(int) Configuration.MinAmmountOfLessons + 1;
+            trainee.Traineecar = CarType.HeavyTruck;
 
             Trainee trainee1 = new Trainee();
             trainee1.DateOfBirth = time;

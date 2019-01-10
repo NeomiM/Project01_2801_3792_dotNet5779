@@ -27,20 +27,27 @@ namespace PLWPF
         public ManageTest()
         {
             InitializeComponent();
+            this.DataContext = TestForPL;
+           
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             bl = IBL_imp.Instance;
             TestForPL = new Test();
             u_testerIdTextBox.IsReadOnly = true;
             u_traineeIdTextBox.IsReadOnly = true;
-            //update tab
+            //update ta
             try
             {
-                //UpdateDockPanel.IsEnabled = false;
-                closeAlmostAll();
-                u_testIdComboBox.IsEnabled = true;
-                this.u_testIdComboBox.DataContext = TestListForPL;
                 TestListForPL = bl.GetListOfTests();
-                u_testIdComboBox.ItemsSource = bl.GetListOfTests().Select(x => x.TestId);
+                foreach (var test in TestListForPL)
+                {
+                    var id = test.TestId;
+                    u_testIdComboBox.Items.Add(id.ToString());
+                  }
+                //UpdateDockPanel.IsEnabled = false;
+                //closeAlmostAll();
+                u_testIdComboBox.IsEnabled = true;
+                //this.u_testIdComboBox.DataContext = TestListForPL.Select;
+                //u_testIdComboBox.ItemsSource = bl.GetListOfTests().Select(x => x.TestId).ToString();
                 if (TestListForPL.Count == 0)
                     throw new Exception("There are no Testers to update");
                 //UpdateDockPanel.IsEnabled = true;
@@ -51,6 +58,8 @@ namespace PLWPF
                 MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        #region function
 
         public void closeAlmostAll()
         {
@@ -73,6 +82,24 @@ namespace PLWPF
             BoolItemsGrid.IsEnabled = true;
             saveButton.IsEnabled = true;
         }
+
+        public bool ThereIsEmptyFiles()
+        {
+            bool allEmpty = true;
+            if (checkMirrorsCheckBox.IsChecked == false || checkMirrorsCheckBox.IsChecked == null) allEmpty = false;
+            if (imediateStopCheckBox.IsChecked == false || imediateStopCheckBox.IsChecked == null) allEmpty = false;
+            if (keptDistanceCheckBox.IsChecked == false || keptDistanceCheckBox.IsChecked == null) allEmpty = false;
+            if (keptRightofPresidenceCheckBox.IsChecked == false || keptRightofPresidenceCheckBox.IsChecked == null) allEmpty = false;
+            if (parkingCheckBox.IsChecked == false || parkingCheckBox.IsChecked == null) allEmpty = false;
+            if (reverseParkingCheckBox.IsChecked == false || reverseParkingCheckBox.IsChecked == null) allEmpty = false;
+            if (rightTurnCheckBox.IsChecked == false || rightTurnCheckBox.IsChecked == null) allEmpty = false;
+            if (stoppedAtcrossWalkCheckBox.IsChecked == false || stoppedAtcrossWalkCheckBox.IsChecked == null) allEmpty = false;
+            if (stoppedAtRedCheckBox.IsChecked == false || stoppedAtRedCheckBox.IsChecked == null) allEmpty = false;
+            if (usedSignalCheckBox.IsChecked == false || usedSignalCheckBox.IsChecked == null) allEmpty = false;
+            return allEmpty;
+        }
+
+        #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -103,12 +130,8 @@ namespace PLWPF
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            //if(checkMirrorsCheckBox.IsChecked == false)
-            //{
-            //    temp.Text = "ERROR, fill all filed";
-            //    temp.Background = Brushes.Red;
-
-            //}
+            if(!ThereIsEmptyFiles())
+                temp.Visibility = Visibility.Visible;
         }
     }
 }

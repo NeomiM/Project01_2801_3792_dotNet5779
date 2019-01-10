@@ -55,145 +55,125 @@
                     </StackPanel>
                 </DockPanel>
             </TabItem>
-            
-            
-            
-            
+
+
+
+
             <TabItem x:Name="UpdateTab" Header="Update Test">
                 <DockPanel x:Name="UpdateDockPanel">
-                    <StackPanel DockPanel.Dock="Left" Background="Bisque">
-                        <Button Content="Back To Main Menu" Width="auto" HorizontalAlignment="Left" Click="Button_Click"/>
-                        <Grid x:Name="TestDetailsGrid" Background="AliceBlue"  VerticalAlignment="Top" Margin="50,50,0,0" HorizontalAlignment="Stretch" Height="145" Width="216">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
+                    <StackPanel DockPanel.Dock="Left" Background="Bisque" Width="326">
+                        <Button Content="Back To Main Menu" Width="auto" HorizontalAlignment="Left" Click="Button_Click" Margin="10,10,0,0"/>
+                        <GroupBox Header="Test Detils" Background="AliceBlue" Height="145" Width="216" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="50,26,0,0">
+                            <Grid x:Name="TestDetailsGrid" Height="116" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,7,-2,-3"  >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Label VerticalAlignment="Center" Grid.Row="1" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Test Id:"/>
-                            <ComboBox x:Name="u_testIdComboBox" Width="120" VerticalAlignment="Center" Grid.Row="1" Margin="3" ItemsSource="{Binding TestListForPL}" 
-                                  Height="Auto" HorizontalAlignment="Left" DisplayMemberPath="TestId" Grid.Column="1" IsTextSearchEnabled="True" TextSearch.TextPath="TestId" SelectionChanged="TestIdComboBox_SelectionChanged"/>
-                            
-                            <Label Content="Test Date:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
-                            <DatePicker x:Name="u_testDateDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="0" DataContext="{StaticResource testViewSource}"
+                                <Label VerticalAlignment="Center" Grid.Row="0" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Test Id:"/>
+                                <ComboBox x:Name="u_testIdComboBox" Width="120" VerticalAlignment="Center" Grid.Row="0" Margin="3" SelectedItem="{Binding TestListForPL}" 
+                                  Height="Auto" HorizontalAlignment="Left" DisplayMemberPath="TestId" Grid.Column="1" SelectionChanged="TestIdComboBox_SelectionChanged"/>
+
+                                <Label Content="Test Date:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
+                                <DatePicker x:Name="u_testDateDatePicker" Grid.Column="1" HorizontalAlignment="Left" Margin="3" Grid.Row="1" DataContext="{StaticResource testViewSource}"
                                         SelectedDate="{Binding TestDate, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-                            
-                            <Label Content="Tester Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
-                            <TextBox x:Name="u_testerIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" DataContext="{StaticResource testViewSource}" 
+
+                                <Label Content="Tester Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+                                <TextBox x:Name="u_testerIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="2" DataContext="{StaticResource testViewSource}" 
                                      Text="{Binding TesterId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
-                            
-                            <Label Content="Trainee Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
-                            <TextBox x:Name="u_traineeIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" DataContext="{StaticResource testViewSource}"
-                                     Text="{Binding TraineeId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>    
-                        </Grid>
 
-                        <StackPanel Background="Bisque">
-                            <GroupBox x:Name="u_commentsGroupBox" Header="comments:" Background="AliceBlue" Margin="50,30,0,5" Height="100"/>
-                        </StackPanel>
+                                <Label Content="Trainee Id:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
+                                <TextBox x:Name="u_traineeIdTextBox" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="3" Grid.Row="3" DataContext="{StaticResource testViewSource}"
+                                     Text="{Binding TraineeId, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" VerticalAlignment="Center" Width="120"/>
+                            </Grid>
+                        </GroupBox>
 
-                        <Grid Background="AliceBlue"  VerticalAlignment="Top" Margin="50,30,0,5" HorizontalAlignment="Stretch" Height="45" Width="216">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.5*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Test Passed:" Grid.Column="0" HorizontalAlignment="Right" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
-                            <RadioButton x:Name="testPassedRadioButton" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}" 
+                        <GroupBox x:Name="u_commentsGroupBox" Header="comments:" Background="AliceBlue" Margin="50,20,0,5" Height="100" Width="216"/>
+
+                        <GroupBox Background="AliceBlue" Height="45" Width="216" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="50,20,0,5">
+                            <Grid Height="40" Width="200" VerticalAlignment="Top" Margin="0,5,4,-6" HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.5*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Test Passed:" Grid.Column="0" HorizontalAlignment="Right" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+                                <RadioButton x:Name="testPassedRadioButton" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}" 
                                              IsChecked="{Binding TestPassed, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
-                        </Grid>
-                        
-
-
+                            </Grid>
+                        </GroupBox>
 
                     </StackPanel>
 
                     <StackPanel Background="Bisque" DockPanel.Dock="Right">
-                        <Grid x:Name="BoolItemsGrid" Background="AliceBlue"  VerticalAlignment="Top" Margin="0,72,0,30" HorizontalAlignment="Stretch" Height="300" Width="176">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            
-                            <Label Content="Check Mirrors:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="checkMirrorsCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
+                        <GroupBox Background="AliceBlue" VerticalAlignment="Center" HorizontalAlignment="Center" Height="323" Width="200" Margin="0,60,0,2">
+                            <Grid x:Name="BoolItemsGrid" VerticalAlignment="Top" Margin="0,0,-2,-6" HorizontalAlignment="Stretch" Height="320">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="32"/>
+                                    <RowDefinition/>
+                                    <RowDefinition Height="31"/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Label Content="Check Mirrors:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="checkMirrorsCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
                                       IsChecked="{Binding CheckMirrors, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="0" VerticalAlignment="Center" IsThreeState="True"/>
-                            
-                            <Label Content="Imediate Stop:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="imediateStopCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
-                                      IsChecked="{Binding ImediateStop, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="1" VerticalAlignment="Center" IsThreeState="True"/>
-                            
-                            <Label Content="Kept Distance:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="keptDistanceCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
-                                      IsChecked="{Binding KeptDistance, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="2" VerticalAlignment="Center" IsThreeState="True"/>
-                            
-                            <Label Content="Kept Rightof Presidence:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="keptRightofPresidenceCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
+
+                                <Label Content="Imediate Stop:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="imediateStopCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
+                                      IsChecked="{Binding ImediateStop, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3,0,0,8" Grid.Row="1" VerticalAlignment="Bottom" IsThreeState="True"/>
+
+                                <Label Content="Kept Distance:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="keptDistanceCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
+                                      IsChecked="{Binding KeptDistance, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3,0,0,8" Grid.Row="2" VerticalAlignment="Bottom" IsThreeState="True"/>
+
+                                <Label Content="Kept Rightof Presidence:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="keptRightofPresidenceCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
                                       IsChecked="{Binding KeptRightofPresidence, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="3" VerticalAlignment="Center" IsThreeState="True"/>
-                            
-                            <Label Content="Parking:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="parkingCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
-                                      IsChecked="{Binding Parking, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="4" VerticalAlignment="Center" IsThreeState="True"/>
-                            
-                            <Label Content="Reverse Parking:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="reverseParkingCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
+
+                                <Label Content="Parking:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="parkingCheckBox" Content="" Grid.Column="1" DataContext="{StaticResource testViewSource}"
+                                      IsChecked="{Binding Parking, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3,8,4,8" Grid.Row="4" VerticalAlignment="Center" IsThreeState="True"/>
+
+                                <Label Content="Reverse Parking:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="reverseParkingCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
                                       IsChecked="{Binding ReverseParking, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="5" VerticalAlignment="Center" IsThreeState="True"/>
-                            
-                            <Label Content="Right Turn:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="6" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="rightTurnCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
+
+                                <Label Content="Right Turn:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="6" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="rightTurnCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
                                       IsChecked="{Binding RightTurn, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="6" VerticalAlignment="Center" IsThreeState="True"/>
-                            
+
                                 <Label Content="Stopped Atcross Walk:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="stoppedAtcrossWalkCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
+                                <CheckBox x:Name="stoppedAtcrossWalkCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
                                       IsChecked="{Binding StoppedAtcrossWalk, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="7" VerticalAlignment="Center" IsThreeState="True"/>
-                            
+
                                 <Label Content="Stopped At Red:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="8" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="stoppedAtRedCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
+                                <CheckBox x:Name="stoppedAtRedCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
                                       IsChecked="{Binding StoppedAtRed, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="8" VerticalAlignment="Center" IsThreeState="True"/>
-                            
-                            <Label Content="Used Signal:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="9" VerticalAlignment="Center"/>
-                            <CheckBox x:Name="usedSignalCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
+
+                                <Label Content="Used Signal:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="9" VerticalAlignment="Center"/>
+                                <CheckBox x:Name="usedSignalCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}"
                                           IsChecked="{Binding UsedSignal, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="9" VerticalAlignment="Center" IsThreeState="True"/>
-                            
 
-
-
-
-
-
-
-
-
-
-
-
-                        </Grid>
-                        <!--<TextBlock x:Name="temp" Text="ERROR, Please fill in all fields"/>-->
-                        <Button x:Name="saveButton" Content="Check" Width="75" Click="SaveButton_Click"/>
-                        
-
-
-
-
-
-
-
-
+                            </Grid>
+                        </GroupBox>
+                        <TextBlock x:Name="temp" Text="ERROR, Please fill all fields" Foreground="Red" VerticalAlignment="Center" Width="140" Margin="8" Visibility="Hidden"/>
+                        <Button x:Name="saveButton" Content="Check" Width="75" Margin="10" Click="SaveButton_Click"/>
 
                     </StackPanel>
                 </DockPanel>

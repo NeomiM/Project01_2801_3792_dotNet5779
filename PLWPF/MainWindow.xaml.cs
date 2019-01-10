@@ -61,5 +61,19 @@ namespace PLWPF
             new TestersByCarType().ShowDialog();
         }
 
+        private void ValidTrainees_Click(object sender, RoutedEventArgs e)
+        {
+            new validTrainees().Show();
+        }
+
+        private void TestsByDate_Click(object sender, RoutedEventArgs e)
+        {
+            new TestsByDate().Show();
+        }
+
+        private void TraineesByTesters_OnClick(object sender, RoutedEventArgs e)
+        {
+            new traineesByTeachers().Show();
+        }
     }
 }

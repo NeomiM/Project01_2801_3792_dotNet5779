@@ -24,7 +24,7 @@
             <TextBlock x:Name="slelectCar" Margin="3,5,2,0" Foreground="CornflowerBlue">Select a Car Type Below</TextBlock>
             <ComboBox x:Name="CarComboBox" Width="120" SelectedItem="{Binding CarType}"  SelectionChanged="Selector_OnSelectionChanged" Margin="5,10,5,5" />
         </StackPanel>
-        
+
         <DataGrid x:Name="testerDataGrid" Background="Azure" AutoGenerateColumns="False" IsReadOnly="True" EnableRowVirtualization="True"  DockPanel.Dock="Right"  ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="0,0,0,0">
             <DataGrid.Columns>
                 <DataGridTemplateColumn x:Name="testerIdColumn" Header="Tester Id  " Width="SizeToHeader">
@@ -34,7 +34,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn x:Name="firstNameColumn" Header="First Name" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -42,7 +42,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
                 <DataGridTemplateColumn x:Name="sirnameColumn" Header="Last Name" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -65,8 +65,8 @@
                             <TextBlock Text="{Binding TesterGender}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>      
-                
+                </DataGridTemplateColumn>
+
                 <DataGridTemplateColumn x:Name="phoneNumberColumn" Header="Phone Number" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -86,7 +86,7 @@
                 <DataGridTemplateColumn x:Name="maxDistanceForTestColumn" Header="Max Distance For Test" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding MaxDistanceForTest}"/>
+                            <TextBlock Text="{Binding MaxDistanceForTest}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -94,7 +94,7 @@
                 <DataGridTemplateColumn x:Name="yearsOfExperienceColumn" Header="Years Of Experience" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding YearsOfExperience}"/>
+                            <TextBlock Text="{Binding YearsOfExperience}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -102,130 +102,14 @@
                 <DataGridTemplateColumn x:Name="maxTestsInaWeekColumn" Header="Max Tests Ina Week" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBox Text="{Binding MaxTestsInaWeek}"/>
+                            <TextBlock Text="{Binding MaxTestsInaWeek}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
-
-
-
-
-
+                
             </DataGrid.Columns>
         </DataGrid>
-
-
-
     </DockPanel>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--<ListView x:Name="testerListView" ItemsSource="{Binding Source={StaticResource testerViewSource}}" Margin="65,86,327,133" SelectionMode="Single">
-        <ListView.ItemContainerStyle>
-            <Style>
-                <Setter Property="Control.HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="Control.VerticalContentAlignment" Value="Stretch"/>
-            </Style>
-        </ListView.ItemContainerStyle>
-        <ListView.View>
-            <GridView>
-                <GridViewColumn x:Name="dateOfBirthColumn" Header="Date Of Birth" Width="80">
-                    <GridViewColumn.CellTemplate>
-                        <DataTemplate>
-                            <DatePicker Margin="6,-1,-6,-1" SelectedDate="{Binding DateOfBirth, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
-                        </DataTemplate>
-                    </GridViewColumn.CellTemplate>
-                </GridViewColumn>
-                
-               
-                
-               
-                
-                
-                
-                
-                
-            </GridView>
-        </ListView.View>
-    </ListView>-->
-
 </Window>
     
     

@@ -16,6 +16,7 @@ namespace DS
             #region two tests
 
             Test test = new Test();
+            test.TestId = "123";
             test.CheckMirrors = true;
             DateTime time = DateTime.Today;
             test.DateAndHourOfTest = DateTime.Today;
@@ -33,6 +34,7 @@ namespace DS
             test.TestPassed = true;
 
             Test test2 = new Test();
+            test2.TestId = "456";
             test2.CheckMirrors = true;
             DateTime time2 = DateTime.Today.AddDays(5);
             test2.DateAndHourOfTest = DateTime.Today.AddDays(5);
@@ -50,6 +52,7 @@ namespace DS
             test2.TestPassed = false;
 
             Test test3 = new Test();
+            test3.TestId = "789";
             test3.TestDate = DateTime.Today.AddDays(-5);
             test3.CheckMirrors = true;
             test3.DateAndHourOfTest = DateTime.Today.AddDays(-5);

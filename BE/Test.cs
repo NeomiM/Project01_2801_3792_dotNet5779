@@ -62,7 +62,7 @@ namespace BE
         public Address StartingPoint { get => _startingPoint; set => _startingPoint = value; }
         public bool TestPassed { get => _testPassed; set => _testPassed = value; }
         public string RemarksOnTest { get => _remarksOnTest; set => _remarksOnTest = value; }
-        public CarType CarType { get => _carType; set => _carType = value; }
+        public CarType CarType{ get => _carType; set => _carType = value; }
 
         #endregion
 

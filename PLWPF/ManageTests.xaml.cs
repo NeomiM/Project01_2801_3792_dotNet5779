@@ -94,7 +94,10 @@ namespace PLWPF
 
         private void TraineeIdComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            nTestForPL.TraineeId = traineeIdComboBox.Text;
+            //nTestForPL.TraineeId = traineeIdComboBox.Text;
+            //nTestForPL.CarType = bl.GetListOfTrainees().Where(x => x.TraineeId == nTestForPL.TraineeId)
+            //    .Select(x => x.Traineecar).FirstOrDefault();
+            //carTypeTextBlock. = nTestForPL.CarType;
         }
     }
 }

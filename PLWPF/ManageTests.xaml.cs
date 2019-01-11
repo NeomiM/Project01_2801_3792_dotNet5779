@@ -11,17 +11,26 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BE;
+using BL;
 
 namespace PLWPF
 {
     /// <summary>
-    /// Interaction logic for ManageTest.xaml
+    /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class ManageTest : Window
+    public partial class ManageTests : Window
     {
-        public ManageTest()
+        private BL.IBL bl;
+        private List<Trainee> TraineeListForPL;
+        public ManageTests()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
+            bl = IBL_imp.Instance;
+            TraineeListForPL = bl.readyTrainees();
+            this.TraineeComboBox.ItemsSource = TraineeListForPL.Select(x=>x.TraineeId);
+
         }
     }
 }

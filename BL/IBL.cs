@@ -142,6 +142,8 @@ namespace BL
         List<Test> TestsByDate();
 
         List<Trainee> readyTrainees();
+        bool HasntPassedAnyTest(Trainee T);
+
 
         #endregion
 

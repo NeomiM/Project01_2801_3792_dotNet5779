@@ -35,13 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataGrid2DLibrary">
-      <HintPath>.\DataGrid2DLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,24 +56,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ManageTest.xaml.cs">
-      <DependentUpon>ManageTest.xaml</DependentUpon>
+    <Compile Include="ManageTester.xaml.cs" />
+    <Compile Include="ManageTests.xaml.cs">
+      <DependentUpon>ManageTests.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManageTester.xaml.cs" >
-    <DependentUpon>ManageTester.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Schedule.xaml.cs">
-      <DependentUpon>Schedule.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TestersByCarType.xaml.cs">
-      <DependentUpon>TestersByCarType.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="trySchedule.xaml.cs">
-      <DependentUpon>trySchedule.xaml</DependentUpon>
-    </Compile>
- <!--   <Compile Include="Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
--->
     <Compile Include="TestsByDate.xaml.cs">
       <DependentUpon>TestsByDate.xaml</DependentUpon>
     </Compile>
@@ -87,7 +68,6 @@
     </Compile>
     <Compile Include="validTrainees.xaml.cs">
       <DependentUpon>validTrainees.xaml</DependentUpon>
-
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -101,9 +81,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ManageTest.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="ManageTests.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ManageTrainee.xaml">
       <SubType>Designer</SubType>
@@ -113,21 +93,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-
-    <Page Include="Schedule.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TestersByCarType.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="trySchedule.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <!--   <Page Include="Window1.xaml">-->
-
     <Page Include="TestsByDate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -137,7 +102,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="validTrainees.xaml">
-
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

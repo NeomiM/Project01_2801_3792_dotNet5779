@@ -16,6 +16,7 @@ namespace DS
             #region two tests
 
             Test test = new Test();
+            test.TestId = "123";
             test.CheckMirrors = true;
             DateTime time = DateTime.Today.AddDays(8);
             test.DateAndHourOfTest = DateTime.Today;
@@ -34,6 +35,7 @@ namespace DS
             test.CarType = CarType.HeavyTruck;
 
             Test test2 = new Test();
+            test2.TestId = "456";
             test2.CheckMirrors = true;
             DateTime time2 = DateTime.Today.AddDays(5);
             test2.DateAndHourOfTest = DateTime.Today.AddDays(5);
@@ -51,6 +53,7 @@ namespace DS
             test2.TestPassed = false;
 
             Test test3 = new Test();
+            test3.TestId = "789";
             test3.TestDate = DateTime.Today.AddDays(-5);
             test3.CheckMirrors = true;
             test3.DateAndHourOfTest = DateTime.Today.AddDays(-5);
@@ -79,16 +82,20 @@ namespace DS
             tester.DateOfBirth = time;
             tester.FirstName = "Neomi";
             tester.TesterId = "328772801";
+            tester.Testercar = CarType.Private;
 
             Tester tester1 = new Tester();
             tester.DateOfBirth = time;
             tester.FirstName = "Beila";
             tester.TesterId = "205823792";
+            tester1.Testercar = CarType.TwoWheel;
 
             Tester tester2 = new Tester();
             tester2.DateOfBirth = time;
             tester2.FirstName = "Elisha";
             tester2.TesterId = "319185997";
+            tester2.Testercar = CarType.Private;
+
             _testerList.Add(tester);
             _testerList.Add(tester1);
             _testerList.Add(tester2);

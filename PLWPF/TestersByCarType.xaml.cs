@@ -25,8 +25,34 @@ namespace PLWPF
         public TestersByCarType()
         {
             InitializeComponent();
+            WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             bl = IBL_imp.Instance;
-            this.testercarComboBox.ItemsSource = Enum.GetValues(typeof(BE.CarType));
+            IEnumerable<IGrouping<CarType, Tester>> TestersByCarType = bl.TestersByCarType(true);
+            foreach (var cargroup in TestersByCarType)
+            {
+                var car = cargroup.Key;
+                CarComboBox.Items.Add((CarType)car);
+            }
+            //this.testercarComboBox.ItemsSource = Enum.GetValues(typeof(BE.CarType));
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+            System.Windows.Data.CollectionViewSource testerViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("testerViewSource")));
+            // Load data by setting the CollectionViewSource.Source property:
+            // testerViewSource.Source = [generic data source]
+        }
+
+        private void BackToMainMenue_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var testers = bl.TestersByCarType(true).Single(g => g.Key == (CarType)CarComboBox.SelectedItem);
+            testerDataGrid.DataContext = testers;
         }
     }
 }

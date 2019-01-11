@@ -28,14 +28,11 @@ namespace PLWPF
             InitializeComponent();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             mainBL = IBL_imp.Instance;
-
         }
-        
+
         private void ManageTesters_Click(object sender, RoutedEventArgs e)
         {
-            TestersWindow win = new TestersWindow();
-            win.ShowDialog();
-
+            new TestersWindow().ShowDialog();
         }
 
         private void ManageTrainees_Click(object sender, RoutedEventArgs e)
@@ -47,16 +44,10 @@ namespace PLWPF
         {
             new ManageTests().ShowDialog();
         }
-        private void ValidTrainees_Click(object sender, RoutedEventArgs e)
+       
+        private void ValidTrainees_Click(object sender, RoutedEventArgs e)//passed trainne
         {
             new validTrainees().Show();
-        }
-
-        
-
-        private void TestersByCarType_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void TestsByDate_Click(object sender, RoutedEventArgs e)
@@ -67,6 +58,11 @@ namespace PLWPF
         private void TraineesByTesters_OnClick(object sender, RoutedEventArgs e)
         {
             new traineesByTeachers().Show();
+        }
+
+        private void TestersByCarType_Click(object sender, RoutedEventArgs e)
+        {
+            new TestersByCarType().ShowDialog();
         }
     }
 }

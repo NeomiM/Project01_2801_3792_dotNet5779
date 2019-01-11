@@ -19,12 +19,12 @@ namespace PLWPF
     /// <summary>
     /// Interaction logic for ManageTest.xaml
     /// </summary>
-    public partial class ManageTest : Window
+    public partial class ManageTests : Window
     {
         private BL.IBL bl;
         private BE.Test TestForPL;
         private List<Test> TestListForPL;
-        public ManageTest()
+        public ManageTests()
         {
             InitializeComponent();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;

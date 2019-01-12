@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PLWPF"
         xmlns:BE="clr-namespace:BE;assembly=BE" x:Class="PLWPF.ManageTests"
         mc:Ignorable="d"
-        Title="Manage Tests" Height="527.855" Width="695.674" Loaded="Window_Loaded">
+        Title="Manage Tests" Height="527.855" Width="786.874" Loaded="Window_Loaded">
     <Window.Resources>
         <CollectionViewSource x:Key="testViewSource" d:DesignSource="{d:DesignInstance {x:Type BE:Test}, CreateList=True}"/>
     </Window.Resources>
@@ -62,24 +62,29 @@
                                 <Label VerticalAlignment="Center" Grid.Row="2" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Car Type:"/>
                                 <TextBlock x:Name="carTypeTextBlock" Background="White" VerticalAlignment="Center" Text="{Binding CarType ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="2" Margin="3" HorizontalAlignment="Left" Grid.Column="1"/>
                                 <Label VerticalAlignment="Center" Grid.Row="5" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Date And Hour Of Test:"/>
-                                <TextBlock x:Name="dateAndHourOfTestTextBlock" Background="White" VerticalAlignment="Center" Text="{Binding DateAndHourOfTest,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="5" Margin="3" HorizontalAlignment="Left" Grid.Column="1"/>
+                                <TextBlock x:Name="dateAndHourOfTestTextBlock" Background="White" VerticalAlignment="Center" Text="{Binding DateAndHourOfTest}" Grid.Row="5" Margin="3" HorizontalAlignment="Left" Grid.Column="1"/>
                                 <Label VerticalAlignment="Center" Grid.Row="3" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Tester Id:"/>
                                 <TextBlock x:Name="testerIdTextBlock" VerticalAlignment="Center" Background="White" Text="{Binding TesterId,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="3" Margin="3" HorizontalAlignment="Left" Grid.Column="1"/>
                                 <Label VerticalAlignment="Center" Grid.Row="0" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Test Id:"/>
                                 <TextBlock x:Name="testIdTextBlock" Background="White" VerticalAlignment="Center" Text="{Binding TestId ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="0" Margin="3" HorizontalAlignment="Left" Grid.Column="1"/>
                                 <Label VerticalAlignment="Center" Grid.Row="1" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Trainee Id:"/>
-                                <ComboBox x:Name="traineeIdComboBox" SelectionChanged="TraineeIdComboBox_OnSelectionChanged" Width="120" VerticalAlignment="Center" Grid.Row="1" Margin="3" SelectedItem="{Binding TraineeListForPL}" Height="Auto" HorizontalAlignment="Left" Grid.Column="1">
+                                <ComboBox x:Name="AddTraineeIdComboBox" SelectionChanged="TraineeIdComboBox_OnSelectionChanged" Width="120" VerticalAlignment="Center" Grid.Row="1" Margin="3" SelectedItem="{Binding TraineeListForPL}" Height="Auto" HorizontalAlignment="Left" Grid.Column="1">
                                 </ComboBox>
                                 <Label Name="TestAddress" Grid.Row="4" Grid.Column="0"  Content="Test Address:"></Label>
                                 <TextBox x:Name="testAddress" Height="24" Margin="0,5,0,5" Grid.Row="4" Grid.Column="1" Width="150" Background="White"></TextBox>
                                 </Grid>
                         </GroupBox>
-                        <GroupBox Header="Errors:" Foreground="CornflowerBlue" Background="AliceBlue" Margin="30,30,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="104" Width="Auto"/>
+                        <GroupBox Header="Errors:" Foreground="CornflowerBlue" Background="AliceBlue" Margin="30,30,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="104" Width="Auto">
+                            <StackPanel>
+                                <TextBlock x:Name="AddDateErrors"></TextBlock>
+                                <TextBlock x:Name="HoursErrors"></TextBlock>
+                            </StackPanel>
+                        </GroupBox>
                     </StackPanel>
                     <StackPanel Background="Bisque" DockPanel.Dock="Right">
-                        <Calendar Margin="5,50,5,10" Width="193"/>
+                        <Calendar x:Name="AddTestCalender" SelectedDatesChanged="AddTestCalender_OnSelectedDatesChanged" SelectionMode="SingleDate" Margin="5,50,5,10" Width="193"/>
                         <GroupBox Header="Choose an Hour:" Foreground="CornflowerBlue" Background="AliceBlue" Margin="0,0,0,0" Height="Auto" Width="114">
-                            <ListBox x:Name="hours" SelectionMode="Single" Height="Auto" Width="96">
+                            <ListBox x:Name="hours" SelectionChanged="Hours_OnSelectionChanged" SelectionMode="Single" Height="Auto" Width="96">
                                 <ListBox.Items>
                                     <ListBoxItem x:Name="nine" Content="9:00-10:00" HorizontalAlignment="Center"/>
                                     <ListBoxItem x:Name="ten" Content="10:00-11:00" HorizontalAlignment="Center"/>

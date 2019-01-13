@@ -16,36 +16,10 @@
                 <!--There's nothing here-->
             </TabItem>
             <TabItem x:Name="Add" Header="Add Test" >
-                <DockPanel>
+                <local:AddTestUserControl/>
+                <!--<DockPanel>
                     <StackPanel DockPanel.Dock="Left" Background="Bisque">
                         <GroupBox Header="Test Info:"  Margin="30,30,0,0" Foreground="CornflowerBlue" Background="AliceBlue" Height="Auto">
-                            <!--<Grid x:Name="TraineeGrid"   VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="Auto" Width="Auto">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Name="TestId" Grid.Row="0" Grid.Column="0" Content="Test ID:"></Label>
-                                        <TextBlock x:Name="testId" Grid.Row="0" Grid.Column="1" Background="White" Margin="0,5,0,5" Height="24"></TextBlock>
-                                               <Label Name="Trainees" Grid.Row="1" Grid.Column="0" Content="Trainee:"></Label>
-                                        <ComboBox x:Name="TraineeComboBox" Grid.Row="1" Grid.Column="1" SelectedItem="{Binding TraineeListForPL}"></ComboBox>
-                                    <Label Name="InfoCarType" Grid.Row="2" Grid.Column="0" Content="Car Type:"></Label>
-                                        <TextBlock x:Name="Cartype" Height="24" Grid.Row="2" Grid.Column="1" Background="White"  Margin="0,5,0,5"></TextBlock>
-                                    <Label Name="Tester" Grid.Row="3" Grid.Column="0" Content="Tester:"></Label>
-                                        <TextBlock x:Name="testerId" Height="24" Grid.Row="3" Grid.Column="1" Background="White" Margin="0,5,0,5"></TextBlock>
-                                    <Label Name="TestAddress" Grid.Row="4" Grid.Column="0"  Content="Test Address"></Label>
-                                        <TextBlock x:Name="testAddress" Height="24" Margin="0,5,0,5" Grid.Row="4" Grid.Column="1" Width="150" Background="White"></TextBlock>
-                                    <Label Name="TestDate" Grid.Row="5" Grid.Column="0" Content="Test Date and Hour:"></Label>
-                                        <TextBlock x:Name="testDateAndHour" Height="24" Grid.Row="5" Grid.Column="1" Background="White" Margin="0,5,0,5"></TextBlock>
-
-                                </Grid>-->
                             <Grid x:Name="TestAddGrid" VerticalAlignment="Top" Margin="0" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -98,7 +72,7 @@
                         <Button x:Name="Save" Height="30" Width="70" HorizontalAlignment="Center" Content="Add Test" Margin="0,30,0,0"/>
 
                     </StackPanel>
-                </DockPanel>
+                </DockPanel>-->
             </TabItem>
             <TabItem x:Name="Update" Header="Update Test">
                 <StackPanel>

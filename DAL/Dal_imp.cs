@@ -29,7 +29,7 @@ namespace DAL
 
         #endregion
 
-        public void AddTest(Test T) //add check for id if exist
+        public void AddTest(Test T)
         {
             try
             {

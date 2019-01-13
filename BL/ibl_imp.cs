@@ -587,17 +587,21 @@ namespace BL
 
         public bool DayInRange(int t)
         {
-            try
+           // try
+           // {
+            bool retrunVal = true;
+            if (t >= Configuration.EndOfWorkWeek)
             {
-                if (t >Configuration.EndOfWorkWeek)
-                    throw new Exception("ERROR. Test day of the week is out of range.");
-                return true;
+                retrunVal = false;
+            throw new Exception("ERROR. Test day of the week is out of range.");
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            return retrunVal;
+            //}
+//            catch (Exception e)
+//            {
+////                Console.WriteLine(e.Message);
+//                return false;
+//            }
 
         }
 

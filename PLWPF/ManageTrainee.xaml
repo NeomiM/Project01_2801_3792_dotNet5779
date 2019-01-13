@@ -107,9 +107,9 @@
                 <Button x:Name="Save" Content="Save"  Grid.Column="2" HorizontalAlignment="Center" Margin="21,1.2,-112.6,1.8" Grid.Row="13" VerticalAlignment="Center" Width="118" Height="29" Click="Save_Click"/>
                 <RepeatButton x:Name="plus" Content="+" Interval="100" HorizontalContentAlignment="center" VerticalContentAlignment="Top" Grid.Column="1" HorizontalAlignment="right" Margin="0,0,0,15.8" Grid.Row="12" VerticalAlignment="Bottom" Width="36" Height="16" RenderTransformOrigin="0.496,0.731" Click="Plus_On_Click"/>
                 <RepeatButton x:Name="minus" Content="-" Interval="100" Grid.Column="1" HorizontalAlignment="right" Margin="0,0,0,-0.2" Grid.Row="12" VerticalAlignment="Bottom" Width="36" Height="16" Click="Minus_Click" />
-                <ComboBox Name="TraineeComboBox" SelectionChanged="TraineeComboBox_OnSelectionChanged" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding TraineeListForPL}"
-                  IsTextSearchEnabled="True" 
-                  TextSearch.TextPath="TraineeId" Margin="0.4,4,0,5.6"/>
+                <ComboBox Name="TraineeComboBox" SelectionChanged="TraineeComboBox_OnSelectionChanged" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding TraineeListForPL}" Margin="0.4,4,0,5.6"/>
+                  <!--IsTextSearchEnabled="True" 
+                  TextSearch.TextPath="TraineeId"-->
 
             </Grid>
 

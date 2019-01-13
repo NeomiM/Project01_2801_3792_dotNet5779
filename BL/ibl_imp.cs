@@ -16,6 +16,13 @@ using System.Windows;
 using BE;
 using DAL;
 
+
+using System;
+using System.IO;
+using System.Net;
+using System.Xml;
+
+
 //by Neomi Mayer 328772801 and Beila Wellner 205823792
 
 namespace BL

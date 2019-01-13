@@ -152,6 +152,7 @@ namespace BL
         IEnumerable<IGrouping<string, Trainee>> TraineesByDrivingSchool(bool orderList = false);
         IEnumerable<IGrouping<string, Trainee>> TraineesByTeachers(bool orderList = false);
         IEnumerable<IGrouping<int, Trainee>> TraineesByNumTestsDone(bool orderList = false);
-#endregion
+        #endregion
+        void adressdestance(string origin, string destination);
     }
 }

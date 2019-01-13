@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,98 +18,55 @@ using BL;
 namespace PLWPF
 {
     /// <summary>
-    /// Interaction logic for ManageTest.xaml
+    /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class ManageTests : Window
     {
         private BL.IBL bl;
-        private BE.Test TestForPL;
-        private List<Test> TestListForPL;
+        private List<Trainee> AddTraineeListForPL;
+        private Test AddTestForPL;
+
         public ManageTests()
         {
             InitializeComponent();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             bl = IBL_imp.Instance;
-            TestForPL = new Test();
-            u_testerIdTextBox.IsReadOnly = true;
-            u_traineeIdTextBox.IsReadOnly = true;
-            //update tab
-            try
-            {
-                //UpdateDockPanel.IsEnabled = false;
-                closeAlmostAll();
-                u_testIdComboBox.IsEnabled = true;
-                this.u_testIdComboBox.DataContext = TestListForPL;
-                TestListForPL = bl.GetListOfTests();
-                u_testIdComboBox.ItemsSource = bl.GetListOfTests().Select(x => x.TestId);
-                if (TestListForPL.Count == 0)
-                    throw new Exception("There are no Testers to update");
-                //UpdateDockPanel.IsEnabled = true;
-                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
 
-        public void closeAlmostAll()
-        {
-            //TestDetailsGrid.IsEnabled = false;
-            u_testerIdTextBox.IsEnabled = false;
-            u_traineeIdTextBox.IsEnabled = false;
-            u_commentsGroupBox.IsEnabled = false;
-            testPassedRadioButton.IsEnabled = false;
-            BoolItemsGrid.IsEnabled = false;
-            saveButton.IsEnabled = false;
-        }
+ 
 
-        public void openAll()
-        {
-            //TestDetailsGrid.IsEnabled = true;
-            u_testerIdTextBox.IsEnabled = true;
-            u_traineeIdTextBox.IsEnabled = true;
-            u_commentsGroupBox.IsEnabled = true;
-            testPassedRadioButton.IsEnabled = true;
-            BoolItemsGrid.IsEnabled = true;
-            saveButton.IsEnabled = true;
+
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void Window_Loaded_1(object sender, RoutedEventArgs e)
-        {
-
-            System.Windows.Data.CollectionViewSource testViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("testViewSource")));
+            System.Windows.Data.CollectionViewSource testViewSource =
+                ((System.Windows.Data.CollectionViewSource) (this.FindResource("testViewSource")));
             // Load data by setting the CollectionViewSource.Source property:
             // testViewSource.Source = [generic data source]
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this.Close();
-        }
-
-        private void TestIdComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if(saveButton.Content == "Check")
-            {
-                openAll();
-                //UpdateDockPanel.IsEnabled = true;
-            }
-        }
-
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            //if(checkMirrorsCheckBox.IsChecked == false)
+            //if (Update.IsSelected)
             //{
-            //    temp.Text = "ERROR, fill all filed";
-            //    temp.Background = Brushes.Red;
+            //    try
+            //    {
+            //        AddTestForPL = new Test();
+            //        TestAddGrid.DataContext = AddTestForPL;
+            //        AddTraineeListForPL = bl.readyTrainees();
+            //        emptyAddTab();
+            //        AddTestCalender.SelectedDate = null;
+            //        hours.IsEnabled = false;
+            //    }
+            //    catch (Exception exception)
+            //    {
+            //        MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            //    }
 
-            //}
+
+         //   }
         }
+
     }
 }

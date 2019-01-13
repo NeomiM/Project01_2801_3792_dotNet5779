@@ -50,7 +50,7 @@
             </GroupBox>
         </StackPanel>
         <StackPanel Background="Bisque" DockPanel.Dock="Right">
-            <Calendar x:Name="AddTestCalender" SelectedDatesChanged="AddTestCalender_OnSelectedDatesChanged" SelectionMode="SingleDate" Margin="5,50,5,10" Width="193"/>
+            <Calendar x:Name="AddTestCalender" SelectedDatesChanged="AddTestCalender_OnSelectedDatesChanged" DisplayMode="Month" DisplayDateChanged="AddTestCalender_OnDisplayDateChanged" SelectionMode="SingleDate" Margin="5,50,5,10" Width="193"/>
             <GroupBox Header="Choose an Hour:" Foreground="CornflowerBlue" Background="AliceBlue" Margin="0,0,0,0" Height="Auto" Width="114">
                 <ListBox x:Name="hours" SelectionChanged="Hours_OnSelectionChanged" SelectionMode="Single" Height="Auto" Width="96">
                     <ListBox.Items>

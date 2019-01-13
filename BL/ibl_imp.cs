@@ -178,7 +178,7 @@ namespace BL
             bool[] checkAll =
             {
                 TraineeInSystem(T.TraineeId),
-                TesterInSystem(T.TesterId),
+                //TesterInSystem(T.TesterId),
                 HadMinAmountOfLessons(T),
                 HourInRange(T.DateAndHourOfTest.Hour),
                 DayInRange((int)T.TestDate.DayOfWeek),

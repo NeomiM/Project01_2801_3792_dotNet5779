@@ -56,17 +56,37 @@ namespace PLWPF
 
         public void blackoutFridaysAndSaterdays(DateTime startdate, DateTime enddate)
         {
-            // step forward to the first friday
-            while (startdate.DayOfWeek != DayOfWeek.Friday)
-                startdate = startdate.AddDays(1);
-
-            while (startdate < enddate)
+            try
             {
-                AddTestCalender.BlackoutDates.Add(new CalendarDateRange(startdate));
-                AddTestCalender.BlackoutDates.Add(new CalendarDateRange(startdate.AddDays(1)));
-                //yield return startdate;
-                startdate = startdate.AddDays(7);
+
+
+                // step forward to the first friday
+                while (startdate.DayOfWeek != DayOfWeek.Friday)
+                    startdate = startdate.AddDays(1);
+
+                while (startdate < enddate)
+                {
+
+                    AddTestCalender.BlackoutDates.Add(new CalendarDateRange(startdate));
+                    AddTestCalender.BlackoutDates.Add(new CalendarDateRange(startdate.AddDays(1)));
+                    //yield return startdate;
+                    startdate = startdate.AddDays(7);
+                }
+
+                AddDateErrors.Visibility = Visibility.Collapsed;
+                AddDateErrors.Text = "";
             }
+            catch (Exception exception)
+            {
+                AddDateErrors.Visibility = Visibility.Visible;
+                AddDateErrors.Text = exception.Message;
+                AddDateErrors.Foreground = Brushes.Red;
+            }
+        }
+
+        public void Blackoutdays()
+        {
+
         }
 
 
@@ -106,17 +126,17 @@ namespace PLWPF
         {
             try
             {
+
+                //if ((DateTime) AddTestCalender.SelectedDate >= DateTime.Today.AddDays(40))
+                //{
+                //    blackoutFridaysAndSaterdays((DateTime)AddTestCalender.SelectedDate, ((DateTime)AddTestCalender.SelectedDate).AddDays(60));
+                //}
                 if (bl.AvailableTesterFound(AddTestForPL) == null)
                 {
                     throw new Exception("ERROR. Tester not found for that date.");
                 }
                 testerIdTextBlock.Text= bl.AvailableTesterFound(AddTestForPL);
                 AddTestForPL.TesterId = testerIdTextBlock.Text;
-
-                if ((DateTime) AddTestCalender.SelectedDate >= DateTime.Today.AddDays(40))
-                {
-                    blackoutFridaysAndSaterdays((DateTime)AddTestCalender.SelectedDate, ((DateTime)AddTestCalender.SelectedDate).AddDays(60));
-                }
 
                 bool day = bl.DayInRange((int)((DateTime)AddTestCalender.SelectedDate).DayOfWeek);
                 AddDateErrors.Visibility = Visibility.Collapsed;
@@ -134,6 +154,8 @@ namespace PLWPF
                 HoursErrors.Visibility = Visibility.Collapsed;
                 HoursErrors.Text = "";
                 hours.IsEnabled = true;
+                AddDateErrors.Visibility = Visibility.Collapsed;
+                AddDateErrors.Text = "";
             }
             catch (Exception exception)
             {
@@ -205,6 +227,12 @@ namespace PLWPF
             }
 
 
+        }
+
+        private void AddTestCalender_OnDisplayDateChanged(object sender, CalendarDateChangedEventArgs e)
+        {
+                blackoutFridaysAndSaterdays((DateTime)AddTestCalender.DisplayDate, ((DateTime)AddTestCalender.DisplayDate).AddDays(60));   
+            ;
         }
     }
 }

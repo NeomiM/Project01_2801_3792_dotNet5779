@@ -15,7 +15,8 @@ namespace BE
         public static float MinAmmountOfLessons = 20;
         public static int MinHoursBetweenTests=1;
         public static int StartOfWorkDay = 9;
-        public static int EndOfWorkDay = 9;
+        public static int EndOfWorkDay = 15;
         public static int EndOfWorkWeek = 4;
+        public static int MxTestsInAWeek = 15;
     }
 }

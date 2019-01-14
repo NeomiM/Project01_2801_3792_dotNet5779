@@ -19,7 +19,7 @@ namespace BE
 
         internal Address _testerAdress;
         private int _yearsOfExperience;
-        private int _maxTestsInaWeek;
+        private int _maxTestsInaWeek=Configuration.MxTestsInAWeek;
 
         private CarType _testercar;
         double _maxDistanceForTest; //in kilometers
@@ -46,7 +46,7 @@ namespace BE
         public double MaxDistanceForTest { get => _maxDistanceForTest; set => _maxDistanceForTest = value; }
 
         public CarType Testercar { get => _testercar; set => _testercar = value; }
-        public bool[,] Schedule { get; set; } = new bool[5, 6];
+        public bool[,] Schedule { get; set; } = new bool[6, 5];
         public string Email { get => _email; set => _email = value; }
 
 

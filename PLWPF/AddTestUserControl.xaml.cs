@@ -77,7 +77,6 @@ namespace PLWPF
         {
             try
             {
-                Blackoutdays();
                 AddTestCalender.IsEnabled = true;
                 AddTestForPL.TraineeId = AddTraineeIdComboBox.SelectedItem.ToString();
                 AddTestForPL.CarType = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
@@ -85,6 +84,7 @@ namespace PLWPF
                 if (AddTestForPL.CarType == null)
                     throw new Exception("ERROR. Add a car type to the trainee first");
                 carTypeTextBlock.Text = AddTestForPL.CarType.ToString();
+                Blackoutdays(DateTime.Today.Day);
 
             }
             catch (Exception exception)
@@ -108,8 +108,17 @@ namespace PLWPF
         {
             try
             {
-                testerIdTextBlock.Text= bl.AvailableTesterFound(AddTestForPL);
-                AddTestForPL.TesterId = testerIdTextBlock.Text;
+                string testerOrHour = bl.AvailableTesterFound(AddTestForPL);
+                if (testerOrHour.Contains("hours"))
+                {
+
+                }
+                else
+                {
+                    testerIdTextBlock.Text = bl.AvailableTesterFound(AddTestForPL);
+                    AddTestForPL.TesterId = testerIdTextBlock.Text;
+
+                }
 
                 AddDateErrors.Visibility = Visibility.Collapsed;
                 AddDateErrors.Text = "";
@@ -167,20 +176,21 @@ namespace PLWPF
             }
         }
 
-        public void Blackoutdays()
+        public void Blackoutdays(int start=1)
         {
             try
             {
 
 
-                for (int i = 1;
-                    i <= DateTime.DaysInMonth(AddTestCalender.DisplayDate.Year, AddTestCalender.DisplayDate.Month);
-                    i++)
+                for (;
+                    start <= DateTime.DaysInMonth(AddTestCalender.DisplayDate.Year, AddTestCalender.DisplayDate.Month);
+                    start++)
                 {
-
+                    AddTestForPL.TestDate = new DateTime(AddTestCalender.DisplayDate.Year,
+                        AddTestCalender.DisplayDate.Month, start);
                     if (bl.AvailableTesterFound(AddTestForPL) == null)
                         AddTestCalender.BlackoutDates.Add(new CalendarDateRange(
-                            new DateTime(AddTestCalender.DisplayDate.Year, AddTestCalender.DisplayDate.Month, i)));
+                            new DateTime(AddTestCalender.DisplayDate.Year, AddTestCalender.DisplayDate.Month, start)));
 
                 }
             }

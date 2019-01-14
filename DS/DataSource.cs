@@ -85,7 +85,16 @@ namespace DS
             tester.FirstName = "Beila";
             tester.TesterId = "205823792";
             tester.Testercar = CarType.HeavyTruck;
-            
+            bool[,] sced=
+            {
+                { true,true, true, true,true},
+                { false,false, false, false,false},
+                { true,true, true, true,true},
+                { true,true, true, true,true},
+                { true,true, true, true,true},
+                { true,true, true, true,true}
+            };
+            tester.Schedule = sced;
 
             Tester tester2 = new Tester();
             tester2.DateOfBirth = time;

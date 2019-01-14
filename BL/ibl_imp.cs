@@ -536,20 +536,21 @@ namespace BL
                     where tester.Testercar == T.CarType && HasntPassedMaxTests(tester, T.TestDate)
                             select tester;
 
-                List<Tester> cleanTesters = (List<Tester>) clear;
-
+                List<Tester> cleanTesters = clear.ToList();
+                if(cleanTesters.Count==0)
+                    throw new Exception("ERROR. No trainers with that cartype are avialable.");
                         //makes a list of all avialble hours for a test
                 List < Tester > filteredTesters = new List<Tester>();                
                 DateTime checkhour = T.TestDate;
-                checkhour = checkhour.AddHours(Configuration.StartOfWorkDay-1);
-                for (int i = Configuration.StartOfWorkDay; i <= Configuration.EndOfWorkDay; i++)
+                checkhour = checkhour.AddHours(Configuration.StartOfWorkDay);
+                for (int i = Configuration.StartOfWorkDay; i < Configuration.EndOfWorkDay; i++)
                 {
-                    checkhour = checkhour.AddHours(1);
                     filteredTesters = AvailableTesters(checkhour, cleanTesters);
                     if (filteredTesters.Any())
                     {
                         availableHours.Add(i);
                     }
+                    checkhour = checkhour.AddHours(1);
                     //else throw new Exception("ERROR. There are no available testers that day.");
                 }
                 if(availableHours.Count==0)
@@ -563,7 +564,7 @@ namespace BL
                 }
 
                 var first = filteredTesters.First();
-                return first.ToString();
+                return first.TesterId;
                 //filters all of the cartypes
                 //var carMatch = from tester in filteredTesters
                 //    where tester.Testercar == T.CarType
@@ -676,10 +677,14 @@ namespace BL
                 foreach (Tester t in testersWithCar)
                 {
 
-                    var row = Enumerable.Range(0, t.Schedule.GetLength(1))
-                        .Select(x => t.Schedule[dayOfWeek, x])
+                    //var row = Enumerable.Range(0, t.Schedule.GetLength(1))
+                    //    .Select(x => t.Schedule[dayOfWeek, x])
+                    //    .ToArray();
+                    ////no other tests in that hour with the same tester
+                    var row = Enumerable.Range(0, t.Schedule.GetLength(0))
+                        .Select(x => t.Schedule[x,dayOfWeek])
                         .ToArray();
-                    //no other tests in that hour with the same tester 
+
                     bool noOtherTest =
                         testlist.Where(x => x.TestDate == dateAndHour.Date && x.TesterId == t.TesterId)
                         .All(delegate(Test x) { return x.DateAndHourOfTest.Hour != hour; });

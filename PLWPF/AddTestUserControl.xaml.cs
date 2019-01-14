@@ -33,7 +33,8 @@ namespace PLWPF
 
             try
             {
-                
+                AddDateErrors.Foreground = Brushes.Red;
+                HoursErrors.Foreground = Brushes.Red;
                 AddTestForPL = new Test();
                 TestAddGrid.DataContext = AddTestForPL;
                 AddTraineeListForPL = bl.readyTrainees();
@@ -46,12 +47,94 @@ namespace PLWPF
                 hours.IsEnabled = false;
                 testIdTextBlock.Text = Configuration.FirstTestId.ToString("D" + 8);
                 blackoutFridaysAndSaterdays(DateTime.Today,DateTime.Today.AddDays(60));
+                
             }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+        }
+
+        public void emptyAddTab()
+        {
+            dateAndHourOfTestTextBlock.Text = "";
+            carTypeTextBlock.Text = "";
+            testAddress.Text = "";
+            hours.SelectedItem = null;
+            emptyErrors();
+        }
+        public void emptyErrors()
+        {
+            AddDateErrors.Text = "";
+            AddDateErrors.Visibility = Visibility.Collapsed;
+            HoursErrors.Visibility = Visibility.Collapsed;
+            HoursErrors.Text = "";
+
+        }
+
+        private void TraineeIdComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                Blackoutdays();
+                AddTestCalender.IsEnabled = true;
+                AddTestForPL.TraineeId = AddTraineeIdComboBox.SelectedItem.ToString();
+                AddTestForPL.CarType = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
+                    .Select(x => x.Traineecar).FirstOrDefault();
+                if (AddTestForPL.CarType == null)
+                    throw new Exception("ERROR. Add a car type to the trainee first");
+                carTypeTextBlock.Text = AddTestForPL.CarType.ToString();
+
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                AddTraineeIdComboBox.SelectedIndex = -1;
+            }
+
+        }
+
+        #region calender
+        private void AddTestCalender_OnDisplayDateChanged(object sender, CalendarDateChangedEventArgs e)
+        {
+            //blacks out fridays and saterdays when month is changed
+            blackoutFridaysAndSaterdays((DateTime)AddTestCalender.DisplayDate, ((DateTime)AddTestCalender.DisplayDate).AddDays(60));
+            Blackoutdays();
+            
+        }
+
+        private void AddTestCalender_OnSelectedDatesChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        {
+            try
+            {
+                testerIdTextBlock.Text= bl.AvailableTesterFound(AddTestForPL);
+                AddTestForPL.TesterId = testerIdTextBlock.Text;
+
+                AddDateErrors.Visibility = Visibility.Collapsed;
+                AddDateErrors.Text = "";
+                TimeSpan ts = new TimeSpan(9, 0, 0);
+                if ((DateTime) AddTestCalender.SelectedDate == DateTime.Today)
+                {
+                    ts = new TimeSpan(DateTime.Now.Hour+1, 0, 0);
+                }
+                
+                AddTestForPL.TestDate = (DateTime)AddTestCalender.SelectedDate;
+                AddTestForPL.DateAndHourOfTest = (DateTime)AddTestCalender.SelectedDate + ts;
+                dateAndHourOfTestTextBlock.Text = AddTestForPL.DateAndHourOfTest.ToString();
+                hours.SelectedIndex = 0;
+                HoursErrors.Visibility = Visibility.Collapsed;
+                HoursErrors.Text = "";
+                hours.IsEnabled = true;
+                AddDateErrors.Visibility = Visibility.Collapsed;
+                AddDateErrors.Text = "";
+            }
+            catch (Exception exception)
+            {
+                AddDateErrors.Visibility = Visibility.Visible;
+                AddDateErrors.Text = exception.Message;
+                AddDateErrors.Foreground = Brushes.Red;
+            }
         }
 
         public void blackoutFridaysAndSaterdays(DateTime startdate, DateTime enddate)
@@ -80,100 +163,34 @@ namespace PLWPF
             {
                 AddDateErrors.Visibility = Visibility.Visible;
                 AddDateErrors.Text = exception.Message;
-                AddDateErrors.Foreground = Brushes.Red;
+                
             }
         }
 
         public void Blackoutdays()
         {
-
-        }
-
-
-        public void emptyAddTab()
-        {
-            dateAndHourOfTestTextBlock.Text = "";
-            carTypeTextBlock.Text = "";
-            testAddress.Text = "";
-            hours.SelectedItem = null;
-            emptyErrors();
-        }
-
-        private void TraineeIdComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
             try
             {
 
-                AddTestCalender.IsEnabled = true;
-                AddTestForPL.TraineeId = AddTraineeIdComboBox.Text;
-                AddTestForPL.CarType = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
-                    .Select(x => x.Traineecar).FirstOrDefault();
-                if (AddTestForPL.CarType == null)
-                    throw new Exception("ERROR. Add a car type to the trainee first");
-                carTypeTextBlock.Text = AddTestForPL.CarType.ToString();
 
+                for (int i = 1;
+                    i <= DateTime.DaysInMonth(AddTestCalender.DisplayDate.Year, AddTestCalender.DisplayDate.Month);
+                    i++)
+                {
+
+                    if (bl.AvailableTesterFound(AddTestForPL) == null)
+                        AddTestCalender.BlackoutDates.Add(new CalendarDateRange(
+                            new DateTime(AddTestCalender.DisplayDate.Year, AddTestCalender.DisplayDate.Month, i)));
+
+                }
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                AddTraineeIdComboBox.SelectedIndex = -1;
-            }
-
-        }
-
-
-        private void AddTestCalender_OnSelectedDatesChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
-        {
-            try
-            {
-
-                //if ((DateTime) AddTestCalender.SelectedDate >= DateTime.Today.AddDays(40))
-                //{
-                //    blackoutFridaysAndSaterdays((DateTime)AddTestCalender.SelectedDate, ((DateTime)AddTestCalender.SelectedDate).AddDays(60));
-                //}
-                if (bl.AvailableTesterFound(AddTestForPL) == null)
-                {
-                    throw new Exception("ERROR. Tester not found for that date.");
-                }
-                testerIdTextBlock.Text= bl.AvailableTesterFound(AddTestForPL);
-                AddTestForPL.TesterId = testerIdTextBlock.Text;
-
-                bool day = bl.DayInRange((int)((DateTime)AddTestCalender.SelectedDate).DayOfWeek);
-                AddDateErrors.Visibility = Visibility.Collapsed;
-                AddDateErrors.Text = "";
-                TimeSpan ts = new TimeSpan(9, 0, 0);
-                if ((DateTime) AddTestCalender.SelectedDate == DateTime.Today)
-                {
-                    ts = new TimeSpan(DateTime.Now.Hour+1, 0, 0);
-                }
-                
-                AddTestForPL.TestDate = (DateTime)AddTestCalender.SelectedDate;
-                AddTestForPL.DateAndHourOfTest = (DateTime)AddTestCalender.SelectedDate + ts;
-                dateAndHourOfTestTextBlock.Text = AddTestForPL.DateAndHourOfTest.ToString();
-                hours.SelectedIndex = 0;
-                HoursErrors.Visibility = Visibility.Collapsed;
-                HoursErrors.Text = "";
-                hours.IsEnabled = true;
-                AddDateErrors.Visibility = Visibility.Collapsed;
-                AddDateErrors.Text = "";
-            }
-            catch (Exception exception)
-            {
-                AddDateErrors.Visibility = Visibility.Visible;
                 AddDateErrors.Text = exception.Message;
-                AddDateErrors.Foreground = Brushes.Red;
+                AddDateErrors.Visibility = Visibility.Visible;
             }
         }
-
-        public void emptyErrors()
-        {
-            AddDateErrors.Text = "";
-            AddDateErrors.Visibility = Visibility.Collapsed;
-            HoursErrors.Visibility = Visibility.Collapsed;
-            HoursErrors.Text = "";
-
-        }
-
+        #endregion
         private void Hours_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -229,10 +246,11 @@ namespace PLWPF
 
         }
 
-        private void AddTestCalender_OnDisplayDateChanged(object sender, CalendarDateChangedEventArgs e)
-        {
-                blackoutFridaysAndSaterdays((DateTime)AddTestCalender.DisplayDate, ((DateTime)AddTestCalender.DisplayDate).AddDays(60));   
-            ;
-        }
+
+
+
+
+
+
     }
 }

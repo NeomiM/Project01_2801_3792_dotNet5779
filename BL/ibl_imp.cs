@@ -530,14 +530,22 @@ namespace BL
             List<int> availableHours = new List<int>();
             try
             {
-                //makes a list of all avialble hours for a test
-                List<Tester> filteredTesters = new List<Tester>();                
+                //filters car typa and hasnt passed max tests
+                List<Tester> testers = GetListOfTesters();
+                var clear = from tester in testers
+                    where tester.Testercar == T.CarType && HasntPassedMaxTests(tester, T.TestDate)
+                            select tester;
+
+                List<Tester> cleanTesters = (List<Tester>) clear;
+
+                        //makes a list of all avialble hours for a test
+                List < Tester > filteredTesters = new List<Tester>();                
                 DateTime checkhour = T.TestDate;
                 checkhour = checkhour.AddHours(Configuration.StartOfWorkDay-1);
                 for (int i = Configuration.StartOfWorkDay; i <= Configuration.EndOfWorkDay; i++)
                 {
                     checkhour = checkhour.AddHours(1);
-                    filteredTesters = AvailableTesters(checkhour);
+                    filteredTesters = AvailableTesters(checkhour, cleanTesters);
                     if (filteredTesters.Any())
                     {
                         availableHours.Add(i);
@@ -547,29 +555,32 @@ namespace BL
                 if(availableHours.Count==0)
                     throw new Exception("ERROR. There are no available testers that day.");
                 string hours = string.Join(",", availableHours);
-                filteredTesters =AvailableTesters(T.DateAndHourOfTest);
+                filteredTesters =AvailableTesters(T.DateAndHourOfTest, cleanTesters);
                 //check for any testers in that hour
                 if (!filteredTesters.Any())
                 {
                     throw new Exception("ERROR. No testers available in that hour");
                 }
+
+                var first = filteredTesters.First();
+                return first.ToString();
                 //filters all of the cartypes
-                var carMatch = from tester in filteredTesters
-                    where tester.Testercar == T.CarType
-                    select tester;
-                if(!carMatch.Any())
-                    throw new Exception("ERROR. There are no testers with that car type available that date.");
-                filteredTesters = (List<Tester>) carMatch;
-                string testerFound = "";
-                foreach (Tester t in filteredTesters)
-                {
-                    if (HasntPassedMaxTests(t,T.TestDate))
-                    {
-                        testerFound = t.TesterId;
-                        return testerFound;
-                    }
-                }
-                throw new Exception("ERROR. Potential testers have passed their max amount of tests in a week");
+                //var carMatch = from tester in filteredTesters
+                //    where tester.Testercar == T.CarType
+                //    select tester;
+                //if(!carMatch.Any())
+                //    throw new Exception("ERROR. There are no testers with that car type available that date.");
+                //filteredTesters = (List<Tester>) carMatch;
+                //string testerFound = "";
+                //foreach (Tester t in filteredTesters)
+                //{
+                //    if (HasntPassedMaxTests(t,T.TestDate))
+                //    {
+                //        testerFound = t.TesterId;
+                //        return testerFound;
+                //    }
+                //}
+                //throw new Exception("ERROR. Potential testers have passed their max amount of tests in a week");
             }
             catch (Exception e)
             {
@@ -578,11 +589,13 @@ namespace BL
                 {
                     if (availableHours.Any())
                     {
-                        Console.WriteLine("Avialable hours are: ");
+                        //Console.WriteLine("Avialable hours are: ");
                         string hours=string.Join(",",availableHours);
-                        Console.WriteLine(hours);
+                        //Console.WriteLine(hours);
+                        return "Avialable hours are: "+hours;
                     }
 
+                    
                 }
 
                 return null;
@@ -653,15 +666,14 @@ namespace BL
             return testerlist;
         }
      
-        public List<Tester> AvailableTesters(DateTime dateAndHour)//all available testers in that hour schedual and other test wise
+        public List<Tester> AvailableTesters(DateTime dateAndHour, List<Tester> testersWithCar)//all available testers in that hour schedual and other test wise
         {
-            List<Tester> testerlist = dal.GetListOfTesters();
             List<Test> testlist = dal.GetListOfTests();
             List<Tester> filteredTesters = new List<Tester>();
             int dayOfWeek = (int)dateAndHour.DayOfWeek;
             int hour = dateAndHour.Hour;
             if (dayOfWeek < 5 && hour >= Configuration.StartOfWorkDay && hour <= Configuration.EndOfWorkDay)
-                foreach (Tester t in testerlist)
+                foreach (Tester t in testersWithCar)
                 {
 
                     var row = Enumerable.Range(0, t.Schedule.GetLength(1))

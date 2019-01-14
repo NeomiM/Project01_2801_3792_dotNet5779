@@ -114,7 +114,7 @@ namespace BL
         /// </summary>
         /// <param name="dateAndHour"></param>
         /// <returns>returns a list of testers that are potentially availeble in that hour</returns>
-        List<Tester> AvailableTesters(DateTime dateAndHour);
+        List<Tester> AvailableTesters(DateTime dateAndHour, List<Tester> testersWithCar);
         /// <summary>
         /// 
         /// </summary>

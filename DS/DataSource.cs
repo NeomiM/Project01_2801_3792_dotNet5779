@@ -84,6 +84,8 @@ namespace DS
             tester.DateOfBirth = time;
             tester.FirstName = "Beila";
             tester.TesterId = "205823792";
+            tester.Testercar = CarType.HeavyTruck;
+            
 
             Tester tester2 = new Tester();
             tester2.DateOfBirth = time;

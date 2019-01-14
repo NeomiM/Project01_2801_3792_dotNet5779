@@ -18,6 +18,7 @@ using DAL;
 
 
 using System;
+using System.Collections;
 using System.IO;
 using System.Net;
 using System.Xml;
@@ -190,7 +191,7 @@ namespace BL
             bool clear = checkAll.All(x => x);
             if (clear)
             {
-                T.TesterId = AvailableTesterFound(T);
+              //  T.TesterId = AvailableTesterFound(T);
                 dal.AddTest(T);
                 Console.WriteLine("Test added successfully");
             }
@@ -524,7 +525,7 @@ namespace BL
             }
         }
 
-        public string AvailableTesterFound(Test T)
+        public Dictionary<string, int> AvailableTesterFound(Test T)
         {
             //all testers available in that hour from work schedual and other tests
             List<int> availableHours = new List<int>();
@@ -543,11 +544,30 @@ namespace BL
                 List < Tester > filteredTesters = new List<Tester>();                
                 DateTime checkhour = T.TestDate;
                 checkhour = checkhour.AddHours(Configuration.StartOfWorkDay);
+                Dictionary<string, int> TestersAndHours= new Dictionary<string, int>();
+          //      Dictionary<int,string> HoursAndTrainees = new Dictionary<int,string>();
+                //IEnumerable<IGrouping<string, int>> TrainersAndHours=from tester in cleanTesters group (new int()) by tester.TesterId ;
+
                 for (int i = Configuration.StartOfWorkDay; i < Configuration.EndOfWorkDay; i++)
                 {
                     filteredTesters = AvailableTesters(checkhour, cleanTesters);
                     if (filteredTesters.Any())
                     {
+                        foreach (Tester t in filteredTesters)
+                        {
+                      
+                      
+                            if (TestersAndHours.ContainsKey(t.TesterId))
+                            {
+                                TestersAndHours[t.TesterId] =i;
+                            }
+                            else
+                            {
+                                TestersAndHours.Add(t.TesterId, i);
+                            }
+                            //  HoursAndTrainees.Add(i,t.TesterId);
+                        }
+                         
                         availableHours.Add(i);
                     }
                     checkhour = checkhour.AddHours(1);
@@ -555,16 +575,17 @@ namespace BL
                 }
                 if(availableHours.Count==0)
                     throw new Exception("ERROR. There are no available testers that day.");
-                string hours = string.Join(",", availableHours);
-                filteredTesters =AvailableTesters(T.DateAndHourOfTest, cleanTesters);
-                //check for any testers in that hour
-                if (!filteredTesters.Any())
-                {
-                    throw new Exception("ERROR. No testers available in that hour");
-                }
+                return TestersAndHours;
+                //string hours = string.Join(",", availableHours);
+                //filteredTesters =AvailableTesters(T.DateAndHourOfTest, cleanTesters);
+                ////check for any testers in that hour
+                //if (!filteredTesters.Any())
+                //{
+                //    throw new Exception("ERROR. No testers available in that hour");
+                //}
 
-                var first = filteredTesters.First();
-                return first.TesterId;
+                //var first = filteredTesters.First();
+                //return first.TesterId;
                 //filters all of the cartypes
                 //var carMatch = from tester in filteredTesters
                 //    where tester.Testercar == T.CarType
@@ -585,20 +606,21 @@ namespace BL
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                if (e.Message == "ERROR. No testers available in that hour")
-                {
-                    if (availableHours.Any())
-                    {
-                        //Console.WriteLine("Avialable hours are: ");
-                        string hours=string.Join(",",availableHours);
-                        //Console.WriteLine(hours);
-                        return "Avialable hours are: "+hours;
-                    }
 
-                    
-                }
+                //Console.WriteLine(e.Message);
+                //if (e.Message == "ERROR. No testers available in that hour")
+                //{
+                //    if (availableHours.Any())
+                //    {
+                //        //Console.WriteLine("Avialable hours are: ");
+                //        string hours=string.Join(",",availableHours);
+                //        //Console.WriteLine(hours);
+                //        return "Avialable hours are: "+hours;
+                //    }
 
+
+                //}
+               // MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
 

@@ -86,7 +86,7 @@ namespace BL
         /// </summary>
         /// <param name="T"></param>
         /// <returns>available tester id if found or null if not found</returns>
-        string AvailableTesterFound(Test T);
+        Dictionary<string, int> AvailableTesterFound(Test T);
         /// <summary>
         /// checks that the day is in the days where the testers work
         /// </summary>

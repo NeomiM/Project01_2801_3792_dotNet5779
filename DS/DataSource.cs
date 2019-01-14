@@ -87,12 +87,12 @@ namespace DS
             tester.Testercar = CarType.HeavyTruck;
             bool[,] sced=
             {
-                { true,true, true, true,true},
+                { false,true, true, true,true},
                 { false,false, false, false,false},
-                { true,true, true, true,true},
-                { true,true, true, true,true},
-                { true,true, true, true,true},
-                { true,true, true, true,true}
+                { false,true, true, true,true},
+                { false,true, true, true,true},
+                { false,true, true, true,true},
+                { false,true, true, true,true}
             };
             tester.Schedule = sced;
 

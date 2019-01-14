@@ -108,17 +108,8 @@ namespace PLWPF
         {
             try
             {
-                string testerOrHour = bl.AvailableTesterFound(AddTestForPL);
-                if (testerOrHour.Contains("hours"))
-                {
-
-                }
-                else
-                {
-                    testerIdTextBlock.Text = bl.AvailableTesterFound(AddTestForPL);
-                    AddTestForPL.TesterId = testerIdTextBlock.Text;
-
-                }
+                testerIdTextBlock.Text = "";
+                
 
                 AddDateErrors.Visibility = Visibility.Collapsed;
                 AddDateErrors.Text = "";

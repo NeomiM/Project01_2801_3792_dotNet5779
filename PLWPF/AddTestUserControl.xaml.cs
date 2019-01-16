@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace PLWPF
         private BL.IBL bl;
         private List<Trainee> AddTraineeListForPL;
         private Test AddTestForPL;
+        private Dictionary<string, List<int>> AvilabletestersForPL;
 
         public AddTestUserControl()
         {
@@ -33,6 +35,8 @@ namespace PLWPF
 
             try
             {
+                hours.Visibility = Visibility.Hidden;
+                TesterComboBox.IsEnabled = false;
                 AddDateErrors.Foreground = Brushes.Red;
                 HoursErrors.Foreground = Brushes.Red;
                 AddTestForPL = new Test();
@@ -46,8 +50,11 @@ namespace PLWPF
                 AddTestCalender.IsEnabled = false;
                 hours.IsEnabled = false;
                 testIdTextBlock.Text = Configuration.FirstTestId.ToString("D" + 8);
-                blackoutFridaysAndSaterdays(DateTime.Today,DateTime.Today.AddDays(60));
-                
+                blackoutFridaysAndSaterdays(DateTime.Today, DateTime.Today.AddDays(60));
+                if(DateTime.Now.Hour>BE.Configuration.EndOfWorkDay-1)
+                    AddTestCalender.BlackoutDates.Add(new CalendarDateRange(DateTime.Today));
+
+
             }
             catch (Exception exception)
             {
@@ -64,6 +71,7 @@ namespace PLWPF
             hours.SelectedItem = null;
             emptyErrors();
         }
+
         public void emptyErrors()
         {
             AddDateErrors.Text = "";
@@ -84,7 +92,12 @@ namespace PLWPF
                 if (AddTestForPL.CarType == null)
                     throw new Exception("ERROR. Add a car type to the trainee first");
                 carTypeTextBlock.Text = AddTestForPL.CarType.ToString();
-                Blackoutdays(DateTime.Today.Day);
+                Blackoutdays(DateTime.Today.Day, DateTime.Today.Month);
+                int next = DateTime.Today.Month + 1;
+               // if (DateTime.Today.Month == 12)
+                //    next = 1;
+                //Blackoutdays(DateTime.Today.Day, next);
+
 
             }
             catch (Exception exception)
@@ -96,31 +109,43 @@ namespace PLWPF
         }
 
         #region calender
+
         private void AddTestCalender_OnDisplayDateChanged(object sender, CalendarDateChangedEventArgs e)
         {
             //blacks out fridays and saterdays when month is changed
-            blackoutFridaysAndSaterdays((DateTime)AddTestCalender.DisplayDate, ((DateTime)AddTestCalender.DisplayDate).AddDays(60));
-            Blackoutdays();
-            
+            blackoutFridaysAndSaterdays((DateTime) AddTestCalender.DisplayDate,
+                ((DateTime) AddTestCalender.DisplayDate).AddDays(60));
+            Blackoutdays(1, AddTestCalender.DisplayDate.Month);
+
         }
 
-        private void AddTestCalender_OnSelectedDatesChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        private void AddTestCalender_OnSelectedDatesChanged(object sender,
+            SelectionChangedEventArgs selectionChangedEventArgs)
         {
             try
             {
-                testerIdTextBlock.Text = "";
-                
-
+                hours.Items.Clear();
+                AddDateErrors.Text = "";
+                TesterComboBox.SelectedIndex=-1;
+                //if (TesterComboBox.Items != null)
+                //    TesterComboBox.SelectedIndex = -1;
+               // if (bl.AvailableTesterFound(AddTestForPL) == null)
+                 //   throw new Exception("ERROR. No testers avialble on that date");
+                AddTestForPL.TestDate = (DateTime) AddTestCalender.SelectedDate;
+                AvilabletestersForPL = bl.AvailableTesterFound(AddTestForPL);
+                TesterComboBox.ItemsSource = AvilabletestersForPL.Keys.ToList();
+                TesterComboBox.SelectedItem = null;
+                TesterComboBox.IsEnabled = true;
                 AddDateErrors.Visibility = Visibility.Collapsed;
                 AddDateErrors.Text = "";
                 TimeSpan ts = new TimeSpan(9, 0, 0);
                 if ((DateTime) AddTestCalender.SelectedDate == DateTime.Today)
                 {
-                    ts = new TimeSpan(DateTime.Now.Hour+1, 0, 0);
+                    ts = new TimeSpan(DateTime.Now.Hour + 1, 0, 0);
                 }
-                
-                AddTestForPL.TestDate = (DateTime)AddTestCalender.SelectedDate;
-                AddTestForPL.DateAndHourOfTest = (DateTime)AddTestCalender.SelectedDate + ts;
+
+                AddTestForPL.TestDate = (DateTime) AddTestCalender.SelectedDate;
+                AddTestForPL.DateAndHourOfTest = (DateTime) AddTestCalender.SelectedDate + ts;
                 dateAndHourOfTestTextBlock.Text = AddTestForPL.DateAndHourOfTest.ToString();
                 hours.SelectedIndex = 0;
                 HoursErrors.Visibility = Visibility.Collapsed;
@@ -163,25 +188,25 @@ namespace PLWPF
             {
                 AddDateErrors.Visibility = Visibility.Visible;
                 AddDateErrors.Text = exception.Message;
-                
+
             }
         }
 
-        public void Blackoutdays(int start=1)
+        public void Blackoutdays(int start, int startMonth)
         {
             try
             {
 
 
                 for (;
-                    start <= DateTime.DaysInMonth(AddTestCalender.DisplayDate.Year, AddTestCalender.DisplayDate.Month);
+                    start <= DateTime.DaysInMonth(AddTestCalender.DisplayDate.Year, startMonth);
                     start++)
                 {
                     AddTestForPL.TestDate = new DateTime(AddTestCalender.DisplayDate.Year,
                         AddTestCalender.DisplayDate.Month, start);
                     if (bl.AvailableTesterFound(AddTestForPL) == null)
                         AddTestCalender.BlackoutDates.Add(new CalendarDateRange(
-                            new DateTime(AddTestCalender.DisplayDate.Year, AddTestCalender.DisplayDate.Month, start)));
+                            new DateTime(AddTestCalender.DisplayDate.Year, startMonth, start)));
 
                 }
             }
@@ -191,48 +216,52 @@ namespace PLWPF
                 AddDateErrors.Visibility = Visibility.Visible;
             }
         }
+
         #endregion
+
         private void Hours_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-                if (AddTestForPL.DateAndHourOfTest.Date == DateTime.Today && DateTime.Now.Hour >= hours.SelectedIndex + 9)
+                if (AddTestForPL.DateAndHourOfTest.Date == DateTime.Today &&
+                    DateTime.Now.Hour >= hours.SelectedIndex + 9)
                     throw new Exception("EROOR. Can't add an hour that has already passed.");
                 TimeSpan ts;
-                switch (hours.SelectedIndex)
+                switch (hours.SelectedItem.ToString())
                 {
-                    case 0://nine 
+                    case "9:00-10:00": //nine 
                         ts = new TimeSpan(9, 0, 0);
                         AddTestForPL.DateAndHourOfTest = AddTestForPL.DateAndHourOfTest.Date + ts;
                         dateAndHourOfTestTextBlock.Text = AddTestForPL.DateAndHourOfTest.ToString();
                         break;
-                    case 1://ten
+                    case "10:00-11:00": //ten
                         ts = new TimeSpan(10, 0, 0);
                         AddTestForPL.DateAndHourOfTest = AddTestForPL.DateAndHourOfTest.Date + ts;
                         dateAndHourOfTestTextBlock.Text = AddTestForPL.DateAndHourOfTest.ToString();
                         break;
-                    case 2://eleven
+                    case "11:00-12:00": //eleven
                         ts = new TimeSpan(11, 0, 0);
                         AddTestForPL.DateAndHourOfTest = AddTestForPL.DateAndHourOfTest.Date + ts;
                         dateAndHourOfTestTextBlock.Text = AddTestForPL.DateAndHourOfTest.ToString();
                         break;
-                    case 3://twelve
+                    case "12:00-13:00": //twelve
                         ts = new TimeSpan(12, 0, 0);
                         AddTestForPL.DateAndHourOfTest = AddTestForPL.DateAndHourOfTest.Date + ts;
                         dateAndHourOfTestTextBlock.Text = AddTestForPL.DateAndHourOfTest.ToString();
                         break;
-                    case 4://one
+                    case "13:00-14:00": //one
                         ts = new TimeSpan(13, 0, 0);
                         AddTestForPL.DateAndHourOfTest = AddTestForPL.DateAndHourOfTest.Date + ts;
                         dateAndHourOfTestTextBlock.Text = AddTestForPL.DateAndHourOfTest.ToString();
                         break;
-                    case 5://two
+                    case "14:00-15:00": //two
                         ts = new TimeSpan(14, 0, 0);
                         AddTestForPL.DateAndHourOfTest = AddTestForPL.DateAndHourOfTest.Date + ts;
                         dateAndHourOfTestTextBlock.Text = AddTestForPL.DateAndHourOfTest.ToString();
                         break;
 
                 }
+
                 HoursErrors.Visibility = Visibility.Collapsed;
                 HoursErrors.Text = "";
 
@@ -248,10 +277,42 @@ namespace PLWPF
         }
 
 
+        private void TesterComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                AddTestForPL.TesterId = TesterComboBox.SelectedItem.ToString();
+                List<int> hoursOfTester = AvilabletestersForPL[AddTestForPL.TesterId];
+                TimeSpan ts = new TimeSpan(hoursOfTester.First(), 0, 0);
+                AddTestForPL.DateAndHourOfTest= AddTestForPL.DateAndHourOfTest + ts;
+
+                if (hoursOfTester != null)
+                {
+                    hours.Visibility = Visibility.Visible;
+                    foreach (var time in hoursOfTester)
+                    {
+                        if (AddTestForPL.TestDate.Date != DateTime.Today)
+                        {
+                            string timeframe = "" + time + ":00-" + (time + 1) + ":00";
+                            hours.Items.Add(timeframe);
+                            
+                        }
+                         else if (DateTime.Now.Hour < time)
+                        {
+                            string timeframe = "" + time + ":00-" + (time + 1) + ":00";
+                            hours.Items.Add(timeframe);
+
+                        }
+                    }
 
 
+                }
+            }
+            catch (Exception exception)
+            {
 
+            }
 
-
+        }
     }
 }

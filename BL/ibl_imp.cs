@@ -525,7 +525,7 @@ namespace BL
             }
         }
 
-        public Dictionary<string, int> AvailableTesterFound(Test T)
+        public Dictionary<string, List<int>> AvailableTesterFound(Test T)
         {
             //all testers available in that hour from work schedual and other tests
             List<int> availableHours = new List<int>();
@@ -544,7 +544,7 @@ namespace BL
                 List < Tester > filteredTesters = new List<Tester>();                
                 DateTime checkhour = T.TestDate;
                 checkhour = checkhour.AddHours(Configuration.StartOfWorkDay);
-                Dictionary<string, int> TestersAndHours= new Dictionary<string, int>();
+                Dictionary<string, List<int>> TestersAndHours= new Dictionary<string,List<int>>();
           //      Dictionary<int,string> HoursAndTrainees = new Dictionary<int,string>();
                 //IEnumerable<IGrouping<string, int>> TrainersAndHours=from tester in cleanTesters group (new int()) by tester.TesterId ;
 
@@ -559,11 +559,13 @@ namespace BL
                       
                             if (TestersAndHours.ContainsKey(t.TesterId))
                             {
-                                TestersAndHours[t.TesterId] =i;
+                               
+                                TestersAndHours[t.TesterId].Add(i);
                             }
                             else
                             {
-                                TestersAndHours.Add(t.TesterId, i);
+                                TestersAndHours.Add(t.TesterId, new List<int>());
+                                TestersAndHours[t.TesterId].Add(i);
                             }
                             //  HoursAndTrainees.Add(i,t.TesterId);
                         }
@@ -703,7 +705,7 @@ namespace BL
                     //    .Select(x => t.Schedule[dayOfWeek, x])
                     //    .ToArray();
                     ////no other tests in that hour with the same tester
-                    var row = Enumerable.Range(0, t.Schedule.GetLength(0))
+                    var colum = Enumerable.Range(0, t.Schedule.GetLength(0))
                         .Select(x => t.Schedule[x,dayOfWeek])
                         .ToArray();
 
@@ -712,7 +714,7 @@ namespace BL
                         .All(delegate(Test x) { return x.DateAndHourOfTest.Hour != hour; });
                     //.All(x => x.DateAndHourOfTest.Hour != hour);
                     //if the tester is available in that hour and doesnt have any other tests 
-                    if (row[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
+                    if (colum[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
                         filteredTesters.Add(t);
 
                 }

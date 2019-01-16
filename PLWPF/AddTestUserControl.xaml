@@ -32,7 +32,8 @@
                     <Label VerticalAlignment="Center" Grid.Row="5" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Date And Hour Of Test:"/>
                     <TextBlock x:Name="dateAndHourOfTestTextBlock" Background="White" VerticalAlignment="Center" Text="{Binding DateAndHourOfTest}" Grid.Row="5" Margin="3" HorizontalAlignment="Left" Grid.Column="1"/>
                     <Label VerticalAlignment="Center" Grid.Row="3" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Tester Id:"/>
-                    <TextBlock x:Name="testerIdTextBlock" VerticalAlignment="Center" Background="White" Text="{Binding TesterId,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="3" Margin="3" HorizontalAlignment="Left" Grid.Column="1"/>
+                    <!--<TextBlock x:Name="testerIdTextBlock" VerticalAlignment="Center" Background="White" Text="{Binding TesterId ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="3" Margin="3" HorizontalAlignment="Left" Grid.Column="1"/>-->
+                    <ComboBox x:Name="TesterComboBox" SelectedItem="{Binding TesterForPL}" SelectionChanged="TesterComboBox_OnSelectionChanged" Width="120" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" ></ComboBox>
                     <Label VerticalAlignment="Center" Grid.Row="0" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Test Id:"/>
                     <TextBlock x:Name="testIdTextBlock" Background="White" VerticalAlignment="Center" Text="{Binding TestId ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="0" Margin="3" HorizontalAlignment="Left" Grid.Column="1"/>
                     <Label VerticalAlignment="Center" Grid.Row="1" Margin="3" HorizontalAlignment="Left" Grid.Column="0" Content="Trainee Id:"/>
@@ -51,15 +52,15 @@
         </StackPanel>
         <StackPanel Background="Bisque" DockPanel.Dock="Right">
             <Calendar x:Name="AddTestCalender" SelectedDatesChanged="AddTestCalender_OnSelectedDatesChanged" DisplayMode="Month" DisplayDateChanged="AddTestCalender_OnDisplayDateChanged" SelectionMode="SingleDate" Margin="5,50,5,10" Width="193"/>
-            <GroupBox Header="Choose an Hour:" Foreground="CornflowerBlue" Background="AliceBlue" Margin="0,0,0,0" Height="Auto" Width="114">
-                <ListBox x:Name="hours" SelectionChanged="Hours_OnSelectionChanged" SelectionMode="Single" Height="Auto" Width="96">
+            <GroupBox Header="Choose an Hour:" Foreground="CornflowerBlue" Background="AliceBlue" Margin="0,0,0,0" Height="146" Width="106">
+                <ListBox x:Name="hours" SelectionChanged="Hours_OnSelectionChanged" HorizontalAlignment="Center" SelectionMode="Single" Height="Auto" Width="auto">
                     <ListBox.Items>
-                        <ListBoxItem x:Name="nine" Content="9:00-10:00" HorizontalAlignment="Center"/>
+                        <!--<ListBoxItem x:Name="nine" Content="9:00-10:00" HorizontalAlignment="Center"/>
                         <ListBoxItem x:Name="ten" Content="10:00-11:00" HorizontalAlignment="Center"/>
                         <ListBoxItem x:Name="eleven" Content="11:00-12:00" HorizontalAlignment="Center"/>
                         <ListBoxItem x:Name="twelve" Content="12:00-13:00" HorizontalAlignment="Center"/>
                         <ListBoxItem x:Name="one" Content="13:00-14:00" HorizontalAlignment="Center"/>
-                        <ListBoxItem x:Name="two" Content="14:00-15:00" HorizontalAlignment="Center"/>
+                        <ListBoxItem x:Name="two" Content="14:00-15:00" HorizontalAlignment="Center"/>-->
                     </ListBox.Items>
                 </ListBox>
             </GroupBox>

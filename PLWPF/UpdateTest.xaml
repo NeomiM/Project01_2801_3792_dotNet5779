@@ -6,14 +6,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PLWPF"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="530" d:DesignWidth="700">
     <UserControl.Resources>
         <CollectionViewSource x:Key="testViewSource" d:DesignSource="{d:DesignInstance {x:Type BE:Test}, CreateList=True}"/>
     </UserControl.Resources>
     <DockPanel x:Name="UpdateDockPanel">
-        <StackPanel DockPanel.Dock="Left" Background="Bisque" Width="326">
-            <Button Content="Back To Main Menu" Width="auto" HorizontalAlignment="Left" Click="Button_Click" Margin="10,10,0,0"/>
-            <GroupBox Header="Test Detils" Background="AliceBlue" Height="145" Width="216" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="50,26,0,0">
+    
+        <StackPanel DockPanel.Dock="Left" Background="Bisque" Width="350">            
+            <GroupBox Header="Test Detils" Background="AliceBlue" Height="145" Width="216" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,48,0,0">
                 <Grid x:Name="TestDetailsGrid" Height="116" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="4,7,0,0"  >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -44,25 +44,27 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox x:Name="u_commentsGroupBox" Header="comments:" Background="AliceBlue" Margin="50,20,0,5" Height="100" Width="216"/>
+            <GroupBox x:Name="u_commentsGroupBox" Header="comments:" Background="AliceBlue" Margin="0,20,0,0" Height="100" Width="216"/>
 
-            <GroupBox Background="AliceBlue" Height="45" Width="216" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="50,20,0,5">
+            <GroupBox Background="AliceBlue" Height="45" Width="216" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,20,0,0">
                 <Grid Height="40" Width="200" VerticalAlignment="Top" Margin="0,5,4,-6" HorizontalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Test Passed:" Grid.Column="0" HorizontalAlignment="Right" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
-                    <RadioButton x:Name="testPassedRadioButton" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}" 
+                    <CheckBox x:Name="testPassedCheckBox" IsThreeState="True" Grid.Column="1" HorizontalAlignment="Left" DataContext="{StaticResource testViewSource}" 
                                              IsChecked="{Binding TestPassed, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
+
                 </Grid>
             </GroupBox>
+            <TextBlock x:Name="warningTextBlock1" Text="ERROR, Please fill field" Foreground="Red" VerticalAlignment="Center" HorizontalAlignment="Center" Width="auto" Margin="8" Visibility="Hidden"/>
 
         </StackPanel>
 
-        <StackPanel Background="Bisque" DockPanel.Dock="Right">
-            <TextBlock x:Name="whatToDoTextBlock" Text="Click once to confirm and twice to disqualify:" Foreground="Blue" VerticalAlignment="Center" Width="240" Margin="23"/>
-            <GroupBox Background="AliceBlue" VerticalAlignment="Center" HorizontalAlignment="Center" Height="323" Width="200" Margin="0,0,0,2">
+        <StackPanel Background="Bisque" DockPanel.Dock="Right" Width="350">
+            <TextBlock x:Name="whatToDoTextBlock" Text="Click once to confirm and twice to disqualify:" Foreground="Blue" VerticalAlignment="Center" Width="240" Margin="0,23,0,0"/>
+            <GroupBox Background="AliceBlue" VerticalAlignment="Center" HorizontalAlignment="Center" Height="323" Width="200" Margin="0,15,0,0">
                 <Grid x:Name="BoolItemsGrid" VerticalAlignment="Top" Margin="0,0,-2,-6" HorizontalAlignment="Stretch" Height="320">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -123,9 +125,12 @@
 
                 </Grid>
             </GroupBox>
-            <TextBlock x:Name="warningTextBlock" Text="ERROR, Please fill all fields" Foreground="Red" VerticalAlignment="Center" Width="140" Margin="8" Visibility="Hidden"/>
-            <Button x:Name="saveButton" Content="Check" Width="75" Margin="10" Click="SaveButton_Click"/>
+            <TextBlock x:Name="warningTextBlock" Text="ERROR, Please fill all fields" Foreground="Red" VerticalAlignment="Center" Width="auto" Margin="8" HorizontalAlignment="Center" Visibility="Hidden"/>
+            <Button x:Name="saveButton" Content="Check" Width="75" Click="SaveButton_Click"/>
+            <Button x:Name="Button" Content="Save" Width="75" Margin="8" IsEnabled="False" Click="Button_Click"/>
+
 
         </StackPanel>
+            
     </DockPanel>
 </UserControl>

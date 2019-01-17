@@ -86,7 +86,7 @@ namespace BL
         /// </summary>
         /// <param name="T"></param>
         /// <returns>available tester id if found or null if not found</returns>
-        string AvailableTesterFound(Test T);
+        Dictionary<string, List<int>> AvailableTesterFound(Test T);
         /// <summary>
         /// checks that the day is in the days where the testers work
         /// </summary>
@@ -114,7 +114,7 @@ namespace BL
         /// </summary>
         /// <param name="dateAndHour"></param>
         /// <returns>returns a list of testers that are potentially availeble in that hour</returns>
-        List<Tester> AvailableTesters(DateTime dateAndHour);
+        List<Tester> AvailableTesters(DateTime dateAndHour, List<Tester> testersWithCar);
         /// <summary>
         /// 
         /// </summary>
@@ -153,7 +153,6 @@ namespace BL
         IEnumerable<IGrouping<string, Trainee>> TraineesByTeachers(bool orderList = false);
         IEnumerable<IGrouping<int, Trainee>> TraineesByNumTestsDone(bool orderList = false);
         #endregion
-
-        void adressdestance(string origin, string destination);
+        string adressDistance(string origin, string destination);
     }
 }

@@ -50,19 +50,19 @@ namespace PLWPF
         {
             //if (Update.IsSelected)
             //{
-            //    try
-            //    {
+              try
+                {
             //        AddTestForPL = new Test();
             //        TestAddGrid.DataContext = AddTestForPL;
             //        AddTraineeListForPL = bl.readyTrainees();
             //        emptyAddTab();
             //        AddTestCalender.SelectedDate = null;
             //        hours.IsEnabled = false;
-            //    }
-            //    catch (Exception exception)
-            //    {
+                }
+                catch (Exception exception)
+               {
             //        MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    }
+                }
 
 
          //   }

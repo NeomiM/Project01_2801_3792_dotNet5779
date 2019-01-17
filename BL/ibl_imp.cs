@@ -16,10 +16,13 @@ using System.Windows;
 using BE;
 using DAL;
 
+
 using System;
+using System.Collections;
 using System.IO;
 using System.Net;
 using System.Xml;
+
 
 //by Neomi Mayer 328772801 and Beila Wellner 205823792
 
@@ -176,7 +179,7 @@ namespace BL
             bool[] checkAll =
             {
                 TraineeInSystem(T.TraineeId),
-                TesterInSystem(T.TesterId),
+                //TesterInSystem(T.TesterId),
                 HadMinAmountOfLessons(T),
                 HourInRange(T.DateAndHourOfTest.Hour),
                 DayInRange((int)T.TestDate.DayOfWeek),
@@ -188,7 +191,7 @@ namespace BL
             bool clear = checkAll.All(x => x);
             if (clear)
             {
-                T.TesterId = AvailableTesterFound(T);
+              //  T.TesterId = AvailableTesterFound(T);
                 dal.AddTest(T);
                 Console.WriteLine("Test added successfully");
             }
@@ -522,67 +525,104 @@ namespace BL
             }
         }
 
-        public string AvailableTesterFound(Test T)
+        public Dictionary<string, List<int>> AvailableTesterFound(Test T)
         {
             //all testers available in that hour from work schedual and other tests
             List<int> availableHours = new List<int>();
             try
             {
-                //makes a list of all avialble hours for a test
-                List<Tester> filteredTesters = new List<Tester>();                
+                //filters car typa and hasnt passed max tests
+                List<Tester> testers = GetListOfTesters();
+                var clear = from tester in testers
+                    where tester.Testercar == T.CarType && HasntPassedMaxTests(tester, T.TestDate)
+                            select tester;
+
+                List<Tester> cleanTesters = clear.ToList();
+                if(cleanTesters.Count==0)
+                    throw new Exception("ERROR. No trainers with that cartype are avialable.");
+                        //makes a list of all avialble hours for a test
+                List < Tester > filteredTesters = new List<Tester>();                
                 DateTime checkhour = T.TestDate;
-                checkhour = checkhour.AddHours(Configuration.StartOfWorkDay-1);
-                for (int i = Configuration.StartOfWorkDay; i <= Configuration.EndOfWorkDay; i++)
+                checkhour = checkhour.AddHours(Configuration.StartOfWorkDay);
+                Dictionary<string, List<int>> TestersAndHours= new Dictionary<string,List<int>>();
+          //      Dictionary<int,string> HoursAndTrainees = new Dictionary<int,string>();
+                //IEnumerable<IGrouping<string, int>> TrainersAndHours=from tester in cleanTesters group (new int()) by tester.TesterId ;
+
+                for (int i = Configuration.StartOfWorkDay; i < Configuration.EndOfWorkDay; i++)
                 {
-                    checkhour = checkhour.AddHours(1);
-                    filteredTesters = AvailableTesters(checkhour);
+                    filteredTesters = AvailableTesters(checkhour, cleanTesters);
                     if (filteredTesters.Any())
                     {
+                        foreach (Tester t in filteredTesters)
+                        {
+                      
+                      
+                            if (TestersAndHours.ContainsKey(t.TesterId))
+                            {
+                               
+                                TestersAndHours[t.TesterId].Add(i);
+                            }
+                            else
+                            {
+                                TestersAndHours.Add(t.TesterId, new List<int>());
+                                TestersAndHours[t.TesterId].Add(i);
+                            }
+                            //  HoursAndTrainees.Add(i,t.TesterId);
+                        }
+                         
                         availableHours.Add(i);
                     }
+                    checkhour = checkhour.AddHours(1);
                     //else throw new Exception("ERROR. There are no available testers that day.");
                 }
                 if(availableHours.Count==0)
                     throw new Exception("ERROR. There are no available testers that day.");
-                string hours = string.Join(",", availableHours);
-                filteredTesters =AvailableTesters(T.DateAndHourOfTest);
-                //check for any testers in that hour
-                if (!filteredTesters.Any())
-                {
-                    throw new Exception("ERROR. No testers available in that hour");
-                }
+                return TestersAndHours;
+                //string hours = string.Join(",", availableHours);
+                //filteredTesters =AvailableTesters(T.DateAndHourOfTest, cleanTesters);
+                ////check for any testers in that hour
+                //if (!filteredTesters.Any())
+                //{
+                //    throw new Exception("ERROR. No testers available in that hour");
+                //}
+
+                //var first = filteredTesters.First();
+                //return first.TesterId;
                 //filters all of the cartypes
-                var carMatch = from tester in filteredTesters
-                    where tester.Testercar == T.CarType
-                    select tester;
-                if(!carMatch.Any())
-                    throw new Exception("ERROR. There are no testers with that car type available that date.");
-                filteredTesters = (List<Tester>) carMatch;
-                string testerFound = "";
-                foreach (Tester t in filteredTesters)
-                {
-                    if (HasntPassedMaxTests(t,T.TestDate))
-                    {
-                        testerFound = t.TesterId;
-                        return testerFound;
-                    }
-                }
-                throw new Exception("ERROR. Potential testers have passed their max amount of tests in a week");
+                //var carMatch = from tester in filteredTesters
+                //    where tester.Testercar == T.CarType
+                //    select tester;
+                //if(!carMatch.Any())
+                //    throw new Exception("ERROR. There are no testers with that car type available that date.");
+                //filteredTesters = (List<Tester>) carMatch;
+                //string testerFound = "";
+                //foreach (Tester t in filteredTesters)
+                //{
+                //    if (HasntPassedMaxTests(t,T.TestDate))
+                //    {
+                //        testerFound = t.TesterId;
+                //        return testerFound;
+                //    }
+                //}
+                //throw new Exception("ERROR. Potential testers have passed their max amount of tests in a week");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                if (e.Message == "ERROR. No testers available in that hour")
-                {
-                    if (availableHours.Any())
-                    {
-                        Console.WriteLine("Avialable hours are: ");
-                        string hours=string.Join(",",availableHours);
-                        Console.WriteLine(hours);
-                    }
 
-                }
+                //Console.WriteLine(e.Message);
+                //if (e.Message == "ERROR. No testers available in that hour")
+                //{
+                //    if (availableHours.Any())
+                //    {
+                //        //Console.WriteLine("Avialable hours are: ");
+                //        string hours=string.Join(",",availableHours);
+                //        //Console.WriteLine(hours);
+                //        return "Avialable hours are: "+hours;
+                //    }
 
+
+                //}
+               // MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
 
@@ -639,39 +679,56 @@ namespace BL
         public List<Tester> TestersInArea(Address a)
         {
             List<Tester> testerlist = dal.GetListOfTesters();
+            List<Tester> filteredTesters=new List<Tester>();
+            Dictionary<Tester, string> testersWithDistance=new Dictionary<Tester, string>();
             //makes a random number for distance
-            Random r = new Random();
-            int x = r.Next(100, 1000);
+           // Random r = new Random();
+            //int x = r.Next(100, 1000);
             foreach (Tester t in testerlist)
             {
-                // if(!distance(a,t)==x)
-                //testerlist.remove(T);
-            }
+                string distance = adressDistance(t.TesterAdress.ToString(), a.ToString());
+                if (!distance.Contains("ERROR"))
+                {
+                    List<string> dis = distance.Split(',').ToList<string>();
+                    testersWithDistance.Add(t,dis.First());
+                    filteredTesters.Add(t);
+                }
+                else if (distance.Contains("internet"))
+                {
+                    return null;
+                }
 
-            return testerlist;
+            }
+            
+            var filter= filteredTesters.OrderBy(x=>testersWithDistance[x]);
+            filteredTesters = filter.ToList();
+            return filteredTesters;
         }
      
-        public List<Tester> AvailableTesters(DateTime dateAndHour)//all available testers in that hour schedual and other test wise
+        public List<Tester> AvailableTesters(DateTime dateAndHour, List<Tester> testersWithCar)//all available testers in that hour schedual and other test wise
         {
-            List<Tester> testerlist = dal.GetListOfTesters();
             List<Test> testlist = dal.GetListOfTests();
             List<Tester> filteredTesters = new List<Tester>();
             int dayOfWeek = (int)dateAndHour.DayOfWeek;
             int hour = dateAndHour.Hour;
             if (dayOfWeek < 5 && hour >= Configuration.StartOfWorkDay && hour <= Configuration.EndOfWorkDay)
-                foreach (Tester t in testerlist)
+                foreach (Tester t in testersWithCar)
                 {
 
-                    var row = Enumerable.Range(0, t.Schedule.GetLength(1))
-                        .Select(x => t.Schedule[dayOfWeek, x])
+                    //var row = Enumerable.Range(0, t.Schedule.GetLength(1))
+                    //    .Select(x => t.Schedule[dayOfWeek, x])
+                    //    .ToArray();
+                    ////no other tests in that hour with the same tester
+                    var colum = Enumerable.Range(0, t.Schedule.GetLength(0))
+                        .Select(x => t.Schedule[x,dayOfWeek])
                         .ToArray();
-                    //no other tests in that hour with the same tester 
+
                     bool noOtherTest =
                         testlist.Where(x => x.TestDate == dateAndHour.Date && x.TesterId == t.TesterId)
                         .All(delegate(Test x) { return x.DateAndHourOfTest.Hour != hour; });
                     //.All(x => x.DateAndHourOfTest.Hour != hour);
                     //if the tester is available in that hour and doesnt have any other tests 
-                    if (row[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
+                    if (colum[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
                         filteredTesters.Add(t);
 
                 }
@@ -859,53 +916,55 @@ namespace BL
 
         #endregion
 
-        public void adressdestance(string origin,string destination)
+        public string adressDistance(string origin, string destination)
         {
 
-         origin = "pisga 45 st. jerusalem"; //or "תקווה פתח 100 העם אחד "etc.
-         destination = "gilgal 78 st. ramat-gan";//or "גן רמת 10 בוטינסקי'ז "etc.
-        string KEY = @"oIomr8087DVAi6VGLGABq1jox21hylQh";
-        string url = @"https://www.mapquestapi.com/directions/v2/route" +
-                     @"?key=" + KEY +
-                     @"&from=" + origin +
-                     @"&to=" + destination +
-                     @"&outFormat=xml" +
-                     @"&ambiguities=ignore&routeType=fastest&doReverseGeocode=false" +
-                     @"&enhancedNarrative=false&avoidTimedConditions=false";
-        //request from MapQuest service the distance between the 2 addresses
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        WebResponse response = request.GetResponse();
-        Stream dataStream = response.GetResponseStream();
-        StreamReader sreader = new StreamReader(dataStream);
-        string responsereader = sreader.ReadToEnd();
-        response.Close();
-//the response is given in an XML format
-        XmlDocument xmldoc = new XmlDocument();
-        xmldoc.LoadXml(responsereader);
-        if (xmldoc.GetElementsByTagName("statusCode")[0].ChildNodes[0].InnerText == "0")
-//we have the expected answer
-        {
-            //display the returned distance
-            XmlNodeList distance = xmldoc.GetElementsByTagName("distance");
-            double distInMiles = Convert.ToDouble(distance[0].ChildNodes[0].InnerText);
-            Console.WriteLine("Distance In KM: " + distInMiles* 1.609344);
-            //display the returned driving time
-            XmlNodeList formattedTime = xmldoc.GetElementsByTagName("formattedTime");
-            string fTime = formattedTime[0].ChildNodes[0].InnerText;
-            Console.WriteLine("Driving Time: " + fTime);
-        }
-        else if (xmldoc.GetElementsByTagName("statusCode")[0].ChildNodes[0].InnerText == "402")
-//we have an answer that an error occurred, one of the addresses is not found
-    {
-    Console.WriteLine("an error occurred, one of the addresses is not found. try again.");
-    }
-    else //busy network or other error...
-    {
-    Console.WriteLine("We have'nt got an answer, maybe the net is busy...");
-    }
+            origin = "pisga 45 st. jerusalem"; //or "תקווה פתח 100 העם אחד "etc.
+            destination = "gilgal 78 st. ramat-gan";//or "גן רמת 10 בוטינסקי'ז "etc.
+            string KEY = @"oIomr8087DVAi6VGLGABq1jox21hylQh";
+            string url = @"https://www.mapquestapi.com/directions/v2/route" +
+                         @"?key=" + KEY +
+                         @"&from=" + origin +
+                         @"&to=" + destination +
+                         @"&outFormat=xml" +
+                         @"&ambiguities=ignore&routeType=fastest&doReverseGeocode=false" +
+                         @"&enhancedNarrative=false&avoidTimedConditions=false";
+            //request from MapQuest service the distance between the 2 addresses
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            WebResponse response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader sreader = new StreamReader(dataStream);
+            string responsereader = sreader.ReadToEnd();
+            response.Close();
+            //the response is given in an XML format
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.LoadXml(responsereader);
+            if (xmldoc.GetElementsByTagName("statusCode")[0].ChildNodes[0].InnerText == "0")
+            //we have the expected answer
+            {
+                //display the returned distance
+                XmlNodeList distance = xmldoc.GetElementsByTagName("distance");
+                double distInMiles = Convert.ToDouble(distance[0].ChildNodes[0].InnerText);
+                string dis =""+ (distInMiles * 1.609344);
+              //  Console.WriteLine("Distance In KM: " + distInMiles * 1.609344);
+                //display the returned driving time
+                XmlNodeList formattedTime = xmldoc.GetElementsByTagName("formattedTime");
+                string fTime = formattedTime[0].ChildNodes[0].InnerText;
+               // Console.WriteLine("Driving Time: " + fTime);
+                return dis + "," + fTime;
+            }
+            else if (xmldoc.GetElementsByTagName("statusCode")[0].ChildNodes[0].InnerText == "402")
+            //we have an answer that an error occurred, one of the addresses is not found
+            {
+                return "ERROR. One of the addresses is not found. Try again.";
+            }
+            else //busy network or other error...
+            {
+                return "ERROR. No answer recieved. Please check your internet connection";
+            }
 
-    }
         }
+    }
 
 
 }

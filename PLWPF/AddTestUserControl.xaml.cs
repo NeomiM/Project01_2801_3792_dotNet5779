@@ -170,6 +170,7 @@ namespace PLWPF
         {
             try
             {
+                testerAddress.Text = "";
                 hours.Items.Clear();
                 hours.Visibility = Visibility.Hidden;
                 AddDateErrors.Text = "";
@@ -270,9 +271,9 @@ namespace PLWPF
         {
             try
             {
-                if (AddTestForPL.DateAndHourOfTest.Date == DateTime.Today &&
-                    DateTime.Now.Hour >= hours.SelectedIndex + 9)
-                    throw new Exception("EROOR. Can't add an hour that has already passed.");
+                //if (AddTestForPL.DateAndHourOfTest.Date == DateTime.Today &&
+                  //  DateTime.Now.Hour >= hours.SelectedIndex + 9)
+                    //throw new Exception("EROOR. Can't add an hour that has already passed.");
                 TimeSpan ts;
                 if(hours.Items.Count!=null)
                 switch (hours.SelectedItem.ToString())

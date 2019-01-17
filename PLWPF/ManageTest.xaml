@@ -62,7 +62,8 @@
 
 
             <TabItem x:Name="UpdateTab" Header="Update Test">
-                <DockPanel x:Name="UpdateDockPanel">
+                <local:UpdateTest/>
+                <!--<DockPanel x:Name="UpdateDockPanel">
                     <StackPanel DockPanel.Dock="Left" Background="Bisque" Width="326">
                         <Button Content="Back To Main Menu" Width="auto" HorizontalAlignment="Left" Click="Button_Click" Margin="10,10,0,0"/>
                         <GroupBox Header="Test Detils" Background="AliceBlue" Height="145" Width="216" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="50,26,0,0">
@@ -179,7 +180,7 @@
                         <Button x:Name="saveButton" Content="Check" Width="75" Margin="10" Click="SaveButton_Click"/>
 
                     </StackPanel>
-                </DockPanel>
+                </DockPanel>-->
             </TabItem>
         </TabControl>
     </DockPanel>

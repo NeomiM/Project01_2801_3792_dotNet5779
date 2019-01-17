@@ -88,6 +88,11 @@ namespace DS
             tester.FirstName = "Beila";
             tester.TesterId = "205823792";
             tester1.Testercar = CarType.TwoWheel;
+            tester1._schedual[0, 0] = true;
+            tester1._schedual[1, 0] = true;
+            tester1._schedual[2, 0] = true;
+            tester1._schedual[3, 0] = true;
+            tester1._schedual[4, 1] = true;
 
             Tester tester2 = new Tester();
             tester2.DateOfBirth = time;

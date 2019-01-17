@@ -662,6 +662,8 @@ namespace PLWPF
                 {
                     throw new Exception("ERROR. Tester exist in system");
                 }
+                //hoursFromSchedualArr = TesterForPL._schedual;
+                //showTesterTime(0);
             }
             catch(Exception ex)
             {
@@ -689,15 +691,8 @@ namespace PLWPF
             string id = (string)TesterComboBox.SelectedItem;
             TesterForPL = bl.GetListOfTesters().FirstOrDefault(a => a.TesterId == id);
             {//schedual
-                hoursFromSchedualArr = TesterForPL.getSchedual();
-                for (int i = 0; i < 6; i++)//put selections hour for sunday
-                {
-                    if (hoursFromSchedualArr[i, 0])
-                    {
-                        schedualListBox.SelectedIndex = i;
-                    }
-                }
-
+                hoursFromSchedualArr = TesterForPL._schedual;
+                showTesterTime(0);
             }
             this.TesterGrid.DataContext = TesterForPL;
         }

@@ -31,8 +31,11 @@ namespace PLWPF
             InitializeComponent();
             WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
             bl = IBL_imp.Instance;
+            if (bl.GetListOfTests().Count == 0)
+            {
+                Update.Visibility = Visibility.Hidden;
+            }
 
- 
 
 
         }

@@ -19,9 +19,7 @@
                 <local:AddTestUserControl/>
             </TabItem>
             <TabItem x:Name="Update" Header="Update Test">
-                <StackPanel>
-                    <Button Content="this button is part of tab 2" />
-                </StackPanel>
+                <local:UpdateTest></local:UpdateTest>
             </TabItem>
         </TabControl>
     </DockPanel>

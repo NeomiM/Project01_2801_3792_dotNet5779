@@ -46,13 +46,13 @@ namespace PLWPF
                 this.u_testIdComboBox.DisplayMemberPath = "TestId";
                 this.u_testIdComboBox.DataContext = TestListForPL;
                 if (TestListForPL.Count == 0)
-                    throw new Exception("There are no Testers to update");
+                    throw new Exception("There are no Tests to update");
                 closeAlmostAll();
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                warningTextBlock.Text = ex.Message;
             }
         }
 

@@ -679,16 +679,30 @@ namespace BL
         public List<Tester> TestersInArea(Address a)
         {
             List<Tester> testerlist = dal.GetListOfTesters();
+            List<Tester> filteredTesters=new List<Tester>();
+            Dictionary<Tester, string> testersWithDistance=new Dictionary<Tester, string>();
             //makes a random number for distance
-            Random r = new Random();
-            int x = r.Next(100, 1000);
+           // Random r = new Random();
+            //int x = r.Next(100, 1000);
             foreach (Tester t in testerlist)
             {
-                // if(!distance(a,t)==x)
-                //testerlist.remove(T);
-            }
+                string distance = adressDistance(t.TesterAdress.ToString(), a.ToString());
+                if (!distance.Contains("ERROR"))
+                {
+                    List<string> dis = distance.Split(',').ToList<string>();
+                    testersWithDistance.Add(t,dis.First());
+                    filteredTesters.Add(t);
+                }
+                else if (distance.Contains("internet"))
+                {
+                    return null;
+                }
 
-            return testerlist;
+            }
+            
+            var filter= filteredTesters.OrderBy(x=>testersWithDistance[x]);
+            filteredTesters = filter.ToList();
+            return filteredTesters;
         }
      
         public List<Tester> AvailableTesters(DateTime dateAndHour, List<Tester> testersWithCar)//all available testers in that hour schedual and other test wise
@@ -902,7 +916,7 @@ namespace BL
 
         #endregion
 
-        public void adressdestance(string origin, string destination)
+        public string adressDistance(string origin, string destination)
         {
 
             origin = "pisga 45 st. jerusalem"; //or "תקווה פתח 100 העם אחד "etc.
@@ -931,20 +945,22 @@ namespace BL
                 //display the returned distance
                 XmlNodeList distance = xmldoc.GetElementsByTagName("distance");
                 double distInMiles = Convert.ToDouble(distance[0].ChildNodes[0].InnerText);
-                Console.WriteLine("Distance In KM: " + distInMiles * 1.609344);
+                string dis =""+ (distInMiles * 1.609344);
+              //  Console.WriteLine("Distance In KM: " + distInMiles * 1.609344);
                 //display the returned driving time
                 XmlNodeList formattedTime = xmldoc.GetElementsByTagName("formattedTime");
                 string fTime = formattedTime[0].ChildNodes[0].InnerText;
-                Console.WriteLine("Driving Time: " + fTime);
+               // Console.WriteLine("Driving Time: " + fTime);
+                return dis + "," + fTime;
             }
             else if (xmldoc.GetElementsByTagName("statusCode")[0].ChildNodes[0].InnerText == "402")
             //we have an answer that an error occurred, one of the addresses is not found
             {
-                Console.WriteLine("an error occurred, one of the addresses is not found. try again.");
+                return "ERROR. One of the addresses is not found. Try again.";
             }
             else //busy network or other error...
             {
-                Console.WriteLine("We have'nt got an answer, maybe the net is busy...");
+                return "ERROR. No answer recieved. Please check your internet connection";
             }
 
         }

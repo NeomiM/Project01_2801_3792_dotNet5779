@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BL;
 using BE;
+using Calendar = System.Globalization.Calendar;
 
 namespace PLWPF
 {
@@ -39,18 +40,20 @@ namespace PLWPF
                 TesterComboBox.IsEnabled = false;
                 AddDateErrors.Foreground = Brushes.Red;
                 HoursErrors.Foreground = Brushes.Red;
+                TesterErrors.Foreground = Brushes.Red;
                 AddTestForPL = new Test();
                 TestAddGrid.DataContext = AddTestForPL;
+                dateAndHourOfTestTextBlock.DataContext = AddTestForPL.DateAndHourOfTest.ToString();
                 AddTraineeListForPL = bl.readyTrainees();
                 emptyAddTab();
                 if (AddTraineeListForPL.Count == 0)
                     throw new Exception("ERROR. There are no trainees ready for a test.");
                 this.AddTraineeIdComboBox.ItemsSource = AddTraineeListForPL.Select(x => x.TraineeId);
-                AddTestCalender.DisplayDateStart = DateTime.Today;
+               AddTestCalender.DisplayDateStart = DateTime.Today;
                 AddTestCalender.IsEnabled = false;
                 hours.IsEnabled = false;
                 testIdTextBlock.Text = Configuration.FirstTestId.ToString("D" + 8);
-                blackoutFridaysAndSaterdays(DateTime.Today, DateTime.Today.AddDays(60));
+               // blackoutFridaysAndSaterdays(DateTime.Today, DateTime.Today.AddDays(60));
                 if(DateTime.Now.Hour>BE.Configuration.EndOfWorkDay-1)
                     AddTestCalender.BlackoutDates.Add(new CalendarDateRange(DateTime.Today));
 
@@ -66,10 +69,14 @@ namespace PLWPF
         public void emptyAddTab()
         {
             dateAndHourOfTestTextBlock.Text = "";
+            testerAddress.Text = "";
             carTypeTextBlock.Text = "";
             testAddress.Text = "";
             hours.SelectedItem = null;
+            traineeAddress.Text = "";
             emptyErrors();
+            TesterComboBox.SelectedIndex = -1;
+        //    AddTestCalender=new System.Windows.Controls.Calendar();
         }
 
         public void emptyErrors()
@@ -78,6 +85,8 @@ namespace PLWPF
             AddDateErrors.Visibility = Visibility.Collapsed;
             HoursErrors.Visibility = Visibility.Collapsed;
             HoursErrors.Text = "";
+            TesterErrors.Text = "";
+            TesterErrors.Visibility = Visibility.Collapsed;
 
         }
 
@@ -85,25 +94,62 @@ namespace PLWPF
         {
             try
             {
-                AddTestCalender.IsEnabled = true;
-                AddTestForPL.TraineeId = AddTraineeIdComboBox.SelectedItem.ToString();
-                AddTestForPL.CarType = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
-                    .Select(x => x.Traineecar).FirstOrDefault();
+                hours.Visibility = Visibility.Hidden;
+                if (AddTraineeIdComboBox.SelectedIndex != -1)
+                {
+                    emptyAddTab();
+
+
+                    // AddTestCalender.DisplayDateStart = DateTime.Today;
+                    AddTestCalender.BlackoutDates.Clear();
+                    //var blackoutdates = from date in AddTestCalender.BlackoutDates select date;
+                    //foreach (var blackoutdate in blackoutdates)
+                    //{
+                    //    AddTestCalender.BlackoutDates.Remove(blackoutdate);
+                    //}
+                    // AddTestCalender.DisplayDate = DateTime.Now;
+                    AddTestForPL.TraineeId = AddTraineeIdComboBox.SelectedItem.ToString();
+                    AddTestForPL.CarType = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
+                        .Select(x => x.Traineecar).FirstOrDefault();
+
+                    string address = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
+                        .Select(x => (x.TraineeAddress.ToString())).FirstOrDefault();
+                    if (address != null)
+                    {
+                        traineeAddress.Text = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
+                            .Select(x => (x.TraineeAddress.ToString())).FirstOrDefault();
+                    }
+                    else traineeAddress.Text = "Address not found";
+
                 if (AddTestForPL.CarType == null)
                     throw new Exception("ERROR. Add a car type to the trainee first");
                 carTypeTextBlock.Text = AddTestForPL.CarType.ToString();
-                Blackoutdays(DateTime.Today.Day, DateTime.Today.Month);
+                if(bl.GetListOfTesters().All(x=>x.Testercar!=AddTestForPL.CarType))
+                    throw new Exception("ERROR. there are no testers with that car type.");
+                AddTestCalender.IsEnabled = true;
+               // Blackoutdays(DateTime.Today.Day, DateTime.Today.Month);
+              // blackoutFridaysAndSaterdays(DateTime.Today, DateTime.Today.AddDays(60));
+
+                Blackoutdays(1, AddTestCalender.DisplayDate.Month);
+                AddTestCalender.DisplayDate = new DateTime(AddTestCalender.DisplayDate.Year,AddTestCalender.DisplayDate.Month,1);
+               blackoutFridaysAndSaterdays(AddTestCalender.DisplayDate, AddTestCalender.DisplayDate.AddDays(60));
+             
                 int next = DateTime.Today.Month + 1;
                // if (DateTime.Today.Month == 12)
                 //    next = 1;
                 //Blackoutdays(DateTime.Today.Day, next);
+                
 
+                }
 
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                AddTraineeIdComboBox.SelectedIndex = -1;
+                TesterErrors.Text = exception.Message;
+                TesterErrors.Visibility = Visibility.Visible;
+                AddTestCalender.IsEnabled = false;
+                // MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                //AddTraineeIdComboBox.SelectedIndex = -1;
             }
 
         }
@@ -125,6 +171,7 @@ namespace PLWPF
             try
             {
                 hours.Items.Clear();
+                hours.Visibility = Visibility.Hidden;
                 AddDateErrors.Text = "";
                 TesterComboBox.SelectedIndex=-1;
                 //if (TesterComboBox.Items != null)
@@ -227,6 +274,7 @@ namespace PLWPF
                     DateTime.Now.Hour >= hours.SelectedIndex + 9)
                     throw new Exception("EROOR. Can't add an hour that has already passed.");
                 TimeSpan ts;
+                if(hours.Items.Count!=null)
                 switch (hours.SelectedItem.ToString())
                 {
                     case "9:00-10:00": //nine 
@@ -268,9 +316,13 @@ namespace PLWPF
             }
             catch (Exception exception)
             {
+                if (exception.Message != "Object reference not set to an instance of an object.")
+                {
+
                 HoursErrors.Visibility = Visibility.Visible;
                 HoursErrors.Text = exception.Message;
                 HoursErrors.Foreground = Brushes.Red;
+                }
             }
 
 
@@ -281,10 +333,22 @@ namespace PLWPF
         {
             try
             {
+                hours.Items.Clear();
                 AddTestForPL.TesterId = TesterComboBox.SelectedItem.ToString();
+                string address = bl.GetListOfTesters().Where(x => x.TesterId == AddTestForPL.TesterId)
+                    .Select(x => (x.TesterAdress.ToString())).FirstOrDefault();
+                if (address != null)
+                {
+                    testerAddress.Text = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
+                        .Select(x => (x.TraineeAddress.ToString())).FirstOrDefault();
+                }
+                else testerAddress.Text = "Address not found";
                 List<int> hoursOfTester = AvilabletestersForPL[AddTestForPL.TesterId];
                 TimeSpan ts = new TimeSpan(hoursOfTester.First(), 0, 0);
+                AddTestForPL.DateAndHourOfTest = AddTestForPL.DateAndHourOfTest.Date;
                 AddTestForPL.DateAndHourOfTest= AddTestForPL.DateAndHourOfTest + ts;
+                dateAndHourOfTestTextBlock.Text = AddTestForPL.DateAndHourOfTest.ToString();
+
 
                 if (hoursOfTester != null)
                 {

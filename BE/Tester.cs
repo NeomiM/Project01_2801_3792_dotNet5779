@@ -17,7 +17,7 @@ namespace BE
         private Gender _testerGender;
         private string _phoneNumber;
 
-        internal Address _testerAdress;
+        private Address _testerAdress;
         private int _yearsOfExperience;
         private int _maxTestsInaWeek=Configuration.MxTestsInAWeek;
 
@@ -42,7 +42,7 @@ namespace BE
         public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = value; }
         public int YearsOfExperience { get => _yearsOfExperience; set => _yearsOfExperience = value; }
         public int MaxTestsInaWeek { get => _maxTestsInaWeek; set => _maxTestsInaWeek = value; }
-        internal Address TesterAdress { get => _testerAdress; set => _testerAdress = value; }
+        public Address TesterAdress { get => _testerAdress; set => _testerAdress = value; }
         public double MaxDistanceForTest { get => _maxDistanceForTest; set => _maxDistanceForTest = value; }
 
         public CarType Testercar { get => _testercar; set => _testercar = value; }

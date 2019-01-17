@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using BE;
 //by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace DS
@@ -15,61 +16,61 @@ namespace DS
         {
             #region two tests
 
-            Test test = new Test();
-            test.CheckMirrors = true;
+            //Test test = new Test();
+            //test.CheckMirrors = true;
             DateTime time = DateTime.Today.AddDays(8);
-            test.DateAndHourOfTest = DateTime.Today;
-            test.ImediateStop = true;
-            test.KeptDistance = true;
-            test.KeptRightofPresidence = true;
-            test.Parking = true;
-            test.ReverseParking = true;
-            test.RightTurn = true;
-            test.StoppedAtRed = true;
-            test.StoppedAtcrossWalk = true;
-            test.TestDate = time;
-            test.TesterId = "328772801";
-            test.TraineeId = "328772801";
-            test.TestPassed = false;
-            test.CarType = CarType.HeavyTruck;
+            //test.DateAndHourOfTest = DateTime.Today;
+            //test.ImediateStop = true;
+            //test.KeptDistance = true;
+            //test.KeptRightofPresidence = true;
+            //test.Parking = true;
+            //test.ReverseParking = true;
+            //test.RightTurn = true;
+            //test.StoppedAtRed = true;
+            //test.StoppedAtcrossWalk = true;
+            //test.TestDate = time;
+            //test.TesterId = "328772801";
+            //test.TraineeId = "328772801";
+            //test.TestPassed = false;
+            //test.CarType = CarType.HeavyTruck;
 
-            Test test2 = new Test();
-            test2.CheckMirrors = true;
-            DateTime time2 = DateTime.Today.AddDays(5);
-            test2.DateAndHourOfTest = DateTime.Today.AddDays(5);
-            test2.ImediateStop = true;
-            test2.KeptDistance = true;
-            test2.KeptRightofPresidence = true;
-            test2.Parking = true;
-            test2.ReverseParking = true;
-            test2.RightTurn = true;
-            test2.StoppedAtRed = true;
-            test2.StoppedAtcrossWalk = true;
-            test2.TestDate = time;
-            test2.TesterId = "319185997";
-            test2.TraineeId = "319185997";
-            test2.TestPassed = false;
+            //Test test2 = new Test();
+            //test2.CheckMirrors = true;
+            //DateTime time2 = DateTime.Today.AddDays(5);
+            //test2.DateAndHourOfTest = DateTime.Today.AddDays(5);
+            //test2.ImediateStop = true;
+            //test2.KeptDistance = true;
+            //test2.KeptRightofPresidence = true;
+            //test2.Parking = true;
+            //test2.ReverseParking = true;
+            //test2.RightTurn = true;
+            //test2.StoppedAtRed = true;
+            //test2.StoppedAtcrossWalk = true;
+            //test2.TestDate = time;
+            //test2.TesterId = "319185997";
+            //test2.TraineeId = "319185997";
+            //test2.TestPassed = false;
 
-            Test test3 = new Test();
-            test3.TestDate = DateTime.Today.AddDays(-5);
-            test3.CheckMirrors = true;
-            test3.DateAndHourOfTest = DateTime.Today.AddDays(-5);
-            test3.ImediateStop = true;
-            test3.KeptDistance = true;
-            test3.KeptRightofPresidence = true;
-            test3.Parking = true;
-            test3.ReverseParking = true;
-            test3.RightTurn = true;
-            test3.StoppedAtRed = true;
-            test3.StoppedAtcrossWalk = true;
-            test3.TestDate = time;
-            test3.TesterId = "205823792";
-            test3.TraineeId = "205823792";
-            test3.TestPassed = true;
+            //Test test3 = new Test();
+            //test3.TestDate = DateTime.Today.AddDays(-5);
+            //test3.CheckMirrors = true;
+            //test3.DateAndHourOfTest = DateTime.Today.AddDays(-5);
+            //test3.ImediateStop = true;
+            //test3.KeptDistance = true;
+            //test3.KeptRightofPresidence = true;
+            //test3.Parking = true;
+            //test3.ReverseParking = true;
+            //test3.RightTurn = true;
+            //test3.StoppedAtRed = true;
+            //test3.StoppedAtcrossWalk = true;
+            //test3.TestDate = time;
+            //test3.TesterId = "205823792";
+            //test3.TraineeId = "205823792";
+            //test3.TestPassed = true;
 
-            _testList.Add(test);
-            _testList.Add(test2);
-            _testList.Add(test3);
+            //_testList.Add(test);
+            //_testList.Add(test2);
+            //_testList.Add(test3);
 
             #endregion
 
@@ -87,12 +88,12 @@ namespace DS
             tester.Testercar = CarType.HeavyTruck;
             bool[,] sced=
             {
-                { false,true, true, true,true},
-                { false,false, true, true,true},
-                { false,true, true, true,true},
-                { false,true, true, true,true},
-                { false,true, true, true,true},
-                { false,true, true, true,true}
+                { false,true, false, true,true},
+                { false,true, false, true,true},
+                { false,true, false, true,true},
+                { false,true, false, true,true},
+                { false,true, false, true,true},
+                { false,true, false, true,true}
             };
             tester.Schedule = sced;
 
@@ -100,6 +101,18 @@ namespace DS
             tester2.DateOfBirth = time;
             tester2.FirstName = "Elisha";
             tester2.TesterId = "319185997";
+            tester2.Testercar = CarType.HeavyTruck;
+            sced =new[,]
+            {
+                { true,false, false, true,true},
+                { true,false, false, true,true},
+                { true,true, false, true,true},
+                { true,true, false, true,true},
+                { true,true, false, true,true},
+                { true,true, false, true,true}
+            };
+            tester2.TesterAdress = new Address("hertzel", "613", "beit Shemesh");
+            tester2.Schedule = sced;
             _testerList.Add(tester);
             _testerList.Add(tester1);
             _testerList.Add(tester2);
@@ -115,6 +128,7 @@ namespace DS
             trainee.DrivingTeacher = "Shalom";
             trainee.LessonsPassed =(int) Configuration.MinAmmountOfLessons + 1;
             trainee.Traineecar = CarType.HeavyTruck;
+            trainee.TraineeAddress=new Address("hertzel","613","beit Shemesh");
 
             Trainee trainee1 = new Trainee();
             trainee1.DateOfBirth = time;
@@ -122,6 +136,7 @@ namespace DS
             trainee1.TraineeId = "205823792";
             trainee1.LessonsPassed = (int)Configuration.MinAmmountOfLessons + 1;
             trainee1.DrivingTeacher = "Shalom";
+            trainee1.Traineecar = CarType.TwoWheel;
 
             Trainee trainee2 = new Trainee();
             trainee2.DateOfBirth = time;

@@ -26,14 +26,12 @@ namespace PLWPF
         private BL.IBL bl;
         private BE.Tester TesterForPL;
         private List<Tester> TesterListForPL;
-        string winCondition;
         //arrays for schedule
         bool[] SundayArr = new bool[6];
         bool[] MondayArr = new bool[6];
         bool[] TuesdayArr = new bool[6];
-         bool[] WednesdayArr = new bool[6];
+        bool[] WednesdayArr = new bool[6];
         bool[] ThursdayArr = new bool[6];
-        bool[,] hoursFromSchedualArr = new bool[6, 5];
 
         public TestersWindow()
         {
@@ -67,10 +65,10 @@ namespace PLWPF
         {
             this.Close();
         }
+
         private void AddTester_Click(object sender, RoutedEventArgs e)
         {
             removeWarnings();
-            winCondition = "add";
             TesterComboBox.ItemsSource = bl.GetListOfTesters().Select(x => x.TesterId);
             TesterForPL = new Tester();
             openAll();
@@ -86,7 +84,6 @@ namespace PLWPF
         private void UpdateTester_Click(object sender, RoutedEventArgs e)
         {
             removeWarnings();
-            winCondition = "update";
             try
             {
                 TesterForPL = new Tester();
@@ -104,7 +101,6 @@ namespace PLWPF
                 Save.Content = "Check";
                 TesterComboBox.Visibility = Visibility.Visible;
                 testerIdTextBox.Visibility = Visibility.Hidden;
-                showTesterTime(0);
             }
             catch (Exception exception)
             {
@@ -115,7 +111,6 @@ namespace PLWPF
         private void DeleteTester_Click(object sender, RoutedEventArgs e)
         {
             removeWarnings();
-            winCondition = "delete";
             try
             {
                 Save.Content = "Delete";
@@ -128,7 +123,6 @@ namespace PLWPF
                 IdErrors.Text = "First Select ID";
                 TesterListForPL = bl.GetListOfTesters();
                 TesterComboBox.ItemsSource = bl.GetListOfTesters().Select(x => x.TesterId);
-                showTesterTime(0);
                 if (TesterListForPL.Count == 0)
                     throw new Exception("There are no testers to update.");
             }
@@ -140,138 +134,9 @@ namespace PLWPF
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (Save.Content == "Add")
-            {
-                try
-                {
-                    //TesterForPL.TesterAddress = new Address(Street.Text, BuidingNumber.Text, City.Text);
-                    TesterForPL.setSchedual(SundayArr, MondayArr, TuesdayArr, WednesdayArr, ThursdayArr);
-                    bl.AddTester(TesterForPL);
-                    TesterGrid.Visibility = Visibility.Hidden;
-                    MessageBox.Show("Tester saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-
-                catch (Exception exception)
-                {
-                    MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    TesterGrid.Visibility = Visibility.Visible;
-                }
-            }
-            if (Save.Content == "Update")
-            {
-                //TesterForPL.TesterAddress = new Address(Street.Text, BuidingNumber.Text, City.Text);
-                TesterForPL.setSchedual(SundayArr, MondayArr, TuesdayArr, WednesdayArr, ThursdayArr);
-                bl.UpdateTester(TesterForPL);
-                TesterGrid.Visibility = Visibility.Hidden;
-                MessageBox.Show("Tester saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-
-            if (Save.Content == "Delete")
-            {
-                MessageBoxResult dialogResult = MessageBox.Show("Are you sure you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-                if (dialogResult == MessageBoxResult.Yes)
-                {
-                    bl.DeleteTester(TesterForPL);
-                    TesterGrid.Visibility = Visibility.Hidden;
-                    MessageBox.Show("Tester successfully deleted.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                    TesterForPL = new Tester();
-                    TesterGrid.DataContext = TesterForPL;
-                }
-                else if (dialogResult == MessageBoxResult.No)
-                {
-                    TesterForPL = new Tester();
-                    TesterGrid.DataContext = TesterForPL;
-                    TesterGrid.Visibility = Visibility.Hidden;
-                    MessageBox.Show("Tester not deleted.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                }
-            }
-
             if (Save.Content == "Check")
             {
-                //empty filed
-                if (string.IsNullOrWhiteSpace(firstNameTextBox.Text))
-                {
-                    NameErrors.Text = "Warning. Filed is empty";
-                    NameErrors.Foreground = Brushes.Orange;
-                    firstNameTextBox.BorderBrush = Brushes.Orange;
-                }
-                if (string.IsNullOrWhiteSpace(sirnameTextBox.Text))
-                {
-                    SirNameErrors.Text = "Warning. Filed is empty";
-                    SirNameErrors.Foreground = Brushes.Orange;
-                    sirnameTextBox.BorderBrush = Brushes.Orange;
-                }
-                if (testerGenderComboBox.SelectedItem == null)
-                {
-                    GenderError.Text = "Warning. No item selected";
-                    GenderError.Foreground = Brushes.Orange;
-                    testerGenderComboBox.BorderBrush = Brushes.Orange;
-                }
-                if (string.IsNullOrWhiteSpace(phoneNumberTextBox.Text))
-                {
-                    PhoneNumberErrors.Text = "Warning. Filed is empty";
-                    PhoneNumberErrors.Foreground = Brushes.Orange;
-                    phoneNumberTextBox.BorderBrush = Brushes.Orange;
-                }
-                if (string.IsNullOrWhiteSpace(phoneNumberTextBox.Text))
-                {
-                    PhoneNumberErrors.Text = "Warning. Filed is empty";
-                    PhoneNumberErrors.Foreground = Brushes.Orange;
-                    phoneNumberTextBox.BorderBrush = Brushes.Orange;
-                }
-                if (string.IsNullOrWhiteSpace(emailTextBox.Text))
-                {
-                    EmailErrors.Text = "Warning. Filed is empty";
-                    EmailErrors.Foreground = Brushes.Orange;
-                    emailTextBox.BorderBrush = Brushes.Orange;
-                }
-                if (testercarComboBox.SelectedItem == null)
-                {
-                    CarError.Text = "Warning. No item selected";
-                    CarError.Foreground = Brushes.Orange;
-                    testercarComboBox.BorderBrush = Brushes.Orange;
-                }
-                if (maxDistanceForTestTextBox.Text == "0" || maxDistanceForTestTextBox.Text == null)
-                {
-                    DistanceError.Text = "Warning. Filed is empty";
-                    DistanceError.Foreground = Brushes.Orange;
-                    maxDistanceForTestTextBox.BorderBrush = Brushes.Orange;
-                }
-                if (yearsOfExperienceTextBox.Text == "0" || yearsOfExperienceTextBox.Text == null)
-                {
-                    ExperienceErrors.Text = "Warning. Filed is empty";
-                    ExperienceErrors.Foreground = Brushes.Orange;
-                    yearsOfExperienceTextBox.BorderBrush = Brushes.Orange;
-                }
-                if (maxTestsInaWeekTextBox.Text == "0" || maxTestsInaWeekTextBox.Text == null)
-                {
-                    MaxTestsError.Text = "Warning. Filed is empty";
-                    MaxTestsError.Foreground = Brushes.Orange;
-                    maxTestsInaWeekTextBox.BorderBrush = Brushes.Orange;
-                }
-                if(string.IsNullOrWhiteSpace(City.Text))
-                {
-                    AddressErrors.Text = "Warning. Filed is empty";
-                    AddressErrors.Foreground = Brushes.Orange;
-                    City.BorderBrush = Brushes.Orange;
-                }
-                if (string.IsNullOrWhiteSpace(Street.Text))
-                {
-                    AddressErrors.Text = "Warning. Filed is empty";
-                    AddressErrors.Foreground = Brushes.Orange;
-                    Street.BorderBrush = Brushes.Orange;
-                }
-                if (string.IsNullOrWhiteSpace(BuidingNumber.Text))
-                {
-                    AddressErrors.Text = "Warning. Filed is empty";
-                    AddressErrors.Foreground = Brushes.Orange;
-                    BuidingNumber.BorderBrush = Brushes.Orange;
-                }
-                if (!SundayArr.Any(x => x) && !MondayArr.Any(x => x) && !TuesdayArr.Any(x => x) && !WednesdayArr.Any(x => x) && !ThursdayArr.Any(x => x))//if schedule is empty
-                {
-                    ScheduleError.Text = "Warning, No times selected";
-                    ScheduleError.Foreground = Brushes.Orange;
-                }         
+                isWarnings();//empty filed
 
                 if (noErrors() && TesterComboBox.Visibility == Visibility.Hidden)
                 {
@@ -303,6 +168,53 @@ namespace PLWPF
                                     "and fix errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+
+            if (Save.Content == "Add")
+            {
+                try
+                {
+                    //TesterForPL.TesterAddress = new Address(Street.Text, BuidingNumber.Text, City.Text);
+                    TesterForPL.setSchedual(SundayArr, MondayArr, TuesdayArr, WednesdayArr, ThursdayArr);
+                    bl.AddTester(TesterForPL);
+                    TesterGrid.Visibility = Visibility.Hidden;
+                    MessageBox.Show("Tester saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    TesterGrid.Visibility = Visibility.Visible;
+                }
+            }
+
+            if (Save.Content == "Update")
+            {
+                //TesterForPL.TesterAdress = new Address(Street.Text, BuidingNumber.Text, City.Text);
+                TesterForPL.setSchedual(SundayArr, MondayArr, TuesdayArr, WednesdayArr, ThursdayArr);
+                bl.UpdateTester(TesterForPL);
+                TesterGrid.Visibility = Visibility.Hidden;
+                MessageBox.Show("Tester saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+            if (Save.Content == "Delete")
+            {
+                MessageBoxResult dialogResult = MessageBox.Show("Are you sure you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                if (dialogResult == MessageBoxResult.Yes)
+                {
+                    bl.DeleteTester(TesterForPL);
+                    TesterGrid.Visibility = Visibility.Hidden;
+                    MessageBox.Show("Tester successfully deleted.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                    TesterForPL = new Tester();
+                    TesterGrid.DataContext = TesterForPL;
+                }
+                else if (dialogResult == MessageBoxResult.No)
+                {
+                    TesterForPL = new Tester();
+                    TesterGrid.DataContext = TesterForPL;
+                    TesterGrid.Visibility = Visibility.Hidden;
+                    MessageBox.Show("Tester not deleted.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                }
+            }
+
         }
         #endregion
 
@@ -369,6 +281,93 @@ namespace PLWPF
             }
         }
 
+        public void isWarnings()
+        {
+            if (string.IsNullOrWhiteSpace(firstNameTextBox.Text))
+            {
+                NameErrors.Text = "Warning. Filed is empty";
+                NameErrors.Foreground = Brushes.Orange;
+                firstNameTextBox.BorderBrush = Brushes.Orange;
+            }
+            if (string.IsNullOrWhiteSpace(sirnameTextBox.Text))
+            {
+                SirNameErrors.Text = "Warning. Filed is empty";
+                SirNameErrors.Foreground = Brushes.Orange;
+                sirnameTextBox.BorderBrush = Brushes.Orange;
+            }
+            if (testerGenderComboBox.SelectedItem == null)
+            {
+                GenderError.Text = "Warning. No item selected";
+                GenderError.Foreground = Brushes.Orange;
+                testerGenderComboBox.BorderBrush = Brushes.Orange;
+            }
+            if (string.IsNullOrWhiteSpace(phoneNumberTextBox.Text))
+            {
+                PhoneNumberErrors.Text = "Warning. Filed is empty";
+                PhoneNumberErrors.Foreground = Brushes.Orange;
+                phoneNumberTextBox.BorderBrush = Brushes.Orange;
+            }
+            if (string.IsNullOrWhiteSpace(phoneNumberTextBox.Text))
+            {
+                PhoneNumberErrors.Text = "Warning. Filed is empty";
+                PhoneNumberErrors.Foreground = Brushes.Orange;
+                phoneNumberTextBox.BorderBrush = Brushes.Orange;
+            }
+            if (string.IsNullOrWhiteSpace(emailTextBox.Text))
+            {
+                EmailErrors.Text = "Warning. Filed is empty";
+                EmailErrors.Foreground = Brushes.Orange;
+                emailTextBox.BorderBrush = Brushes.Orange;
+            }
+            if (testercarComboBox.SelectedItem == null)
+            {
+                CarError.Text = "Warning. No item selected";
+                CarError.Foreground = Brushes.Orange;
+                testercarComboBox.BorderBrush = Brushes.Orange;
+            }
+            if (maxDistanceForTestTextBox.Text == "0" || maxDistanceForTestTextBox.Text == null)
+            {
+                DistanceError.Text = "Warning. Filed is empty";
+                DistanceError.Foreground = Brushes.Orange;
+                maxDistanceForTestTextBox.BorderBrush = Brushes.Orange;
+            }
+            if (yearsOfExperienceTextBox.Text == "0" || yearsOfExperienceTextBox.Text == null)
+            {
+                ExperienceErrors.Text = "Warning. Filed is empty";
+                ExperienceErrors.Foreground = Brushes.Orange;
+                yearsOfExperienceTextBox.BorderBrush = Brushes.Orange;
+            }
+            if (maxTestsInaWeekTextBox.Text == "0" || maxTestsInaWeekTextBox.Text == null)
+            {
+                MaxTestsError.Text = "Warning. Filed is empty";
+                MaxTestsError.Foreground = Brushes.Orange;
+                maxTestsInaWeekTextBox.BorderBrush = Brushes.Orange;
+            }
+            if (string.IsNullOrWhiteSpace(City.Text))
+            {
+                AddressErrors.Text = "Warning. Filed is empty";
+                AddressErrors.Foreground = Brushes.Orange;
+                City.BorderBrush = Brushes.Orange;
+            }
+            if (string.IsNullOrWhiteSpace(Street.Text))
+            {
+                AddressErrors.Text = "Warning. Filed is empty";
+                AddressErrors.Foreground = Brushes.Orange;
+                Street.BorderBrush = Brushes.Orange;
+            }
+            if (string.IsNullOrWhiteSpace(BuidingNumber.Text))
+            {
+                AddressErrors.Text = "Warning. Filed is empty";
+                AddressErrors.Foreground = Brushes.Orange;
+                BuidingNumber.BorderBrush = Brushes.Orange;
+            }
+            if (!SundayArr.Any(x => x) && !MondayArr.Any(x => x) && !TuesdayArr.Any(x => x) && !WednesdayArr.Any(x => x) && !ThursdayArr.Any(x => x))//if schedule is empty
+            {
+                ScheduleError.Text = "Warning, No times selected";
+                ScheduleError.Foreground = Brushes.Orange;
+            }
+        }
+
         public void removeWarnings()
         {
             IdErrors.Text = "";
@@ -402,12 +401,11 @@ namespace PLWPF
             e.Handled = new Regex("^[a-zA-Z]+$").IsMatch(e.Text);
         }
 
-        //for numbers only
+        //for letters only
         private void TextBox_PreviewTextInputLetters(object sender, TextCompositionEventArgs e)
         {
             e.Handled = new Regex("[^A-z]+").IsMatch(e.Text);
         }
-        #endregion
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -416,72 +414,106 @@ namespace PLWPF
             // Load data by setting the CollectionViewSource.Source property:
             // testerViewSource.Source = [generic data source]
         }
+        #endregion
 
         #region Schedual
+
+        private void SchedualListBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                //save the user choose in arr
+                switch (dayLabel.Content)
+                {
+                    case "Sunday":
+                        setHoursInArr(SundayArr);
+                        break;
+
+                    case "Monday":
+                        setHoursInArr(MondayArr);
+                        break;
+
+                    case "Tuesday":
+                        setHoursInArr(TuesdayArr);
+                        break;
+
+                    case "Wednesday":
+                        setHoursInArr(WednesdayArr);
+                        break;
+
+                    case "Thursday":
+                        setHoursInArr(ThursdayArr);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There is some problem", "Oops", MessageBoxButton.OK, MessageBoxImage.Hand);
+            }
+
+        }
+
         private void NextDayButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                if (winCondition == "add")
+                switch (dayLabel.Content)
                 {
-                    switch (dayLabel.Content)
-                    {
-                        case "Sunday":
-                            dayLabel.Content = "Monday";//change the label
-                            showPreviosSelections(MondayArr);//show previes selections
-                            break;
+                    case "Sunday":
+                        dayLabel.Content = "Monday";//change the label
+                        showDailyHours(MondayArr);//show previes selections
+                        break;
 
-                        case "Monday":
-                            dayLabel.Content = "Tuesday";
-                            showPreviosSelections(TuesdayArr);
-                            break;
+                    case "Monday":
+                        dayLabel.Content = "Tuesday";
+                        showDailyHours(TuesdayArr);
+                        break;
 
-                        case "Tuesday":
-                            dayLabel.Content = "Wednesday";
-                            showPreviosSelections(WednesdayArr);
-                            break;
+                    case "Tuesday":
+                        dayLabel.Content = "Wednesday";
+                        showDailyHours(WednesdayArr);
+                        break;
 
-                        case "Wednesday":
-                            dayLabel.Content = "Thursday";
-                            showPreviosSelections(ThursdayArr);
-                            break;
+                    case "Wednesday":
+                        dayLabel.Content = "Thursday";
+                        showDailyHours(ThursdayArr);
+                        break;
 
-                        case "Thursday":
-                            dayLabel.Content = "Sunday";
-                            showPreviosSelections(SundayArr);
-                            break;
-                    }
+                    case "Thursday":
+                        dayLabel.Content = "Sunday";
+                        showDailyHours(SundayArr);
+                        break;
                 }
-                else//update or delete
-                {
-                    switch (dayLabel.Content)//change the Label
-                    {
-                        case "Sunday":
-                            dayLabel.Content = "Monday";
-                            showTesterTime(1);
-                            break;
+                //else//update or delete
+                //{
+                //    switch (dayLabel.Content)//change the Label
+                //    {
+                //        case "Sunday":
+                //            dayLabel.Content = "Monday";
+                //            showTesterTime(1);
+                //            break;
 
-                        case "Monday":
-                            dayLabel.Content = "Tuesday";
-                            showTesterTime(2);
-                            break;
+                //        case "Monday":
+                //            dayLabel.Content = "Tuesday";
+                //            showTesterTime(2);
+                //            break;
 
-                        case "Tuesday":
-                            dayLabel.Content = "Wednesday";
-                            showTesterTime(3);
-                            break;
+                //        case "Tuesday":
+                //            dayLabel.Content = "Wednesday";
+                //            showTesterTime(3);
+                //            break;
 
-                        case "Wednesday":
-                            dayLabel.Content = "Thursday";
-                            showTesterTime(4);
-                            break;
+                //        case "Wednesday":
+                //            dayLabel.Content = "Thursday";
+                //            showTesterTime(4);
+                //            break;
 
-                        case "Thursday":
-                            dayLabel.Content = "Sunday";
-                            showTesterTime(5);
-                            break;
-                    }
-                }
+                //        case "Thursday":
+                //            dayLabel.Content = "Sunday";
+                //            showTesterTime(0);
+                //            break;
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -493,67 +525,64 @@ namespace PLWPF
         {
             try
             {
-                if (winCondition == "add")
+                switch (dayLabel.Content)
                 {
-                    switch (dayLabel.Content)
-                    {
-                        case "Sunday":
-                            dayLabel.Content = "Thursday";//change the label
-                            showPreviosSelections(ThursdayArr);
-                            break;
+                    case "Sunday":
+                        dayLabel.Content = "Thursday";//change the label
+                        showDailyHours(ThursdayArr);
+                        break;
 
-                        case "Monday":
-                            dayLabel.Content = "Sunday";
-                            showPreviosSelections(SundayArr);
-                            break;
+                    case "Monday":
+                        dayLabel.Content = "Sunday";
+                        showDailyHours(SundayArr);
+                        break;
 
-                        case "Tuesday":
-                            dayLabel.Content = "Monday";
-                            showPreviosSelections(MondayArr);
-                            break;
+                    case "Tuesday":
+                        dayLabel.Content = "Monday";
+                        showDailyHours(MondayArr);
+                        break;
 
-                        case "Wednesday":
-                            dayLabel.Content = "Tuesday";
-                            showPreviosSelections(TuesdayArr);
-                            break;
+                    case "Wednesday":
+                        dayLabel.Content = "Tuesday";
+                        showDailyHours(TuesdayArr);
+                        break;
 
-                        case "Thursday":
-                            dayLabel.Content = "Wednesday";
-                            showPreviosSelections(WednesdayArr);
-                            break;
-                    }
+                    case "Thursday":
+                        dayLabel.Content = "Wednesday";
+                        showDailyHours(WednesdayArr);
+                        break;
                 }
-                else//update or delete
-                {
-                    switch (dayLabel.Content)//change the Label
-                    {
+                //else//update or delete
+                //{
+                //    switch (dayLabel.Content)//change the Label
+                //    {
 
-                        case "Sunday":
-                            dayLabel.Content = "Thursday";
-                            showTesterTime(4);                            
-                            break;
+                //        case "Sunday":
+                //            dayLabel.Content = "Thursday";
+                //            showTesterTime(4);                            
+                //            break;
 
-                        case "Monday":
-                            dayLabel.Content = "Sunday";
-                            showTesterTime(0);
-                            break;
+                //        case "Monday":
+                //            dayLabel.Content = "Sunday";
+                //            showTesterTime(0);
+                //            break;
 
-                        case "Tuesday":
-                            dayLabel.Content = "Monday";
-                            showTesterTime(1);
-                            break;
+                //        case "Tuesday":
+                //            dayLabel.Content = "Monday";
+                //            showTesterTime(1);
+                //            break;
 
-                        case "Wednesday":
-                            dayLabel.Content = "Tuesday";
-                            showTesterTime(2);
-                            break;
+                //        case "Wednesday":
+                //            dayLabel.Content = "Tuesday";
+                //            showTesterTime(2);
+                //            break;
 
-                        case "Thursday":
-                            dayLabel.Content = "Wednesday";
-                            showTesterTime(3);
-                            break;
-                    }
-                }
+                //        case "Thursday":
+                //            dayLabel.Content = "Wednesday";
+                //            showTesterTime(3);
+                //            break;
+                //    }
+                //}
             }
             catch(Exception ex)
             {
@@ -561,41 +590,7 @@ namespace PLWPF
             }            
         }
 
-        private void SchedualListBox_MouseLeave(object sender, MouseEventArgs e)
-        {
-            try
-            {
-                //bool notAllIsFalse = false;
-                switch (dayLabel.Content)//change the hours in list
-                {
-                    case "Sunday":                        
-                        setHoursArr(SundayArr);                        
-                        break;
-
-                    case "Monday":
-                        setHoursArr(MondayArr);
-                        break;
-
-                    case "Tuesday":
-                        setHoursArr(TuesdayArr);
-                        break;
-
-                    case "Wednesday":
-                        setHoursArr(WednesdayArr);
-                        break;
-
-                    case "Thursday":
-                        setHoursArr(ThursdayArr);
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There is some problem", "Oops", MessageBoxButton.OK, MessageBoxImage.Hand);
-            }
-            
-        }
-        public void showPreviosSelections(bool[] dayArr)
+        public void showDailyHours(bool[] dayArr)
         {
             if (dayArr[0]) item0.IsSelected = true;
             else item0.IsSelected = false;
@@ -611,29 +606,7 @@ namespace PLWPF
             else item5.IsSelected = false;
         }
 
-        public void showTesterTime(int num)
-        {
-            if (hoursFromSchedualArr[0, num])
-                item0.IsSelected = true;
-            else item0.IsSelected = false;
-            if (hoursFromSchedualArr[1, num])
-                item1.IsSelected = true;
-            else item1.IsSelected = false;
-            if (hoursFromSchedualArr[2, num])
-                item2.IsSelected = true;
-            else item2.IsSelected = false;
-            if (hoursFromSchedualArr[3, num])
-                item3.IsSelected = true;
-            else item3.IsSelected = false;
-            if (hoursFromSchedualArr[4, num])
-                item4.IsSelected = true;
-            else item4.IsSelected = false;
-            if (hoursFromSchedualArr[5, num])
-                item5.IsSelected = true;
-            else item5.IsSelected = false;
-        }
-
-        public void setHoursArr(bool[] dayArr)
+        public void setHoursInArr(bool[] dayArr)
         {
             if (item0.IsSelected) dayArr[0] = true;
             else dayArr[0] = false;
@@ -662,7 +635,7 @@ namespace PLWPF
                 {
                     throw new Exception("ERROR. Tester exist in system");
                 }
-                //hoursFromSchedualArr = TesterForPL._schedual;
+                //hoursFromSchedualArr = TesterForPL.getSchedual();
                 //showTesterTime(0);
             }
             catch(Exception ex)
@@ -687,13 +660,13 @@ namespace PLWPF
             {
                 openAll();
             }
-
             string id = (string)TesterComboBox.SelectedItem;
             TesterForPL = bl.GetListOfTesters().FirstOrDefault(a => a.TesterId == id);
-            {//schedual
-                hoursFromSchedualArr = TesterForPL._schedual;
-                showTesterTime(0);
-            }
+
+            //schedual
+            TesterForPL.getSchedual(SundayArr, MondayArr, TuesdayArr, WednesdayArr, ThursdayArr);
+            showDailyHours(SundayArr);//working hours in sunday
+
             this.TesterGrid.DataContext = TesterForPL;
         }
         #endregion

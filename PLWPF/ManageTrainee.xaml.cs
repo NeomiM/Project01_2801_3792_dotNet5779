@@ -735,6 +735,6 @@ namespace PLWPF
             minus.IsEnabled = true;
         }
 
-
+        
     }
 }

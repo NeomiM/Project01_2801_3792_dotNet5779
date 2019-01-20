@@ -43,8 +43,7 @@ namespace PLWPF
                 //this.UpdateTab.DataContext = TestForPL;
 
                 this.u_testIdComboBox.ItemsSource = bl.GetListOfTests();
-                this.u_testIdComboBox.DisplayMemberPath = "TestId";
-                this.u_testIdComboBox.DataContext = TestListForPL;
+                //u_testIdComboBox.ItemsSource = bl.GetListOfTests().Select(x => x.TestId);
                 if (TestListForPL.Count == 0)
                     throw new Exception("There are no Testers to update");
                 closeAlmostAll();
@@ -119,7 +118,6 @@ namespace PLWPF
             openAll();
             //this.u_testerIdTextBox.Text = TestForPL.TesterId;
             //this.u_traineeIdTextBox.Text = TestForPL.TraineeId;
-
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -188,6 +186,8 @@ namespace PLWPF
             if (testPassedCheckBox.IsChecked == true)
                 TestForPL.TestPassed = true;
             else TestForPL.TestPassed = false;
+
+            TestForPL.RemarksOnTest = commentsTextBox.Text;
 
             bl.UpdateTest(TestForPL);
 

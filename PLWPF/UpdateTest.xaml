@@ -11,8 +11,8 @@
         <CollectionViewSource x:Key="testViewSource" d:DesignSource="{d:DesignInstance {x:Type BE:Test}, CreateList=True}"/>
     </UserControl.Resources>
     <DockPanel x:Name="UpdateDockPanel">
-    
-        <StackPanel DockPanel.Dock="Left" Background="Bisque" Width="350">            
+
+        <StackPanel DockPanel.Dock="Left" Background="Bisque" Width="350">
             <GroupBox Header="Test Detils" Background="AliceBlue" Height="145" Width="216" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,48,0,0">
                 <Grid x:Name="TestDetailsGrid" Height="116" Width="200" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="4,7,0,0"  >
                     <Grid.RowDefinitions>
@@ -44,7 +44,9 @@
                 </Grid>
             </GroupBox>
 
-            <GroupBox x:Name="u_commentsGroupBox" Header="comments:" Background="AliceBlue" Margin="0,20,0,0" Height="100" Width="216"/>
+            <GroupBox x:Name="u_commentsGroupBox" Header="comments:" Background="AliceBlue" Margin="0,20,0,0" Height="100" Width="216">
+                <TextBox x:Name="commentsTextBox" HorizontalAlignment="Left" Height="60" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" Background="AliceBlue" BorderThickness="0"/>
+            </GroupBox>
 
             <GroupBox Background="AliceBlue" Height="45" Width="216" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,20,0,0">
                 <Grid Height="40" Width="200" VerticalAlignment="Top" Margin="0,5,4,-6" HorizontalAlignment="Center">
@@ -131,6 +133,6 @@
 
 
         </StackPanel>
-            
+
     </DockPanel>
 </UserControl>

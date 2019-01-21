@@ -16,6 +16,13 @@ namespace BE
         public string BuildingNumber { get => _buildingNumber; set => _buildingNumber = value; }
         public string City { get => _city; set => _city = value; }
 
+        //public Address()
+        //{
+        //    _street = null;
+        //    _buildingNumber = null;
+        //    _city = null;
+        //}
+
         public Address(string st,string bn, string c)
         {
             _street = st;
@@ -50,10 +57,19 @@ namespace BE
             else return null;
 
         }
+        public static bool operator ==(Address a,Address b)
+        {
+            return a.Street == null || a.City == null || a.BuildingNumber == null;
+        }
+        public static bool operator !=(Address a, Address b)
+        {
+            return a.Street != null && a.City != null && a.BuildingNumber != null;
+        }
+
 
     }
 
-    
+
 }
 
 

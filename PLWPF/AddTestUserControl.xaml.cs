@@ -1,5 +1,7 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -28,14 +30,22 @@ namespace PLWPF
         private List<Trainee> AddTraineeListForPL;
         private Test AddTestForPL;
         private Dictionary<string, List<int>> AvilabletestersForPL;
-
+        private Address? traineeAdd;
+       private BackgroundWorker sortTestersByAddress;
+     //   private BackgroundWorker DistanceOfTest;
+        private List<Tester> TesterByDistance;
+        private string testDistance;
         public AddTestUserControl()
         {
             InitializeComponent();
             bl = IBL_imp.Instance;
 
+            List<Tester> SortedTestersByCarType= new List<Tester>();
+
             try
             {
+                
+
                 hours.Visibility = Visibility.Hidden;
                 TesterComboBox.IsEnabled = false;
                 AddDateErrors.Foreground = Brushes.Red;
@@ -61,22 +71,35 @@ namespace PLWPF
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                emptyAddTab();
+                TestAddGrid.IsEnabled = false;
+                TesterErrors.Text = exception.Message;
+                TesterErrors.Visibility = Visibility.Visible;
+                TesterErrors.Foreground = Brushes.Red;
+                //  MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
 
+     
+
         public void emptyAddTab()
         {
             dateAndHourOfTestTextBlock.Text = "";
+            TestAddressErrors.Visibility = Visibility.Collapsed;
+            TestAddressErrors.Text = "";
             testerAddress.Text = "";
             carTypeTextBlock.Text = "";
-            testAddress.Text = "";
+            street.Text = "";
+            stNumber.Text = "";
+            city.Text = "";
             hours.SelectedItem = null;
             traineeAddress.Text = "";
+            findTesters.IsEnabled = false;
             emptyErrors();
             TesterComboBox.SelectedIndex = -1;
-        //    AddTestCalender=new System.Windows.Controls.Calendar();
+        //    SortByDistance.Visibility = Visibility.Hidden;
+            //    AddTestCalender=new System.Windows.Controls.Calendar();
         }
 
         public void emptyErrors()
@@ -89,16 +112,19 @@ namespace PLWPF
             TesterErrors.Visibility = Visibility.Collapsed;
 
         }
-
+      
         private void TraineeIdComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
+                TesterByDistance = new List<Tester>();
                 hours.Visibility = Visibility.Hidden;
                 if (AddTraineeIdComboBox.SelectedIndex != -1)
                 {
                     emptyAddTab();
-
+                    if(sortTestersByAddress!=null)
+                        if(sortTestersByAddress.IsBusy)
+                        sortTestersByAddress.CancelAsync();
 
                     // AddTestCalender.DisplayDateStart = DateTime.Today;
                     AddTestCalender.BlackoutDates.Clear();
@@ -112,33 +138,44 @@ namespace PLWPF
                     AddTestForPL.CarType = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
                         .Select(x => x.Traineecar).FirstOrDefault();
 
-                    string address = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
-                        .Select(x => (x.TraineeAddress.ToString())).FirstOrDefault();
-                    if (address != null)
-                    {
-                        traineeAddress.Text = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
-                            .Select(x => (x.TraineeAddress.ToString())).FirstOrDefault();
-                    }
-                    else traineeAddress.Text = "Address not found";
-
                 if (AddTestForPL.CarType == null)
                     throw new Exception("ERROR. Add a car type to the trainee first");
                 carTypeTextBlock.Text = AddTestForPL.CarType.ToString();
                 if(bl.GetListOfTesters().All(x=>x.Testercar!=AddTestForPL.CarType))
                     throw new Exception("ERROR. there are no testers with that car type.");
-                AddTestCalender.IsEnabled = true;
-               // Blackoutdays(DateTime.Today.Day, DateTime.Today.Month);
-              // blackoutFridaysAndSaterdays(DateTime.Today, DateTime.Today.AddDays(60));
 
                 Blackoutdays(1, AddTestCalender.DisplayDate.Month);
                 AddTestCalender.DisplayDate = new DateTime(AddTestCalender.DisplayDate.Year,AddTestCalender.DisplayDate.Month,1);
                blackoutFridaysAndSaterdays(AddTestCalender.DisplayDate, AddTestCalender.DisplayDate.AddDays(60));
-             
-                int next = DateTime.Today.Month + 1;
-               // if (DateTime.Today.Month == 12)
-                //    next = 1;
-                //Blackoutdays(DateTime.Today.Day, next);
-                
+
+                    traineeAdd = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
+                    .Select(x => (x.TraineeAddress)).FirstOrDefault();
+                    string address = traineeAdd.ToString();
+                    if (traineeAdd != null)
+                    {
+                        traineeAddress.Text = address;
+                        city.Text = traineeAdd.Value.City;
+                        street.Text = traineeAdd.Value.Street;
+                        stNumber.Text = traineeAdd.Value.BuildingNumber;
+                        //sortTestersByAddress=new BackgroundWorker();
+                        //sortTestersByAddress.DoWork += sortTestersByAddress_DoWork;
+                        //sortTestersByAddress.RunWorkerCompleted += sortTestersByAddress_Complete;
+                        //sortTestersByAddress.RunWorkerAsync();
+                    }
+                    else traineeAddress.Text = "Address not found";
+
+
+                AddTestCalender.IsEnabled = true;
+                    TestAddressBlock.IsEnabled = false;
+                    findTesters.IsEnabled = false;
+                    // Blackoutdays(DateTime.Today.Day, DateTime.Today.Month);
+                    // blackoutFridaysAndSaterdays(DateTime.Today, DateTime.Today.AddDays(60));
+
+                    //   int next = DateTime.Today.Month + 1;
+                    // if (DateTime.Today.Month == 12)
+                    //    next = 1;
+                    //Blackoutdays(DateTime.Today.Day, next);
+
 
                 }
 
@@ -147,6 +184,7 @@ namespace PLWPF
             {
                 TesterErrors.Text = exception.Message;
                 TesterErrors.Visibility = Visibility.Visible;
+                TesterErrors.Foreground = Brushes.Red;
                 AddTestCalender.IsEnabled = false;
                 // MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 //AddTraineeIdComboBox.SelectedIndex = -1;
@@ -169,7 +207,12 @@ namespace PLWPF
             SelectionChangedEventArgs selectionChangedEventArgs)
         {
             try
-            {
+            { 
+
+                TestAddressBlock.IsEnabled = true;
+                findTesters.IsEnabled = true;
+                if(TesterByDistance!=null)
+                    //SortByDistance.Visibility = Visibility.Visible;
                 testerAddress.Text = "";
                 hours.Items.Clear();
                 hours.Visibility = Visibility.Hidden;
@@ -183,7 +226,8 @@ namespace PLWPF
                 AvilabletestersForPL = bl.AvailableTesterFound(AddTestForPL);
                 TesterComboBox.ItemsSource = AvilabletestersForPL.Keys.ToList();
                 TesterComboBox.SelectedItem = null;
-                TesterComboBox.IsEnabled = true;
+               // TesterComboBox.IsEnabled = true;
+                //SortByDistance.Visibility = Visibility.Visible;
                 AddDateErrors.Visibility = Visibility.Collapsed;
                 AddDateErrors.Text = "";
                 TimeSpan ts = new TimeSpan(9, 0, 0);
@@ -334,14 +378,16 @@ namespace PLWPF
         {
             try
             {
+                TestAddressErrors.Visibility = Visibility.Collapsed;
+                TestAddressErrors.Text = "";
                 hours.Items.Clear();
+                hours.Visibility = Visibility.Hidden;
                 AddTestForPL.TesterId = TesterComboBox.SelectedItem.ToString();
                 string address = bl.GetListOfTesters().Where(x => x.TesterId == AddTestForPL.TesterId)
                     .Select(x => (x.TesterAdress.ToString())).FirstOrDefault();
                 if (address != null)
                 {
-                    testerAddress.Text = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
-                        .Select(x => (x.TraineeAddress.ToString())).FirstOrDefault();
+                    testerAddress.Text = address;
                 }
                 else testerAddress.Text = "Address not found";
                 List<int> hoursOfTester = AvilabletestersForPL[AddTestForPL.TesterId];
@@ -379,5 +425,232 @@ namespace PLWPF
             }
 
         }
+
+
+        private void sortTestersByAddress_DoWork(object sender, DoWorkEventArgs e)
+        {
+            //List<Tester> TestersWithcar = bl.GetListOfTesters().Where(x => x.Testercar == AddTestForPL.CarType && x.TesterAdress != null).ToList();
+            //if (TestersWithcar.Count >= 2)
+            //    e.Result = bl.TestersInArea(TestersWithcar, traineeAdd);
+            //else e.Result = null;
+            List<Tester> TestersWithcar = bl.GetListOfTesters().Where(x => x.Testercar == AddTestForPL.CarType && x.TesterAdress != null && AvilabletestersForPL.ContainsKey(x.TesterId)).ToList();
+            if (TestersWithcar.Count > 0)
+                e.Result = bl.TestersInArea(TestersWithcar, AddTestForPL.StartingPoint);
+            
+
+        }
+
+        private void sortTestersByAddress_Complete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            TesterByDistance = new List<Tester>();
+            TesterByDistance = (List<Tester>)e.Result;
+            List<string> fileredDistance = new List<string>();
+            //List<string> unknownDistance=new List<string>();
+            foreach (var tester in TesterByDistance)
+            {
+                if (AvilabletestersForPL.ContainsKey(tester.TesterId))
+                    fileredDistance.Add(tester.TesterId);
+            }
+            //List<string> faultyAddress = new List<string>();
+            //foreach (var key in AvilabletestersForPL.Keys)
+            //{
+            //    if (!TesterByDistance.Exists(x => x.TesterId == key))
+            //    {
+            //        fileredDistance.Add(key);
+            //        if (bl.GetListOfTesters().Where(x => x.TesterId == key).Select(x => x.TesterAdress)
+            //                .FirstOrDefault() != null)
+            //        {
+            //            faultyAddress.Add(key);
+            //        }
+            //    }
+
+            //}
+            //if (faultyAddress.Count > 0)
+            //{
+            //    TesterErrors.Text = "Warning: faulty addresses with testers: ";
+            //    TesterErrors.Text += String.Join(",", faultyAddress);
+            //    TesterErrors.Foreground = Brushes.Orange;
+            //    TesterErrors.Visibility = Visibility.Visible;
+            //}
+
+            TesterComboBox.ItemsSource = fileredDistance;
+            TesterComboBox.IsEnabled = true;
+            findTesters.Content = "Find Testers";
+        }
+
+        private void ClosesedToTest_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TestAddressErrors.Visibility = Visibility.Collapsed;
+                checkAddress();
+                     //   if (testAddress.Text==""||testAddress.Text==null)
+                        //    throw new Exception("ERROR.Test address empty. cannot calculate distance. ");
+
+                sortTestersByAddress = new BackgroundWorker();
+                sortTestersByAddress.DoWork += sortTestersByAddress_DoWork;
+                sortTestersByAddress.RunWorkerCompleted += sortTestersByAddress_Complete;
+                sortTestersByAddress.RunWorkerAsync();
+                findTesters.Content = "Waiting";
+
+            }
+            catch (Exception ex)
+            {
+                TestAddressErrors.Text = ex.Message;
+                TestAddressErrors.Visibility = Visibility.Visible;
+                TestAddressErrors.Foreground = Brushes.Red;
+
+            }
+
+        }
+
+        void checkAddress()
+        {
+            try
+            {
+                bl.IsText(city.Text);
+                bl.IsText(street.Text);
+                bl.IsNumber(stNumber.Text);
+                AddTestForPL.StartingPoint=new Address(street.Text,stNumber.Text,city.Text);
+            }
+            catch (Exception ex)
+            {
+                TestAddressErrors.Text = ex.Message;
+                TestAddressErrors.Foreground = Brushes.Red;
+                TestAddressErrors.Visibility = Visibility.Visible;
+            }
+        }
+
+        //private void SortByDistance_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        TesterErrors.Text = "";
+        //        TesterErrors.Visibility = Visibility.Collapsed;
+        //        TesterComboBox.SelectedIndex = -1;
+        //        testerAddress.Text = "";
+        //        if (sortTestersByAddress.IsBusy)
+        //        {
+        //            throw new Exception("Testers are currently being sorted, Please wait");
+        //        }
+
+        //        if (TesterByDistance == null)
+        //        {
+        //            throw new Exception("ERROR. there is only one tester with that car type.");
+        //        }
+
+        //        if (TesterByDistance.Count == 0)
+        //        {
+        //            throw new Exception("ERROR. No known addresses so sort out.");
+        //        }
+
+        //        if (TesterByDistance.First().TesterId.Contains("ERROR")|| TesterByDistance.First().TesterId.Contains( "The remote name could not be resolved"))
+        //            throw new Exception(TesterByDistance.First().TesterId);
+
+        //        List<string> fileredDistance=new List<string>();
+        //        //List<string> unknownDistance=new List<string>();
+        //        foreach (var tester in TesterByDistance)
+        //        {
+        //            if(AvilabletestersForPL.ContainsKey(tester.TesterId))
+        //            fileredDistance.Add(tester.TesterId);
+        //        }
+        //        List<string> faultyAddress=new List<string>();
+        //        foreach (var key in AvilabletestersForPL.Keys)
+        //        {
+        //            if (!TesterByDistance.Exists(x => x.TesterId == key))
+        //            {
+        //                fileredDistance.Add(key);
+        //                if (bl.GetListOfTesters().Where(x => x.TesterId == key).Select(x => x.TesterAdress)
+        //                        .FirstOrDefault() != null)
+        //                {
+        //                    faultyAddress.Add(key);
+        //                }
+        //            }
+
+        //        }
+        //        if(faultyAddress.Count>0)
+        //        {
+        //            TesterErrors.Text = "Warning: faulty addresses with testers: ";
+        //            TesterErrors.Text += String.Join(",", faultyAddress);
+        //        TesterErrors.Foreground = Brushes.Orange;
+        //        TesterErrors.Visibility = Visibility.Visible;
+        //        }
+
+        //        TesterComboBox.ItemsSource = fileredDistance;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TesterErrors.Foreground = Brushes.Red;
+        //        TesterErrors.Text = "ERROR. No internet to sort.";
+        //        TesterErrors.Visibility = Visibility.Visible;
+        //    }
+        //}
+
+        //private void DistanceOfTest_DoWork(object sender, DoWorkEventArgs e)
+        //{
+        //    e.Result = bl.adressDistance(testerAddress.Text, testAddress.Text);
+
+        //}
+
+        //private void DistanceOfTest_Complete(object sender, RunWorkerCompletedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        testDistance = "";
+        //        testDistance = e.Result.ToString();
+        //        if (testDistance.Contains(","))
+        //        {
+        //            string drivingDistance = testDistance.Substring(testDistance.LastIndexOf(',') + 1);
+        //            if (int.Parse(drivingDistance) > Configuration.MaxDriving)
+        //                throw new Exception("ERROR. Test is more than one hour away from tester");
+        //        }
+
+        //        if (testDistance.Contains("internet"))
+        //            throw new Exception("ERROR. There is no internet");
+
+        //        if (testDistance.Contains("address"))
+        //            throw new Exception("ERROR. Addresses are faulty.");
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TestAddressErrors.Text = ex.Message;
+        //        TestAddressErrors.Visibility = Visibility.Visible;
+        //        TestAddressErrors.Foreground = Brushes.Red;
+        //    }
+
+        //}
+
+
+        //private void CheckDistance_Click(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        TestAddressErrors.Visibility = Visibility.Collapsed;
+
+        //        if (testAddress.Text==""||testAddress.Text==null)
+        //            throw new Exception("ERROR.Test address empty. cannot calculate distance. ");
+        //        if (testerAddress.Text == null || testerAddress.Text == "" || testerAddress.Text == "Address not found")
+        //        {
+        //            throw new Exception("ERROR. Tester address empty. cannot calculate distance. ");
+        //        }
+        //        if()
+        //        {
+        //        }
+        //        DistanceOfTest = new BackgroundWorker();
+        //        DistanceOfTest.DoWork += DistanceOfTest_DoWork;
+        //        DistanceOfTest.RunWorkerCompleted += DistanceOfTest_Complete;
+        //        DistanceOfTest.RunWorkerAsync();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        TestAddressErrors.Text = ex.Message;
+        //        TestAddressErrors.Foreground = Brushes.Red;
+        //        TestAddressErrors.Visibility = Visibility.Visible;
+        //    }
+
+
+        //}
     }
 }

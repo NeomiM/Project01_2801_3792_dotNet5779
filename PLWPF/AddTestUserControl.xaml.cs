@@ -207,8 +207,8 @@ namespace PLWPF
             SelectionChangedEventArgs selectionChangedEventArgs)
         {
             try
-            { 
-
+            {
+                TesterComboBox.Visibility = Visibility.Hidden;
                 TestAddressBlock.IsEnabled = true;
                 findTesters.IsEnabled = true;
                 if(TesterByDistance!=null)
@@ -288,7 +288,11 @@ namespace PLWPF
         {
             try
             {
-
+                if (DateTime.Now.Hour > Configuration.EndOfWorkDay)
+                {
+                    AddTestCalender.BlackoutDates.Add(new CalendarDateRange(
+                        DateTime.Today));
+                }
 
                 for (;
                     start <= DateTime.DaysInMonth(AddTestCalender.DisplayDate.Year, startMonth);
@@ -475,6 +479,7 @@ namespace PLWPF
 
             TesterComboBox.ItemsSource = fileredDistance;
             TesterComboBox.IsEnabled = true;
+            TesterComboBox.Visibility = Visibility.Visible;
             findTesters.Content = "Find Testers";
         }
 

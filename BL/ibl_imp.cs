@@ -255,8 +255,9 @@ namespace BL
         {
             if (text == ""|| text==null)
                 throw new Exception("Warning. Field is empty.");
-            if (!Regex.IsMatch(text, @"^[a-zA-Z]+$"))
-                throw new Exception("ERROR. Text must not include numbers.");
+            //if (!Regex.IsMatch(text, @"^[a-zA-Z]+$"))
+            if(text.Any(char.IsDigit))
+              throw new Exception("ERROR. Text must not include numbers.");
         }
 
         public void IsNumber(string number)
@@ -676,33 +677,51 @@ namespace BL
 
         #region additional functions
 
-        public List<Tester> TestersInArea(Address a)
+        public List<Tester> TestersInArea(List<Tester> testerlist,Address? a)
         {
-            List<Tester> testerlist = dal.GetListOfTesters();
-            List<Tester> filteredTesters=new List<Tester>();
-            Dictionary<Tester, string> testersWithDistance=new Dictionary<Tester, string>();
-            //makes a random number for distance
-           // Random r = new Random();
-            //int x = r.Next(100, 1000);
-            foreach (Tester t in testerlist)
+            List<Tester> filteredTesters = new List<Tester>();
+            try
             {
-                string distance = adressDistance(t.TesterAdress.ToString(), a.ToString());
-                if (!distance.Contains("ERROR"))
+
+
+               // List<Tester> testerlist = dal.GetListOfTesters();
+
+                Dictionary<Tester, string> testersWithDistance = new Dictionary<Tester, string>();
+                //makes a random number for distance
+                // Random r = new Random();
+                //int x = r.Next(100, 1000);
+                foreach (Tester t in testerlist)
                 {
-                    List<string> dis = distance.Split(',').ToList<string>();
-                    testersWithDistance.Add(t,dis.First());
-                    filteredTesters.Add(t);
-                }
-                else if (distance.Contains("internet"))
-                {
-                    return null;
+
+                    string distance = adressDistance(t.TesterAdress.ToString(), a.ToString());
+                    if (!distance.Contains("ERROR" ))
+                    {
+                        List<string> dis = distance.Split(',').ToList<string>();
+                        if(float.Parse(dis.First())<=t.MaxDistanceForTest)
+                        {
+                        testersWithDistance.Add(t, dis.First());
+                        filteredTesters.Add(t);
+                        }
+                    }
+                    else if (distance.Contains("internet"))
+                    {
+                        throw new Exception("ERROR. No Internet.");
+                    }
+                   
+
                 }
 
+                var filter = filteredTesters.OrderBy(x => testersWithDistance[x]);
+                filteredTesters = filter.ToList();
+                return filteredTesters;
             }
-            
-            var filter= filteredTesters.OrderBy(x=>testersWithDistance[x]);
-            filteredTesters = filter.ToList();
-            return filteredTesters;
+            catch (Exception ex)
+            {
+                Tester Error=new Tester();
+                Error.TesterId = ex.Message;
+                filteredTesters.Add(Error);
+                return filteredTesters;
+            }
         }
      
         public List<Tester> AvailableTesters(DateTime dateAndHour, List<Tester> testersWithCar)//all available testers in that hour schedual and other test wise
@@ -919,8 +938,8 @@ namespace BL
         public string adressDistance(string origin, string destination)
         {
 
-            origin = "pisga 45 st. jerusalem"; //or "תקווה פתח 100 העם אחד "etc.
-            destination = "gilgal 78 st. ramat-gan";//or "גן רמת 10 בוטינסקי'ז "etc.
+            //origin = "pisga 45 st. jerusalem"; //or "תקווה פתח 100 העם אחד "etc.
+            //destination = "gilgal 78 st. ramat-gan";//or "גן רמת 10 בוטינסקי'ז "etc.
             string KEY = @"oIomr8087DVAi6VGLGABq1jox21hylQh";
             string url = @"https://www.mapquestapi.com/directions/v2/route" +
                          @"?key=" + KEY +

@@ -103,12 +103,14 @@ namespace BL
         #endregion
 
         #region  additional functions
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="a">an address</param>
         /// <returns> a list of all testers near an address</returns>
-        List<Tester> TestersInArea(BE.Address a);
+        List<Tester> TestersInArea(List<Tester> testerlist, Address? a);
+
         /// <summary>
         /// 
         /// </summary>
@@ -154,5 +156,7 @@ namespace BL
         IEnumerable<IGrouping<int, Trainee>> TraineesByNumTestsDone(bool orderList = false);
         #endregion
         string adressDistance(string origin, string destination);
+
+
     }
 }

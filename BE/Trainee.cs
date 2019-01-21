@@ -14,7 +14,7 @@ namespace BE
         private DateTime _dateOfBirth=DateTime.Now.AddYears(-1*(int)BE.Configuration.MinAgeOFTrainee);
         private Gender _traineeGender;
         private string _phoneNumber;
-        private Address _traineeAddress;
+        private Address? _traineeAddress;
         private CarType _traineecar;
         private GearType _traineeGear;
         private string _drivingSchool;
@@ -38,7 +38,7 @@ namespace BE
         public DateTime DateOfBirth { get => _dateOfBirth; set => _dateOfBirth = value; }
         public Gender TraineeGender { get => _traineeGender; set => _traineeGender = value; }
         public string PhoneNumber { get => _phoneNumber; set => _phoneNumber = value; }
-        public Address TraineeAddress { get => _traineeAddress; set => _traineeAddress = value; }
+        public Address? TraineeAddress { get => _traineeAddress; set => _traineeAddress = value; }
         public GearType TraineeGear { get => _traineeGear; set => _traineeGear = value; }
         public string DrivingSchool { get => _drivingSchool; set => _drivingSchool = value; }
         public string DrivingTeacher { get => _drivingTeacher; set => _drivingTeacher = value; }

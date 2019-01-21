@@ -80,13 +80,25 @@ namespace DS
             tester.DateOfBirth = time;
             tester.FirstName = "Neomi";
             tester.TesterId = "328772801";
+            tester.Testercar = CarType.HeavyTruck;
+            bool[,] sced =
+            {
+                { true,false, false, true,true},
+                { true,false, false, true,true},
+                { true,true, false, true,true},
+                { true,true, false, true,true},
+                { true,true, false, true,true},
+                { true,true, false, true,true}
+            };
+            tester.Schedule = sced;
+            //tester2.TesterAdress = new Address("hertzel", "613", "beit Shemesh");
 
             Tester tester1 = new Tester();
-            tester.DateOfBirth = time;
-            tester.FirstName = "Beila";
-            tester.TesterId = "205823792";
-            tester.Testercar = CarType.HeavyTruck;
-            bool[,] sced=
+            tester1.DateOfBirth = time;
+            tester1.FirstName = "Beila";
+            tester1.TesterId = "205823792";
+            tester1.Testercar = CarType.HeavyTruck;
+             sced= new[,]
             {
                 { false,true, false, true,true},
                 { false,true, false, true,true},
@@ -95,7 +107,9 @@ namespace DS
                 { false,true, false, true,true},
                 { false,true, false, true,true}
             };
-            tester.Schedule = sced;
+            tester1.Schedule = sced;
+            tester1.TesterAdress = new Address("pisga", "45", "jerusalem"); //pisga 45 st. jerusalem
+            tester1.MaxDistanceForTest = 20;
 
             Tester tester2 = new Tester();
             tester2.DateOfBirth = time;
@@ -113,6 +127,7 @@ namespace DS
             };
             tester2.TesterAdress = new Address("hertzel", "613", "beit Shemesh");
             tester2.Schedule = sced;
+            tester2.MaxDistanceForTest = 25;
             _testerList.Add(tester);
             _testerList.Add(tester1);
             _testerList.Add(tester2);

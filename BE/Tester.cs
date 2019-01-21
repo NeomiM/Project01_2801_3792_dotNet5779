@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Xml.Serialization;
 
 //by Neomi Mayer 328772801 and Beila Wellner 205823792
 namespace BE
@@ -16,6 +17,7 @@ namespace BE
         private DateTime _dateOfBirth;
         private Gender _testerGender;
         private string _phoneNumber;
+        [XmlIgnore]//to not be automatic by serialise
         public bool[,] _schedual = new bool[6, 5];
 
         internal Address _testerAdress;

@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using BE;
 using BL;
 
-// how toi make an xml file in configuration. 
+// how to make an xml file in configuration. 
 //read on serialise
 //read on how to make schedual to xml
 //read on background worker
@@ -123,12 +123,15 @@ namespace PLWPF
 
         private void TestIdComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string id = ((Test)testIdComboBox.SelectedItem).TestId;
-            TestForPL = bl.GetListOfTests().FirstOrDefault(a => a.TestId == id);
-            //testerIdTextBox.Text = TestForPL.TesterId;
-            //traineeIdTextBox.Text = TestForPL.TraineeId;
-            //testDateDatePicker.Text = TestForPL.TestDate.ToString();
-            openAll();
+            if(testIdComboBox.SelectedItem != null)
+            {
+                string id = ((Test)testIdComboBox.SelectedItem).TestId;
+                TestForPL = bl.GetListOfTests().FirstOrDefault(a => a.TestId == id);
+                testerIdTextBox.Text = TestForPL.TesterId;
+                traineeIdTextBox.Text = TestForPL.TraineeId;
+                testDateDatePicker.Text = TestForPL.TestDate.ToString();
+                openAll();
+            }
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -203,6 +206,7 @@ namespace PLWPF
             bl.UpdateTest(TestForPL);
 
             MessageBox.Show("Test saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
+            testIdComboBox.SelectedItem = null;
 
         }
     }

@@ -9,23 +9,23 @@ using BE;
 
 namespace DAL
 {
-    class Dal_XML_imp: Idal
+    class Dal_XML_imp
     {
-        #region tester
-        //void AddTester(Tester T);
-        //void DeleteTester(Tester T);
-        //void UpdateTester(Tester T);
-        //List<Tester> GetListOfTesters();
-        XElement testerRoot;
-        string pathTester = "";
-        private void LoadDataTester()
-        {
-            try
-            {
-                testerRoot = XElement.Load(pathTester);
-            }
-        }
+        //#region tester
+        ////void AddTester(Tester T);
+        ////void DeleteTester(Tester T);
+        ////void UpdateTester(Tester T);
+        ////List<Tester> GetListOfTesters();
+        //XElement testerRoot;
+        //string pathTester = "";
+        //private void LoadDataTester()
+        //{
+        //    try
+        //    {
+        //        testerRoot = XElement.Load(pathTester);
+        //    }
+        //}
 
-        #endregion
+        //#endregion
     }
 }

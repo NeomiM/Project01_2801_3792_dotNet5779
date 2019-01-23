@@ -74,10 +74,11 @@
                     <TextBlock x:Name="HoursErrors"></TextBlock>
                     <TextBlock x:Name="TesterErrors"></TextBlock>
                     <TextBlock x:Name="TestAddressErrors"></TextBlock>
-                </StackPanel>
+                    <TextBlock x:Name="blErrors"></TextBlock>
+              </StackPanel>
             </GroupBox>
         </StackPanel>
-        <StackPanel Background="Bisque" DockPanel.Dock="Right">
+        <StackPanel x:Name="calenderAndHours" Background="Bisque" DockPanel.Dock="Right">
             <GroupBox Header="Pick a Date:"  Margin="0,30,0,0" Foreground="CornflowerBlue" Background="AliceBlue" Width="230"  Height="211">
                 <Calendar x:Name="AddTestCalender" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedDatesChanged="AddTestCalender_OnSelectedDatesChanged" DisplayMode="Month" DisplayDateChanged="AddTestCalender_OnDisplayDateChanged" SelectionMode="SingleDate" Margin="0" Height="167"/>
             </GroupBox>

@@ -57,7 +57,7 @@ namespace BE
             else return null;
 
         }
-        public static bool operator ==(Address a,Address b)
+        public static  bool operator ==(Address a,Address b)
         {
             return a.Street == null || a.City == null || a.BuildingNumber == null;
         }

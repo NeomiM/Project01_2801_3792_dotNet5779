@@ -40,18 +40,18 @@ namespace DAL
             try
             {
                 if (Configuration.FirstTestId < 99999999)
-                    T.TestId += "" + Configuration.FirstTestId.ToString("D" + 8);
+                    T.TestId = "" + Configuration.FirstTestId.ToString("D" + 8);
                 else
                 {
                     throw new Exception("test id storage full");
                 }
                 Configuration.FirstTestId++;
                 //add if ids are in the system
-                if (DataSource._traineeList.Exists(x => x.TraineeId == T.TraineeId))
+                if (!DataSource._traineeList.Any(x => x.TraineeId == T.TraineeId))
                 {
                  throw new Exception("ERROR. The trainee isn't in the system.");
                 }
-                if (!DataSource._testerList.Exists(x => x.TesterId == T.TesterId))
+                if (!DataSource._testerList.Any(x => x.TesterId == T.TesterId))
                  {
                  throw new Exception("ERROR. The tester isn't in the system");
                 }                        

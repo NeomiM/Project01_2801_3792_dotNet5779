@@ -82,11 +82,17 @@ namespace DS
             tester.FirstName = "Neomi";
             tester.TesterId = "328772801";
             tester.Testercar = CarType.Private;
+            //tester._schedual[0, 0] = true;
+            //tester._schedual[1, 0] = true;
+            //tester._schedual[2, 0] = true;
+            //tester._schedual[3, 0] = true;
+            //tester._schedual[4, 1] = true;
 
             Tester tester1 = new Tester();
-            tester.DateOfBirth = time;
-            tester.FirstName = "Beila";
-            tester.TesterId = "205823792";
+            tester1.DateOfBirth = time;
+            tester1.FirstName = "Beila";
+            tester1.TesterId = "205823792";
+            tester1.PhoneNumber = "0546212193";
             tester1.Testercar = CarType.TwoWheel;
             tester1._schedual[0, 0] = true;
             tester1._schedual[1, 0] = true;
@@ -99,6 +105,11 @@ namespace DS
             tester2.FirstName = "Elisha";
             tester2.TesterId = "319185997";
             tester2.Testercar = CarType.Private;
+            //tester2._schedual[0, 0] = true;
+            //tester2._schedual[1, 0] = true;
+            //tester2._schedual[2, 0] = true;
+            //tester2._schedual[3, 0] = true;
+            //tester2._schedual[4, 1] = true;
 
             _testerList.Add(tester);
             _testerList.Add(tester1);

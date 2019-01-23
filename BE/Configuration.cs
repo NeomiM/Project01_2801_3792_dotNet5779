@@ -17,5 +17,7 @@ namespace BE
         public static int StartOfWorkDay = 9;
         public static int EndOfWorkDay = 9;
         public static int EndOfWorkWeek = 4;
+        public static int NumOfWorkingDays = 5;
+        public static int NumOfHoursPerDay = 6;
     }
 }

@@ -133,24 +133,24 @@ namespace BL
                     CheckAge(T.DateOfBirth, "Trainee"),
                     TraineeNotInSystem(T.TraineeId),
                     CheckEmail(T.Email)
-            };
+                     };
                 
 
                 bool clear = checkAll.All(x => x==true);
                 if (clear)
                  dal.AddTrainee(T);
-        }
+              }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-}
+         }
 
         public void DeleteTrainee(Trainee T)
         {
                    bool[] checkAll = {
                     CheckId(T.TraineeId),
-                    TraineeInSystem(T.TraineeId)
+            TraineeInSystem(T.TraineeId)
                     };
 
             bool clear = checkAll.All(x => x);
@@ -161,8 +161,8 @@ namespace BL
         public void UpdateTrainee(Trainee T)
         {
             bool[] checkAll =
-                {CheckId(T.TraineeId),CheckAge(T.DateOfBirth,"Trainee"),
-                    TraineeInSystem(T.TraineeId)                
+                {CheckId(T.TraineeId),CheckAge(T.DateOfBirth,"Trainee")
+            ,TraineeInSystem(T.TraineeId)               
                 ,CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
@@ -178,14 +178,16 @@ namespace BL
         {
             bool[] checkAll =
             {
-                TraineeInSystem(T.TraineeId),
+                
                 //TesterInSystem(T.TesterId),
                 HadMinAmountOfLessons(T),
                 HourInRange(T.DateAndHourOfTest.Hour),
                 DayInRange((int)T.TestDate.DayOfWeek),
-                NoConflictingTests(T),
+                
                 NotPassedPrevTest(T),
                 AvailableTesterFound(T)!=null,
+            TraineeInSystem(T.TraineeId),
+            NoConflictingTests(T)
 
             };
             bool clear = checkAll.All(x => x);
@@ -193,8 +195,8 @@ namespace BL
             {
               //  T.TesterId = AvailableTesterFound(T);
                 dal.AddTest(T);
-                Console.WriteLine("Test added successfully");
             }
+            else throw new Exception();
 
         }
 
@@ -355,22 +357,23 @@ namespace BL
         public bool TraineeInSystem(string TraineeId)
         {
 
-            try
+
+       try
             {
-                List<Trainee> traineeList = dal.GetListOfTrainees();
-                if (!traineeList.Any(x=>x.TraineeId==TraineeId))
+           List<Trainee> traineeList = dal.GetListOfTrainees();
+             if (!traineeList.Any(x=>x.TraineeId==TraineeId))
                 {
                  throw new Exception("ERROR. The trainee isn't in the system.");
                 }
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+           return true;
+          }
+      catch (Exception e)
+        {
+        Console.WriteLine(e.Message);
+        return false;
+        }
 
-        }       
+       }       
         public bool TesterInSystem(string TesterId)
             {
                 try
@@ -451,28 +454,33 @@ namespace BL
         {
             try
             {
+
                 List<Test> testlist = GetListOfTests();
                 //gets all of the datetimes of the tests with the same student
                 //var testTime = from item in testlist
-                  //             where item.TraineeId == T.TraineeId &&item.CarType==T.CarType
-                    //           select item.DateAndHourOfTest;
-                var testTime=from item in AllTestsThat(x=>x.TraineeId == T.TraineeId &&x.CarType==T.CarType)
+                //             where item.TraineeId == T.TraineeId &&item.CarType==T.CarType
+                //           select item.DateAndHourOfTest;
+                if (testlist.Count > 0)
+                {
+                var testTime=from item in AllTestsThat(x=>x.TraineeId == T.TraineeId && x.CarType==T.CarType)
                 select item.DateAndHourOfTest;
                 if (testTime.Any())
                 {
                     //if there is a test that is less then a week 
-                    if (testTime.Any(x => (now - x).TotalDays < 7))
+                    if (testTime.Any(x => (T.DateAndHourOfTest - x).TotalDays < 7))
                         throw new Exception("ERROR. test dates are less than a week apart");
                     //if there are any tests with the same date and hour
                     if (testTime.Any(x => x == T.DateAndHourOfTest))
                         throw new Exception("ERROR. it is not allowed to have two tests at the same time");
+                }
                 }
 
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+
                 return false;
             }
         }
@@ -488,7 +496,7 @@ namespace BL
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }
@@ -503,7 +511,7 @@ namespace BL
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }
@@ -514,14 +522,14 @@ namespace BL
             {
                 List<Test> testlist = dal.GetListOfTests();
                 bool passedTheTest = testlist.Where(x => x.TraineeId == T.TraineeId)
-                    .Any(x => x.CarType == T.CarType && x.TestPassed == T.TestPassed);
+                    .Any(x => x.CarType == T.CarType && x.TestPassed == true);
                 if (passedTheTest)
                     throw new Exception("ERROR. Can't add a test that already has been passed");
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }
@@ -636,7 +644,7 @@ namespace BL
            // try
            // {
             bool retrunVal = true;
-            if (t >= Configuration.EndOfWorkWeek)
+            if (t > Configuration.EndOfWorkWeek)
             {
                 retrunVal = false;
             throw new Exception("ERROR. Test day of the week is out of range.");
@@ -754,7 +762,7 @@ namespace BL
             return filteredTesters;
         }
         
-        public List<Test> AllTestsThat(Func<Test, bool> predicate=null)
+        public IEnumerable<Test> AllTestsThat(Func<Test, bool> predicate=null)
         {
             List<Test> testsList = dal.GetListOfTests();
 
@@ -763,8 +771,8 @@ namespace BL
 
             var all = from test in testsList
                 where predicate(test)
-                select new {test};
-            return (List<Test>)all;
+                select test;
+            return all;
 
         }
 
@@ -984,6 +992,5 @@ namespace BL
 
         }
     }
-
-
 }
+

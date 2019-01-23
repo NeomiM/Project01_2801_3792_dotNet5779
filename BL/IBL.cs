@@ -122,7 +122,7 @@ namespace BL
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns>returns a list of all thats that the predicate returns true</returns>
-        List<Test> AllTestsThat(Func<Test,bool> predicate=null);
+        IEnumerable<Test> AllTestsThat(Func<Test,bool> predicate=null);
 
         List<Trainee> AllTraineesThat(Func<Trainee, bool> predicate= null);
         /// <summary>

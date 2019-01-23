@@ -124,15 +124,15 @@ namespace PLWPF
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            //if(saveButton.Content == "Check")
-            //{
+            if(saveButton.Content == "Check")
+            {
                 if (!ThereNoEmptyFiles())
                     warningTextBlock.Visibility = Visibility.Visible;
                 if (testPassedCheckBox.IsChecked == false || testPassedCheckBox.IsThreeState == false)
                     warningTextBlock1.Visibility = Visibility.Visible;
                 if (warningTextBlock.Visibility == Visibility.Hidden && warningTextBlock1.Visibility == Visibility.Hidden)
             {
-                //saveButton.Content = "Save";
+                saveButton.Content = "Save";
                 Button.IsEnabled = true;
             }
             //}

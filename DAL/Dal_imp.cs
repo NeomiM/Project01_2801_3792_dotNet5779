@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using BE;
 using DS;
 //by Neomi Mayer 328772801 and Beila Wellner 205823792
@@ -11,7 +10,7 @@ namespace DAL
     {
         public static Idal getDAL(string typeDAL)
         {
-            return Dal_imp.Instance;
+           return Dal_XML_imp.Instance;    
         }
     }
 
@@ -25,17 +24,12 @@ namespace DAL
             get { return instance; }
         }
 
-
-
-        private Dal_imp()
-        {
-
-        }
+        private Dal_imp() { }
         static Dal_imp() { }
 
         #endregion
 
-        public void AddTest(Test T)
+        public void AddTest(Test T) //add check for id if exist
         {
             try
             {

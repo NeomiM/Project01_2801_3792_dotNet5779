@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Xml.Schema;
-
 //by Neomi Mayer 328772801 and Beila Wellner 205823792S
 
 namespace BE
@@ -17,9 +15,9 @@ namespace BE
         public static float MinAmmountOfLessons = 20;
         public static int MinHoursBetweenTests=1;
         public static int StartOfWorkDay = 9;
-        public static int EndOfWorkDay = 15;
+        public static int EndOfWorkDay = 9;
         public static int EndOfWorkWeek = 4;
-        public static int MxTestsInAWeek = 15;
-       
+        public static int NumOfWorkingDays = 5;
+        public static int NumOfHoursPerDay = 6;
     }
 }

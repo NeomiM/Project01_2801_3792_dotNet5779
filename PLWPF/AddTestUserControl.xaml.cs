@@ -207,8 +207,8 @@ namespace PLWPF
             SelectionChangedEventArgs selectionChangedEventArgs)
         {
             try
-            { 
-
+            {
+                TesterComboBox.Visibility = Visibility.Hidden;
                 TestAddressBlock.IsEnabled = true;
                 findTesters.IsEnabled = true;
                 if(TesterByDistance!=null)
@@ -288,7 +288,11 @@ namespace PLWPF
         {
             try
             {
-
+                if (DateTime.Now.Hour > Configuration.EndOfWorkDay)
+                {
+                    AddTestCalender.BlackoutDates.Add(new CalendarDateRange(
+                        DateTime.Today));
+                }
 
                 for (;
                     start <= DateTime.DaysInMonth(AddTestCalender.DisplayDate.Year, startMonth);
@@ -472,9 +476,22 @@ namespace PLWPF
             //    TesterErrors.Foreground = Brushes.Orange;
             //    TesterErrors.Visibility = Visibility.Visible;
             //}
-
+            if (fileredDistance.Count != 0)
+            {
             TesterComboBox.ItemsSource = fileredDistance;
             TesterComboBox.IsEnabled = true;
+            TesterComboBox.Visibility = Visibility.Visible;
+                TesterErrors.Text = "";
+                TesterErrors.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                TesterErrors.Text = "ERROR. No testers found.";
+                TesterErrors.Foreground = Brushes.Red;
+                TesterErrors.Visibility = Visibility.Visible;
+
+
+            }
             findTesters.Content = "Find Testers";
         }
 
@@ -482,6 +499,7 @@ namespace PLWPF
         {
             try
             {
+                TesterComboBox.Visibility = Visibility.Hidden;
                 TestAddressErrors.Visibility = Visibility.Collapsed;
                 checkAddress();
                      //   if (testAddress.Text==""||testAddress.Text==null)
@@ -506,18 +524,40 @@ namespace PLWPF
 
         void checkAddress()
         {
-            try
-            {
+            //try
+           // {
                 bl.IsText(city.Text);
                 bl.IsText(street.Text);
                 bl.IsNumber(stNumber.Text);
                 AddTestForPL.StartingPoint=new Address(street.Text,stNumber.Text,city.Text);
+            //}
+            //catch (Exception ex)
+            //{
+            //    TestAddressErrors.Text = ex.Message;
+            //    TestAddressErrors.Foreground = Brushes.Red;
+            //    TestAddressErrors.Visibility = Visibility.Visible;
+            //}
+        }
+
+        private void checkErrors()
+        {
+            if(AddDateErrors.Text!="" && AddDateErrors.Text != null)
+                throw new Exception();
+            if (TesterErrors.Text != "" && TesterErrors.Text != null)
+                throw new Exception();
+            if (HoursErrors.Text != "" && HoursErrors.Text != null)
+                throw new Exception();
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                checkErrors();
             }
             catch (Exception ex)
             {
-                TestAddressErrors.Text = ex.Message;
-                TestAddressErrors.Foreground = Brushes.Red;
-                TestAddressErrors.Visibility = Visibility.Visible;
+                MessageBox.Show("Can't add test. Check Errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

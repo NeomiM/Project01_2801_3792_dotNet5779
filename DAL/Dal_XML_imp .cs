@@ -10,7 +10,7 @@ using BE;
 
 namespace DAL
 {
-    class Dal_XML_imp: Idal
+    class Dal_XML_imp : Idal
     {
         #region Singleton
         private static readonly Dal_XML_imp instance = new Dal_XML_imp();
@@ -62,7 +62,7 @@ namespace DAL
                 testRoot.Save(testPath);
             }
             else loadData(testerRoot, testPath);
-        #endregion
+            #endregion
         }
 
         private void loadData(XElement element, string path)
@@ -111,28 +111,28 @@ namespace DAL
             int numOfDays = scheduleMatrix.GetLength(1);
             int numOfHours = scheduleMatrix.GetLength(0);
             result += "" + numOfDays + "," + numOfHours;
-            for(int i = 0; i < numOfDays; i++)
-            { 
-            //{
-            //    switch(i)
-            //    {
-            //        case 0:
-            //            result += "" + " Sunday:";
-            //            break;
-            //        case 1:
-            //            result += "" + " Monday:";
-            //            break;
-            //        case 2:
-            //            result += "" + " Tuesday:";
-            //            break;
-            //        case 3:
-            //            result += "" + " Wednesday:";
-            //            break;
-            //        case 4:
-            //            result += "" + " Thursday:";
-            //            break;
-            //    }
-                for(int j = 0; j < numOfHours; j++)
+            for (int i = 0; i < numOfDays; i++)
+            {
+                //{
+                //    switch(i)
+                //    {
+                //        case 0:
+                //            result += "" + " Sunday:";
+                //            break;
+                //        case 1:
+                //            result += "" + " Monday:";
+                //            break;
+                //        case 2:
+                //            result += "" + " Tuesday:";
+                //            break;
+                //        case 3:
+                //            result += "" + " Wednesday:";
+                //            break;
+                //        case 4:
+                //            result += "" + " Thursday:";
+                //            break;
+                //    }
+                for (int j = 0; j < numOfHours; j++)
                 {
                     if (scheduleMatrix[j, i]) result += "," + "true";
                     else result += "," + "false";
@@ -207,20 +207,20 @@ namespace DAL
 
         public bool[,] set_schedule(string value)
         {
-            if(value != null && value.Length > 0)
+            if (value != null && value.Length > 0)
             {
                 string[] values = value.Split(',');
                 int numOfDays = int.Parse(values[0]);
                 int numOfHours = int.Parse(values[1]);
                 bool[,] scheduleMatrix = new bool[numOfHours, numOfDays];
                 int index = 2;
-                for(int i =0; i < numOfHours; i++)
+                for (int i = 0; i < numOfHours; i++)
                 {
-                    for(int j = 0; j < numOfDays; j++)
+                    for (int j = 0; j < numOfDays; j++)
                     {
                         if (values[index] == "true")
                             scheduleMatrix[i, j] = true;
-                        else if(values[index] == "false")
+                        else if (values[index] == "false")
                             scheduleMatrix[i, j] = false;
                         index++;
                     }

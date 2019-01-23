@@ -134,41 +134,6 @@ namespace PLWPF
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            if (Save.Content == "Check")
-            {
-                isWarnings();//empty filed
-
-                if (noErrors() && TesterComboBox.Visibility == Visibility.Hidden)
-                {
-                    if (bl.TesterInSystem(TesterForPL.TesterId))
-                    {
-                        MessageBoxResult dialogResult = MessageBox.Show("Tester alredy exists in the system! Do you want to update?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-                        if (dialogResult == MessageBoxResult.Yes)
-                        {
-                            TesterComboBox.Visibility = Visibility.Visible;
-                            TesterComboBox.SelectedValue = (object)TesterForPL.TesterId;
-                            TesterForPL = bl.GetListOfTesters()
-                                .FirstOrDefault(x => x.TesterId == testerIdTextBox.Text);
-                        }
-                        else if (dialogResult == MessageBoxResult.No)
-                        {
-                            TesterForPL = new Tester();
-                            TesterGrid.DataContext = TesterForPL;
-                        }
-                    }
-                    else Save.Content = "Add";
-                }
-                else if (noErrors())
-                {
-                    Save.Content = "Update";
-                }
-                else
-                {
-                    MessageBox.Show("Can't add Tester. Fill ID " +
-                                    "and fix errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-
             if (Save.Content == "Add")
             {
                 try
@@ -215,6 +180,40 @@ namespace PLWPF
                 }
             }
 
+            if (Save.Content == "Check")
+            {
+                isWarnings();//empty filed
+
+                if (noErrors() && TesterComboBox.Visibility == Visibility.Visible)    
+                    {
+                    if (bl.TesterInSystem(TesterForPL.TesterId))
+                    {
+                        MessageBoxResult dialogResult = MessageBox.Show("Tester alredy exists in the system! Do you want to update?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                        if (dialogResult == MessageBoxResult.Yes)
+                        {
+                            TesterComboBox.Visibility = Visibility.Visible;
+                            TesterComboBox.SelectedValue = (object)TesterForPL.TesterId;
+                            TesterForPL = bl.GetListOfTesters()
+                                .FirstOrDefault(x => x.TesterId == testerIdTextBox.Text);
+                        }
+                        else if (dialogResult == MessageBoxResult.No)
+                        {
+                            TesterForPL = new Tester();
+                            TesterGrid.DataContext = TesterForPL;
+                        }
+                    }
+                    else Save.Content = "Add";
+                }
+                else if (noErrors())
+                {
+                    Save.Content = "Update";
+                }
+                else
+                {
+                    MessageBox.Show("Can't add Tester. Fill ID " +
+                                    "and fix errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
         #endregion
 

@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BE;
 using BL;
-
+//hi
 // how to make an xml file in configuration. 
 //read on serialise
 //read on how to make schedual to xml
@@ -136,23 +136,23 @@ namespace PLWPF
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            ////if (saveButton.Content == "Check")
-            ////{
+            if (saveButton.Content == "Check")
+            {
                 if (!ThereNoEmptyFiles())
                     warningTextBlock.Visibility = Visibility.Visible;
                 if (testPassedCheckBox.IsChecked == false || testPassedCheckBox.IsThreeState == false)
                     warningTextBlock1.Visibility = Visibility.Visible;
                 if (warningTextBlock.Visibility == Visibility.Hidden && warningTextBlock1.Visibility == Visibility.Hidden)
                 {
-                    //saveButton.Content = "Save";
+                    saveButton.Content = "Save";
                     Button.IsEnabled = true;
                 }
-            //}
-            //if(saveButton.Content == "Save")
-            //{
-            //    bl.UpdateTest(TestForPL);
-            //    MessageBox.Show("Test saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
-            //}
+            }
+            if (saveButton.Content == "Save")
+            {
+                bl.UpdateTest(TestForPL);
+                MessageBox.Show("Test saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

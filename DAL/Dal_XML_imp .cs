@@ -41,9 +41,9 @@ namespace DAL
         XElement testerRoot;
         string testerPath = @"TesterXml.xml";
         XElement traineeRoot;
-        string traineePath = @"TesterXml.xml";
+        string traineePath = @"TraineeXml.xml";
         XElement testRoot;
-        string testPath = @"TesterXml.xml";
+        string testPath = @"TestXml.xml";
 
         public Dal_XML_imp()
         {

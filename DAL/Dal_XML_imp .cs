@@ -17,6 +17,8 @@ namespace DAL
             return Dal_XML_imp.Instance;
         }
     }
+
+
     public class Dal_XML_imp : Idal
     {
         #region Singleton
@@ -31,14 +33,17 @@ namespace DAL
 
         #endregion
 
+
+
+
         XElement configRoot;
         string configPath = @"ConfigXml.xml";
         XElement testerRoot;
         string testerPath = @"TesterXml.xml";
         XElement traineeRoot;
-        string traineePath = @"TraineeXml.xml";
+        string traineePath = @"TesterXml.xml";
         XElement testRoot;
-        string testPath = @"TestXml.xml";
+        string testPath = @"TesterXml.xml";
 
         public Dal_XML_imp()
         {
@@ -47,32 +52,32 @@ namespace DAL
             {
                 //
             }
-            //else loadData(configRoot, configPath);
+            else loadData(configRoot, configPath);
 
             if (!File.Exists(testerPath))
             {
                 testerRoot = new XElement("testers");
                 testerRoot.Save(testerPath);
             }
-            else loadData(ref testerRoot, testerPath);
-            
+            else loadData(testerRoot, testerPath);
+
             if (!File.Exists(traineePath))
             {
                 traineeRoot = new XElement("trainees");
                 traineeRoot.Save(traineePath);
             }
-            //else loadData(traineeRoot, traineePath);
+            else loadData(traineeRoot, traineePath);
 
             if (!File.Exists(testPath))
             {
                 testRoot = new XElement("tests");
                 testRoot.Save(testPath);
             }
-            else loadData(ref testRoot, testPath);
+            else loadData(testerRoot, testPath);
             #endregion
         }
 
-        private void loadData(ref XElement element, string path)
+        private void loadData(XElement element, string path)
         {
             try
             {
@@ -149,9 +154,9 @@ namespace DAL
         }
 
         //from xml
-        public List<Tester> GetListOfTesters()
+        public List<Tester> GetTestersList()
         {
-            //loadData(testerRoot, testerPath);
+            loadData(testerRoot, testerPath);
             List<Tester> testers;
             try
             {
@@ -182,7 +187,7 @@ namespace DAL
 
         public Tester GetTester(string id)
         {
-            //loadData(testerRoot, testerPath);
+            loadData(testerRoot, testerPath);
             Tester tester;
             try
             {
@@ -240,26 +245,23 @@ namespace DAL
         //functions for tester
         public void AddTester(Tester tester)
         {
-            loadData(ref testerRoot, testerPath);
-            var id = new XElement("id", tester.TesterId);
-            var firstName = new XElement("firstName", tester.FirstName);
-            var sirName = new XElement("sirName", tester.Sirname);
-            //var name = new XElement("name", firstName, sirName);
-            var DateOfBirth = new XElement("DateOfBirth", tester.DateOfBirth);
-            var gender = new XElement("gender", tester.TesterGender);
-            var PhoneNumber = new XElement("PhoneNumber", tester.PhoneNumber);
-            var email = new XElement("email", tester.Email);
-            var car = new XElement("car", tester.Testercar);
-            var maxDistanceForTest = new XElement("maxDistanceForTest", tester.MaxDistanceForTest);
-            var yearsOfExperience = new XElement("yearsOfExperience", tester.YearsOfExperience);
-            var maxTestInAWeek = new XElement("maxTestInAWeek", tester.MaxTestsInaWeek);
-            //XElement address = new XElement("address", tester.TesterAdress);
-            //var Schedule = new XElement("Schedule", get_schedule(tester._schedual));
+            XElement id = new XElement("id", tester.TesterId);
+            XElement firstName = new XElement("firstName", tester.FirstName);
+            XElement sirName = new XElement("sirName", tester.Sirname);
+            XElement name = new XElement("name", firstName, sirName);
+            XElement DateOfBirth = new XElement("DateOfBirth", tester.DateOfBirth);
+            XElement gender = new XElement("gender", tester.TesterGender);
+            XElement PhoneNumber = new XElement("PhoneNumber", tester.PhoneNumber);
+            XElement email = new XElement("email", tester.Email);
+            XElement car = new XElement("car", tester.Testercar);
+            XElement maxDistanceForTest = new XElement("maxDistanceForTest", tester.MaxDistanceForTest);
+            XElement yearsOfExperience = new XElement("yearsOfExperience", tester.YearsOfExperience);
+            XElement maxTestInAWeek = new XElement("maxTestInAWeek", tester.MaxTestsInaWeek);
+            XElement address = new XElement("address", tester.TesterAdress);
+            XElement Schedule = new XElement("Schedule", get_schedule(tester._schedual));
 
-            XElement finalTester = new XElement("tester", id, firstName, sirName, DateOfBirth, gender, PhoneNumber, email, car, maxDistanceForTest,
-                yearsOfExperience, maxTestInAWeek);
-
-            testerRoot.Add(finalTester);
+            testerRoot.Add(new XElement("student", id, name, DateOfBirth, gender, PhoneNumber, email, car, maxDistanceForTest, yearsOfExperience,
+                maxTestInAWeek, address, Schedule));
             testerRoot.Save(testerPath);
         }
 
@@ -319,14 +321,25 @@ namespace DAL
 
 
         //functions for trainee
-        public void AddTrainee(Trainee T) { }
+        public void AddTrainee(Trainee T)
+        {
+            if (XML.GetAllTraineesFromXml(_traineesXml).Any(t => t. == T.Id))
+
+                throw new Exception("The trainee already exist in the system");
+
+
+
+            _traineesXml.Add(XML.ConvertTraineeToXml(newTrainee));
+
+            _traineesXml.Save(Configuration.TraineesXmlFilePath);
+        }
         public void DeleteTrainee(Trainee T) { }
         public void UpdateTrainee(Trainee T) { }
         //functions for test
         public void AddTest(Test T) { }
         public void UpdateTest(Test T) { }
 
-        //public List<Tester> GetListOfTesters() { return null; }
+        public List<Tester> GetListOfTesters() { return null; }
         public List<Trainee> GetListOfTrainees() { return null; }
         public List<Test> GetListOfTests() { return null; }
 

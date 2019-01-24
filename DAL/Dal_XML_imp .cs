@@ -10,7 +10,14 @@ using BE;
 
 namespace DAL
 {
-    class Dal_XML_imp : Idal
+    public class FactoryDAL
+    {
+        public static Idal getDAL(string typeDAL)
+        {
+            return Dal_XML_imp.Instance;
+        }
+    }
+    public class Dal_XML_imp : Idal
     {
         #region Singleton
         private static readonly Dal_XML_imp instance = new Dal_XML_imp();
@@ -29,9 +36,9 @@ namespace DAL
         XElement testerRoot;
         string testerPath = @"TesterXml.xml";
         XElement traineeRoot;
-        string traineePath = @"TesterXml.xml";
+        string traineePath = @"TraineeXml.xml";
         XElement testRoot;
-        string testPath = @"TesterXml.xml";
+        string testPath = @"TestXml.xml";
 
         public Dal_XML_imp()
         {
@@ -40,28 +47,28 @@ namespace DAL
             {
                 //
             }
-            else loadData(configRoot, configPath);
+            //else loadData(configRoot, configPath);
 
             if (!File.Exists(testerPath))
             {
                 testerRoot = new XElement("testers");
                 testerRoot.Save(testerPath);
             }
-            else loadData(testerRoot, testerPath);
+            //else loadData(testerRoot, testerPath);
 
             if (!File.Exists(traineePath))
             {
                 traineeRoot = new XElement("trainees");
                 traineeRoot.Save(traineePath);
             }
-            else loadData(traineeRoot, traineePath);
+            //else loadData(traineeRoot, traineePath);
 
             if (!File.Exists(testPath))
             {
                 testRoot = new XElement("tests");
                 testRoot.Save(testPath);
             }
-            else loadData(testerRoot, testPath);
+            else loadData(testRoot, testPath);
             #endregion
         }
 
@@ -142,9 +149,9 @@ namespace DAL
         }
 
         //from xml
-        public List<Tester> GetTestersList()
+        public List<Tester> GetListOfTesters()
         {
-            loadData(testerRoot, testerPath);
+            //loadData(testerRoot, testerPath);
             List<Tester> testers;
             try
             {
@@ -175,7 +182,7 @@ namespace DAL
 
         public Tester GetTester(string id)
         {
-            loadData(testerRoot, testerPath);
+            //loadData(testerRoot, testerPath);
             Tester tester;
             try
             {
@@ -233,23 +240,26 @@ namespace DAL
         //functions for tester
         public void AddTester(Tester tester)
         {
-            XElement id = new XElement("id", tester.TesterId);
-            XElement firstName = new XElement("firstName", tester.FirstName);
-            XElement sirName = new XElement("sirName", tester.Sirname);
-            XElement name = new XElement("name", firstName, sirName);
-            XElement DateOfBirth = new XElement("DateOfBirth", tester.DateOfBirth);
-            XElement gender = new XElement("gender", tester.TesterGender);
-            XElement PhoneNumber = new XElement("PhoneNumber", tester.PhoneNumber);
-            XElement email = new XElement("email", tester.Email);
-            XElement car = new XElement("car", tester.Testercar);
-            XElement maxDistanceForTest = new XElement("maxDistanceForTest", tester.MaxDistanceForTest);
-            XElement yearsOfExperience = new XElement("yearsOfExperience", tester.YearsOfExperience);
-            XElement maxTestInAWeek = new XElement("maxTestInAWeek", tester.MaxTestsInaWeek);
-            XElement address = new XElement("address", tester.TesterAdress);
-            XElement Schedule = new XElement("Schedule", get_schedule(tester._schedual));
+            loadData(testerRoot, testerPath);
+            var id = new XElement("id", tester.TesterId);
+            var firstName = new XElement("firstName", tester.FirstName);
+            var sirName = new XElement("sirName", tester.Sirname);
+            //var name = new XElement("name", firstName, sirName);
+            var DateOfBirth = new XElement("DateOfBirth", tester.DateOfBirth);
+            var gender = new XElement("gender", tester.TesterGender);
+            var PhoneNumber = new XElement("PhoneNumber", tester.PhoneNumber);
+            var email = new XElement("email", tester.Email);
+            var car = new XElement("car", tester.Testercar);
+            var maxDistanceForTest = new XElement("maxDistanceForTest", tester.MaxDistanceForTest);
+            var yearsOfExperience = new XElement("yearsOfExperience", tester.YearsOfExperience);
+            var maxTestInAWeek = new XElement("maxTestInAWeek", tester.MaxTestsInaWeek);
+            //XElement address = new XElement("address", tester.TesterAdress);
+            //var Schedule = new XElement("Schedule", get_schedule(tester._schedual));
 
-            testerRoot.Add(new XElement("student", id, name, DateOfBirth, gender, PhoneNumber, email, car, maxDistanceForTest, yearsOfExperience,
-                maxTestInAWeek, address, Schedule));
+            XElement finalTester = new XElement("tester", id, firstName, sirName, DateOfBirth, gender, PhoneNumber, email, car, maxDistanceForTest,
+                yearsOfExperience, maxTestInAWeek);
+
+            testerRoot.Element("testers").Add(finalTester);
             testerRoot.Save(testerPath);
         }
 
@@ -316,7 +326,7 @@ namespace DAL
         public void AddTest(Test T) { }
         public void UpdateTest(Test T) { }
 
-        public List<Tester> GetListOfTesters() { return null; }
+        //public List<Tester> GetListOfTesters() { return null; }
         public List<Trainee> GetListOfTrainees() { return null; }
         public List<Test> GetListOfTests() { return null; }
 

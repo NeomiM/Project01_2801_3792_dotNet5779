@@ -11,23 +11,23 @@ namespace BE
     {
         
        #region private variables
-        private string _testerId;
-        private string _sirname;
-        private string _firstName;
+        private string _testerId="";
+        private string _sirname="";
+        private string _firstName = "";
         private DateTime _dateOfBirth;
         private Gender _testerGender;
-        private string _phoneNumber;
-        [XmlIgnore]//to not be automatic by serialise
+        private string _phoneNumber = "";
+        //[XmlIgnore]//to not be automatic by serialise
         public bool[,] _schedual = new bool[6, 5];
 
-        private Address _testerAdress;
-        private int _yearsOfExperience;
-        private int _maxTestsInaWeek;
+        private Address _testerAdress = new Address("","","");
+        private int _yearsOfExperience = 0;
+        private int _maxTestsInaWeek =0;
 
         private CarType _testercar;
-        double _maxDistanceForTest; //in kilometers
+        double _maxDistanceForTest = 0; //in kilometers
         //things I added
-        private string _email;
+        private string _email ="";
 
         #endregion
 

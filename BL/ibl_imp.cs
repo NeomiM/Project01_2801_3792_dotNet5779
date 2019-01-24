@@ -60,7 +60,7 @@ namespace BL
             MyDal = FactoryDAL.getDAL(TypeDAL);
         }
 
-        private Idal dal = Dal_imp.Instance;
+        private Idal dal = Dal_XML_imp.Instance;
 
         #endregion
 

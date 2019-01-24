@@ -12,14 +12,11 @@
     </Window.Resources>
     <DockPanel LastChildFill="True" Background="AliceBlue">
         <TabControl Background="Bisque" SelectedIndex="0" SelectionChanged="Selector_OnSelectionChanged" >
-            <!--<TabItem Header="" Visibility="Collapsed">
-                --><!--There's nothing here--><!--
-            </TabItem>-->
             <TabItem x:Name="Add" Header="Add Test" >
                 <local:AddTestUserControl/>
             </TabItem>
             <TabItem x:Name="Update" Header="Update Test">
-                <local:UpdateTest></local:UpdateTest>
+                <local:UpdateTest ></local:UpdateTest>
             </TabItem>
         </TabControl>
     </DockPanel>

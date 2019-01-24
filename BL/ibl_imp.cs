@@ -16,6 +16,14 @@ using System.Windows;
 using BE;
 using DAL;
 
+
+using System;
+using System.Collections;
+using System.IO;
+using System.Net;
+using System.Xml;
+
+
 //by Neomi Mayer 328772801 and Beila Wellner 205823792
 
 namespace BL
@@ -28,7 +36,7 @@ namespace BL
             return IBL_imp.Instance;
         }
     }
-    public class IBL_imp: IBL
+    public class IBL_imp : IBL
     {
         DateTime now = DateTime.Today;
 
@@ -51,7 +59,7 @@ namespace BL
             string TypeDAL = ConfigurationSettings.AppSettings.Get("TypeDS");
             MyDal = FactoryDAL.getDAL(TypeDAL);
         }
-        
+
         private Idal dal = Dal_XML_imp.Instance;
 
         #endregion
@@ -74,10 +82,10 @@ namespace BL
                 if (!clear)
                     throw new Exception("Tester Not Added");
 
-               dal.AddTester(T);
-                
+                dal.AddTester(T);
+
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -86,22 +94,16 @@ namespace BL
 
         }
 
-        //ok it looks good to me now
-        //how come you had to write "ref"?
-
-        //if you want to update a pointer like testerRoot you need to send it by refference
-     
-
         public void DeleteTester(Tester T)
-         {
-             bool[] checkAll =
-                {CheckId(T.TesterId),
+        {
+            bool[] checkAll =
+               {CheckId(T.TesterId),
                 TesterInSystem(T.TesterId)
                 };
 
             bool clear = checkAll.All(x => x);
-            if (clear)          
-            dal.DeleteTester(T);
+            if (clear)
+                dal.DeleteTester(T);
         }
 
         public void UpdateTester(Tester T)
@@ -131,36 +133,36 @@ namespace BL
                     CheckAge(T.DateOfBirth, "Trainee"),
                     TraineeNotInSystem(T.TraineeId),
                     CheckEmail(T.Email)
-            };
-                
+                     };
 
-                bool clear = checkAll.All(x => x==true);
+
+                bool clear = checkAll.All(x => x == true);
                 if (clear)
-                 dal.AddTrainee(T);
-        }
+                    dal.AddTrainee(T);
+            }
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-}
+        }
 
         public void DeleteTrainee(Trainee T)
         {
-                   bool[] checkAll = {
+            bool[] checkAll = {
                     CheckId(T.TraineeId),
-                    TraineeInSystem(T.TraineeId)
+            TraineeInSystem(T.TraineeId)
                     };
 
             bool clear = checkAll.All(x => x);
             if (clear)
-            dal.DeleteTrainee(T);
+                dal.DeleteTrainee(T);
         }
 
         public void UpdateTrainee(Trainee T)
         {
             bool[] checkAll =
-                {CheckId(T.TraineeId),CheckAge(T.DateOfBirth,"Trainee"),
-                    TraineeInSystem(T.TraineeId)                
+                {CheckId(T.TraineeId),CheckAge(T.DateOfBirth,"Trainee")
+            ,TraineeInSystem(T.TraineeId)
                 ,CheckEmail(T.Email)};
 
             bool clear = checkAll.All(x => x);
@@ -176,23 +178,25 @@ namespace BL
         {
             bool[] checkAll =
             {
-                TraineeInSystem(T.TraineeId),
-                TesterInSystem(T.TesterId),
+                
+                //TesterInSystem(T.TesterId),
                 HadMinAmountOfLessons(T),
                 HourInRange(T.DateAndHourOfTest.Hour),
                 DayInRange((int)T.TestDate.DayOfWeek),
-                NoConflictingTests(T),
+
                 NotPassedPrevTest(T),
                 AvailableTesterFound(T)!=null,
+            TraineeInSystem(T.TraineeId),
+            NoConflictingTests(T)
 
             };
             bool clear = checkAll.All(x => x);
             if (clear)
             {
-                T.TesterId = AvailableTesterFound(T);
+                //  T.TesterId = AvailableTesterFound(T);
                 dal.AddTest(T);
-                Console.WriteLine("Test added successfully");
             }
+            else throw new Exception();
 
         }
 
@@ -210,8 +214,8 @@ namespace BL
                     throw new Exception("ERROR. Not all of fields for end of test filled");
                 var mostFailed = T.GetType().GetProperties()
                     .Where(pi => pi.PropertyType == typeof(bool))
-                    .Select(pi => (bool)pi.GetValue(T)==false);
-                if(mostFailed.Count(x=>x==false)>5 && T.TestPassed==true) 
+                    .Select(pi => (bool)pi.GetValue(T) == false);
+                if (mostFailed.Count(x => x == false) > 5 && T.TestPassed == true)
                     throw new Exception("ERROR. Cannot pass a student if failed more then five checks." +
                                         " The test will not be updated.");
                 dal.UpdateTest(T);
@@ -251,15 +255,16 @@ namespace BL
 
         public void IsText(string text)
         {
-            if (text == ""|| text==null)
+            if (text == "" || text == null)
                 throw new Exception("Warning. Field is empty.");
-            if (!Regex.IsMatch(text, @"^[a-zA-Z]+$"))
+            //if (!Regex.IsMatch(text, @"^[a-zA-Z]+$"))
+            if (text.Any(char.IsDigit))
                 throw new Exception("ERROR. Text must not include numbers.");
         }
 
         public void IsNumber(string number)
         {
-            if (number == ""||number == null)
+            if (number == "" || number == null)
                 throw new Exception("Warning. Field is empty.");
 
             foreach (char c in number)
@@ -273,51 +278,51 @@ namespace BL
         {
             //try
             //{
-            if (id == null|| id=="")
+            if (id == null || id == "")
                 throw new Exception("ERROR. Field is empty.");
             IsNumber(id);
             int idcheck;
             if (id.Length > 9)
                 throw new Exception("ERROR. Id is too long.");
-                if (id.Length < 8)
-                    throw new Exception("ERROR. Not enough numbers in id.");
+            if (id.Length < 8)
+                throw new Exception("ERROR. Not enough numbers in id.");
 
-                string tempId = id;
-                //check if it's all numbers- 8/9 numbers
-                if (tempId.Length == 8)
-                    tempId = "0" + tempId;//adding '0' to id begining
-                if (tempId.Length == 9)
+            string tempId = id;
+            //check if it's all numbers- 8/9 numbers
+            if (tempId.Length == 8)
+                tempId = "0" + tempId;//adding '0' to id begining
+            if (tempId.Length == 9)
+            {
+                int sum = 0;
+                int calulate = 0;
+                for (int i = 0; i < 9; i++)
                 {
-                    int sum = 0;
-                    int calulate = 0;
-                    for (int i = 0; i < 9; i++)
+                    if (i % 2 == 0)//Multiplying the double places by 1
                     {
-                        if (i % 2 == 0)//Multiplying the double places by 1
-                        {
-                            calulate = 1 * (int)Char.GetNumericValue(tempId[i]);
-                        }
-                        else //if(i % 2 != 0) Multiplying the double places by 2
-                        {
-                            calulate = 2 * (int)Char.GetNumericValue(tempId[i]);
-                        }
-                        if (calulate >= 10)
-                        {
-                            calulate = 1 + (calulate % 10);//tens digit (can only be 1) + Unity digit
-                        }
-                        sum += calulate;
+                        calulate = 1 * (int)Char.GetNumericValue(tempId[i]);
                     }
-                    if (sum % 10 == 0)
+                    else //if(i % 2 != 0) Multiplying the double places by 2
                     {
-                        return true;
+                        calulate = 2 * (int)Char.GetNumericValue(tempId[i]);
                     }
-                    else throw new Exception("ERROR. Id is invalid.");
+                    if (calulate >= 10)
+                    {
+                        calulate = 1 + (calulate % 10);//tens digit (can only be 1) + Unity digit
+                    }
+                    sum += calulate;
                 }
-        //}
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine(e.Message);
-        //        return false;
-        //    }
+                if (sum % 10 == 0)
+                {
+                    return true;
+                }
+                else throw new Exception("ERROR. Id is invalid.");
+            }
+            //}
+            //    catch (Exception e)
+            //    {
+            //        Console.WriteLine(e.Message);
+            //        return false;
+            //    }
 
             return false;
         }
@@ -352,13 +357,15 @@ namespace BL
         public bool TraineeInSystem(string TraineeId)
         {
 
+
             try
             {
                 List<Trainee> traineeList = dal.GetListOfTrainees();
-                if(traineeList == null)
-                if (!traineeList.Any(x=>x.TraineeId==TraineeId))
+                if (traineeList == null)
+                    return false;
+                if (!traineeList.Any(x => x.TraineeId == TraineeId))
                 {
-                 throw new Exception("ERROR. The trainee isn't in the system.");
+                    throw new Exception("ERROR. The trainee isn't in the system.");
                 }
                 return true;
             }
@@ -368,34 +375,34 @@ namespace BL
                 return false;
             }
 
-        }       
+        }
         public bool TesterInSystem(string TesterId)
+        {
+            try
             {
-                try
+                List<Tester> testerList = dal.GetListOfTesters();
+                if (testerList.All(x => x.TesterId != TesterId))
                 {
-                    List<Tester> testerList = dal.GetListOfTesters();
-                if (testerList == null) return false;
-                    if (testerList.All(x=>x.TesterId!=TesterId))
-                    {
                     throw new Exception("ERROR. The tester isn't in the system.");
-                    }
-                    return true;
                 }
-                catch (Exception e)
-                {
-                 Console.WriteLine(e.Message);
-                 return false;
-                }
+                return true;
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
         public bool TraineeNotInSystem(string TraineeId)
         {
             try
             {
                 List<Trainee> traineeList = dal.GetListOfTrainees();
-                if (traineeList.Count == 0) return true;
-                if (traineeList.Any(x=>x.TraineeId==TraineeId))
+                if (traineeList == null)
+                    return true;
+                if (traineeList.Any(x => x.TraineeId == TraineeId))
                 {
-                 throw new Exception("ERROR. The trainee is already in the system.");
+                    throw new Exception("ERROR. The trainee is already in the system.");
                 }
                 return true;
             }
@@ -406,23 +413,22 @@ namespace BL
             }
         }
         public bool TesterNotInSystem(string TesterId)
+        {
+            try
             {
-                try
+                List<Tester> testerList = dal.GetListOfTesters();
+                if (testerList.Any(x => x.TesterId == TesterId))
                 {
-                    List<Tester> testerList = dal.GetListOfTesters();
-                if (testerList.Count == 0) return true;
-                    if (testerList.Any(x=>x.TesterId==TesterId))
-                    {
                     throw new Exception("ERROR. The tester alredy is in the system.");
-                    }
-                    return true;
                 }
-                catch (Exception e)
-                {
-                 Console.WriteLine(e.Message);
-                 return false;
-                }
-           }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
         public bool CheckEmail(string email)
         {
             try
@@ -436,7 +442,7 @@ namespace BL
                     return true;
                 }
 
-               
+
             }
             catch (Exception e)
             {
@@ -452,28 +458,33 @@ namespace BL
         {
             try
             {
+
                 List<Test> testlist = GetListOfTests();
                 //gets all of the datetimes of the tests with the same student
                 //var testTime = from item in testlist
-                  //             where item.TraineeId == T.TraineeId &&item.CarType==T.CarType
-                    //           select item.DateAndHourOfTest;
-                var testTime=from item in AllTestsThat(x=>x.TraineeId == T.TraineeId &&x.CarType==T.CarType)
-                select item.DateAndHourOfTest;
-                if (testTime.Any())
+                //             where item.TraineeId == T.TraineeId &&item.CarType==T.CarType
+                //           select item.DateAndHourOfTest;
+                if (testlist.Count > 0)
                 {
-                    //if there is a test that is less then a week 
-                    if (testTime.Any(x => (now - x).TotalDays < 7))
-                        throw new Exception("ERROR. test dates are less than a week apart");
-                    //if there are any tests with the same date and hour
-                    if (testTime.Any(x => x == T.DateAndHourOfTest))
-                        throw new Exception("ERROR. it is not allowed to have two tests at the same time");
+                    var testTime = from item in AllTestsThat(x => x.TraineeId == T.TraineeId && x.CarType == T.CarType)
+                                   select item.DateAndHourOfTest;
+                    if (testTime.Any())
+                    {
+                        //if there is a test that is less then a week 
+                        if (testTime.Any(x => (T.DateAndHourOfTest - x).TotalDays < 7))
+                            throw new Exception("ERROR. test dates are less than a week apart");
+                        //if there are any tests with the same date and hour
+                        if (testTime.Any(x => x == T.DateAndHourOfTest))
+                            throw new Exception("ERROR. it is not allowed to have two tests at the same time");
+                    }
                 }
 
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+
                 return false;
             }
         }
@@ -489,7 +500,7 @@ namespace BL
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }
@@ -504,7 +515,7 @@ namespace BL
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }
@@ -515,117 +526,158 @@ namespace BL
             {
                 List<Test> testlist = dal.GetListOfTests();
                 bool passedTheTest = testlist.Where(x => x.TraineeId == T.TraineeId)
-                    .Any(x => x.CarType == T.CarType && x.TestPassed == T.TestPassed);
+                    .Any(x => x.CarType == T.CarType && x.TestPassed == true);
                 if (passedTheTest)
                     throw new Exception("ERROR. Can't add a test that already has been passed");
                 return true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }
 
-        public string AvailableTesterFound(Test T)
+        public Dictionary<string, List<int>> AvailableTesterFound(Test T)
         {
             //all testers available in that hour from work schedual and other tests
             List<int> availableHours = new List<int>();
             try
             {
+                //filters car typa and hasnt passed max tests
+                List<Tester> testers = GetListOfTesters();
+                var clear = from tester in testers
+                            where tester.Testercar == T.CarType && HasntPassedMaxTests(tester, T.TestDate)
+                            select tester;
+
+                List<Tester> cleanTesters = clear.ToList();
+                if (cleanTesters.Count == 0)
+                    throw new Exception("ERROR. No trainers with that cartype are avialable.");
                 //makes a list of all avialble hours for a test
-                List<Tester> filteredTesters = new List<Tester>();                
+                List<Tester> filteredTesters = new List<Tester>();
                 DateTime checkhour = T.TestDate;
-                checkhour = checkhour.AddHours(Configuration.StartOfWorkDay-1);
-                for (int i = Configuration.StartOfWorkDay; i <= Configuration.EndOfWorkDay; i++)
+                checkhour = checkhour.AddHours(Configuration.StartOfWorkDay);
+                Dictionary<string, List<int>> TestersAndHours = new Dictionary<string, List<int>>();
+                //      Dictionary<int,string> HoursAndTrainees = new Dictionary<int,string>();
+                //IEnumerable<IGrouping<string, int>> TrainersAndHours=from tester in cleanTesters group (new int()) by tester.TesterId ;
+
+                for (int i = Configuration.StartOfWorkDay; i < Configuration.EndOfWorkDay; i++)
                 {
-                    checkhour = checkhour.AddHours(1);
-                    filteredTesters = AvailableTesters(checkhour);
+                    filteredTesters = AvailableTesters(checkhour, cleanTesters);
                     if (filteredTesters.Any())
                     {
+                        foreach (Tester t in filteredTesters)
+                        {
+
+
+                            if (TestersAndHours.ContainsKey(t.TesterId))
+                            {
+
+                                TestersAndHours[t.TesterId].Add(i);
+                            }
+                            else
+                            {
+                                TestersAndHours.Add(t.TesterId, new List<int>());
+                                TestersAndHours[t.TesterId].Add(i);
+                            }
+                            //  HoursAndTrainees.Add(i,t.TesterId);
+                        }
+
                         availableHours.Add(i);
                     }
+                    checkhour = checkhour.AddHours(1);
                     //else throw new Exception("ERROR. There are no available testers that day.");
                 }
-                if(availableHours.Count==0)
+                if (availableHours.Count == 0)
                     throw new Exception("ERROR. There are no available testers that day.");
-                string hours = string.Join(",", availableHours);
-                filteredTesters =AvailableTesters(T.DateAndHourOfTest);
-                //check for any testers in that hour
-                if (!filteredTesters.Any())
-                {
-                    throw new Exception("ERROR. No testers available in that hour");
-                }
+                return TestersAndHours;
+                //string hours = string.Join(",", availableHours);
+                //filteredTesters =AvailableTesters(T.DateAndHourOfTest, cleanTesters);
+                ////check for any testers in that hour
+                //if (!filteredTesters.Any())
+                //{
+                //    throw new Exception("ERROR. No testers available in that hour");
+                //}
+
+                //var first = filteredTesters.First();
+                //return first.TesterId;
                 //filters all of the cartypes
-                var carMatch = from tester in filteredTesters
-                    where tester.Testercar == T.CarType
-                    select tester;
-                if(!carMatch.Any())
-                    throw new Exception("ERROR. There are no testers with that car type available that date.");
-                filteredTesters = (List<Tester>) carMatch;
-                string testerFound = "";
-                foreach (Tester t in filteredTesters)
-                {
-                    if (HasntPassedMaxTests(t,T.TestDate))
-                    {
-                        testerFound = t.TesterId;
-                        return testerFound;
-                    }
-                }
-                throw new Exception("ERROR. Potential testers have passed their max amount of tests in a week");
+                //var carMatch = from tester in filteredTesters
+                //    where tester.Testercar == T.CarType
+                //    select tester;
+                //if(!carMatch.Any())
+                //    throw new Exception("ERROR. There are no testers with that car type available that date.");
+                //filteredTesters = (List<Tester>) carMatch;
+                //string testerFound = "";
+                //foreach (Tester t in filteredTesters)
+                //{
+                //    if (HasntPassedMaxTests(t,T.TestDate))
+                //    {
+                //        testerFound = t.TesterId;
+                //        return testerFound;
+                //    }
+                //}
+                //throw new Exception("ERROR. Potential testers have passed their max amount of tests in a week");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                if (e.Message == "ERROR. No testers available in that hour")
-                {
-                    if (availableHours.Any())
-                    {
-                        Console.WriteLine("Avialable hours are: ");
-                        string hours=string.Join(",",availableHours);
-                        Console.WriteLine(hours);
-                    }
 
-                }
+                //Console.WriteLine(e.Message);
+                //if (e.Message == "ERROR. No testers available in that hour")
+                //{
+                //    if (availableHours.Any())
+                //    {
+                //        //Console.WriteLine("Avialable hours are: ");
+                //        string hours=string.Join(",",availableHours);
+                //        //Console.WriteLine(hours);
+                //        return "Avialable hours are: "+hours;
+                //    }
 
+
+                //}
+                // MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
 
 
-            
+
         }
 
         public bool DayInRange(int t)
         {
-            try
+            // try
+            // {
+            bool retrunVal = true;
+            if (t > Configuration.EndOfWorkWeek)
             {
-                if (t >Configuration.EndOfWorkWeek)
-                    throw new Exception("ERROR. Test day of the week is out of range.");
-                return true;
+                retrunVal = false;
+                throw new Exception("ERROR. Test day of the week is out of range.");
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            return retrunVal;
+            //}
+            //            catch (Exception e)
+            //            {
+            ////                Console.WriteLine(e.Message);
+            //                return false;
+            //            }
 
         }
 
-        public bool HasntPassedMaxTests(Tester T,DateTime DateOfTest)
+        public bool HasntPassedMaxTests(Tester T, DateTime DateOfTest)
         {
-            List < Test > tests= dal.GetListOfTests();
+            List<Test> tests = dal.GetListOfTests();
             //gets the date for the beginning of the week
             int diff = (7 + (DateOfTest.DayOfWeek - DayOfWeek.Sunday)) % 7;
             DateTime weekDay = DateOfTest.AddDays(-1 * diff).Date;
-            int countTests=0;
+            int countTests = 0;
             //goes through the week and adds the tests the tester has that week
             for (int i = 0; i < 5; i++)
             {
                 var testsInDay = from test in tests
-                    where test.TestDate == weekDay && T.TesterId == test.TestId
-                    select test;
+                                 where test.TestDate == weekDay && T.TesterId == test.TestId
+                                 select test;
                 countTests += testsInDay.Count();
-                weekDay=weekDay.AddDays(1);
+                weekDay = weekDay.AddDays(1);
             }
 
             if (countTests < T.MaxTestsInaWeek)
@@ -637,49 +689,84 @@ namespace BL
 
         #region additional functions
 
-        public List<Tester> TestersInArea(Address a)
+        public List<Tester> TestersInArea(List<Tester> testerlist, Address? a)
         {
-            List<Tester> testerlist = dal.GetListOfTesters();
-            //makes a random number for distance
-            Random r = new Random();
-            int x = r.Next(100, 1000);
-            foreach (Tester t in testerlist)
+            List<Tester> filteredTesters = new List<Tester>();
+            try
             {
-                // if(!distance(a,t)==x)
-                //testerlist.remove(T);
-            }
 
-            return testerlist;
+
+                // List<Tester> testerlist = dal.GetListOfTesters();
+
+                Dictionary<Tester, string> testersWithDistance = new Dictionary<Tester, string>();
+                //makes a random number for distance
+                // Random r = new Random();
+                //int x = r.Next(100, 1000);
+                foreach (Tester t in testerlist)
+                {
+
+                    string distance = adressDistance(t.TesterAdress.ToString(), a.ToString());
+                    if (!distance.Contains("ERROR"))
+                    {
+                        List<string> dis = distance.Split(',').ToList<string>();
+                        if (float.Parse(dis.First()) <= t.MaxDistanceForTest)
+                        {
+                            testersWithDistance.Add(t, dis.First());
+                            filteredTesters.Add(t);
+                        }
+                    }
+                    else if (distance.Contains("internet"))
+                    {
+                        throw new Exception("ERROR. No Internet.");
+                    }
+
+
+                }
+
+                var filter = filteredTesters.OrderBy(x => testersWithDistance[x]);
+                filteredTesters = filter.ToList();
+                return filteredTesters;
+            }
+            catch (Exception ex)
+            {
+                Tester Error = new Tester();
+                Error.TesterId = ex.Message;
+                filteredTesters.Add(Error);
+                return filteredTesters;
+            }
         }
-     
-        public List<Tester> AvailableTesters(DateTime dateAndHour)//all available testers in that hour schedual and other test wise
+
+        public List<Tester> AvailableTesters(DateTime dateAndHour, List<Tester> testersWithCar)//all available testers in that hour schedual and other test wise
         {
-            List<Tester> testerlist = dal.GetListOfTesters();
             List<Test> testlist = dal.GetListOfTests();
             List<Tester> filteredTesters = new List<Tester>();
             int dayOfWeek = (int)dateAndHour.DayOfWeek;
             int hour = dateAndHour.Hour;
             if (dayOfWeek < 5 && hour >= Configuration.StartOfWorkDay && hour <= Configuration.EndOfWorkDay)
-                foreach (Tester t in testerlist)
+                foreach (Tester t in testersWithCar)
                 {
 
-                    var row = Enumerable.Range(0, t.Schedule.GetLength(1))
-                        .Select(x => t.Schedule[dayOfWeek, x])
+                    //var row = Enumerable.Range(0, t.Schedule.GetLength(1))
+                    //    .Select(x => t.Schedule[dayOfWeek, x])
+                    //    .ToArray();
+                    ////no other tests in that hour with the same tester
+                    var colum = Enumerable.Range(0, t.Schedule.GetLength(0))
+                        .Select(x => t.Schedule[x, dayOfWeek])
                         .ToArray();
-                    //no other tests in that hour with the same tester 
+
                     bool noOtherTest =
                         testlist.Where(x => x.TestDate == dateAndHour.Date && x.TesterId == t.TesterId)
-                        .All(delegate(Test x) { return x.DateAndHourOfTest.Hour != hour; });
+                        .All(delegate (Test x) { return x.DateAndHourOfTest.Hour != hour; });
                     //.All(x => x.DateAndHourOfTest.Hour != hour);
                     //if the tester is available in that hour and doesnt have any other tests 
-                    if (row[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
+                    if (colum[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
                         filteredTesters.Add(t);
 
                 }
             return filteredTesters;
         }
-        
-        public List<Test> AllTestsThat(Func<Test, bool> predicate=null)
+
+        public IEnumerable<Test> AllTestsThat(Func<Test, bool> predicate = null)
         {
             List<Test> testsList = dal.GetListOfTests();
 
@@ -687,9 +774,9 @@ namespace BL
                 return testsList;
 
             var all = from test in testsList
-                where predicate(test)
-                select new {test};
-            return (List<Test>) all;
+                      where predicate(test)
+                      select test;
+            return all;
 
         }
 
@@ -702,7 +789,7 @@ namespace BL
 
             var all = from trainee in traineeList
                       where predicate(trainee)
-                select trainee;
+                      select trainee;
             return all.ToList();
         }
 
@@ -710,37 +797,59 @@ namespace BL
         {
             List<Test> testList = dal.GetListOfTests();
             var tests = from test in testList
-                where test.TraineeId == T.TraineeId
-                select test;
+                        where test.TraineeId == T.TraineeId
+                        select test;
             return tests.Count();
         }
-        
+
         public bool CanGetLicence(Trainee T)
         {
             List<Test> testList = dal.GetListOfTests();
             var tests = from test in testList
-                where test.TestPassed && test.TraineeId==T.TraineeId
-                select test;
+                        where test.TestPassed && test.TraineeId == T.TraineeId
+                        select test;
             if (tests.Any())
                 return true;
             return false;
 
         }
-        
+
         public List<Test> TestsByDate()
         {
             List<Test> testList = dal.GetListOfTests();
-            var tests =testList.OrderByDescending(x => x.DateAndHourOfTest);
+            var tests = testList.OrderByDescending(x => x.DateAndHourOfTest);
             return tests.ToList();
         }
 
         public List<Trainee> readyTrainees()
         {
+
             List<Trainee> trainees = GetListOfTrainees();
             var filter = from trainee in trainees
-                where !CanGetLicence(trainee) && trainee.LessonsPassed >= Configuration.MinAmmountOfLessons
-                select trainee;
-            return trainees.ToList();
+                         where HasntPassedAnyTest(trainee) && trainee.LessonsPassed >= Configuration.MinAmmountOfLessons
+                         select trainee;
+            List<Trainee> filterbytime = filter.ToList();
+            foreach (Trainee train in filter)
+            {
+                var testTime = from item in GetListOfTests().Where(x => x.TraineeId == train.TraineeId && x.CarType == train.Traineecar)
+                               select item.DateAndHourOfTest;
+                if (testTime.Any() && testTime.Count() > 1)
+                    if (testTime.Any(x => (now - x).TotalDays < 7))
+                        filterbytime.Remove(train);
+
+            }
+            return filterbytime;
+        }
+
+        public bool HasntPassedAnyTest(Trainee T)
+        {
+            List<Test> testList = dal.GetListOfTests();
+            var tests = from test in testList
+                        where test.TestPassed && test.TraineeId == T.TraineeId
+                        select test;
+            if (!tests.Any())
+                return true;
+            return false;
         }
 
         #endregion
@@ -753,8 +862,8 @@ namespace BL
             if (orderList)
             {
                 var testersInOrder = from tester in testerList
-                    orderby tester.Testercar
-                    group tester by tester.Testercar;
+                                     orderby tester.Testercar
+                                     group tester by tester.Testercar;
                 return testersInOrder;
 
 
@@ -762,7 +871,7 @@ namespace BL
             else
             {
                 var testers = from tester in testerList
-                    group tester by tester.Testercar;
+                              group tester by tester.Testercar;
                 return testers;
             }
         }
@@ -773,8 +882,8 @@ namespace BL
             if (orderList)
             {
                 var traineesInOrder = from trainee in traineeList
-                    orderby trainee.DrivingSchool
-                    group trainee by trainee.DrivingSchool;
+                                      orderby trainee.DrivingSchool
+                                      group trainee by trainee.DrivingSchool;
                 return traineesInOrder;
 
 
@@ -782,7 +891,7 @@ namespace BL
             else
             {
                 var trainees = from trainee in traineeList
-                    group trainee by trainee.DrivingSchool;
+                               group trainee by trainee.DrivingSchool;
                 return trainees;
 
             }
@@ -796,17 +905,17 @@ namespace BL
             List<Tester> testerList = dal.GetListOfTesters();
             if (orderList)
             {
-                 var traineesInOrder = from trainee in traineeList
-                                       orderby trainee.DrivingTeacher
-                                       group trainee by trainee.DrivingTeacher;
+                var traineesInOrder = from trainee in traineeList
+                                      orderby trainee.DrivingTeacher
+                                      group trainee by trainee.DrivingTeacher;
                 return traineesInOrder;
 
 
             }
             else
             {
-               var trainees = from trainee in traineeList
-                   group trainee by trainee.DrivingTeacher;
+                var trainees = from trainee in traineeList
+                               group trainee by trainee.DrivingTeacher;
                 return trainees;
 
             }
@@ -815,14 +924,14 @@ namespace BL
 
         public IEnumerable<IGrouping<int, Trainee>> TraineesByNumTestsDone(bool orderList = false)
         {
-           
+
             List<Trainee> traineeList = dal.GetListOfTrainees();
             if (orderList)
             {
                 var traineesInOrder = from trainee in traineeList
-                    let numTests=NumberOfTests(trainee)
-                    orderby numTests
-                    group trainee by numTests;
+                                      let numTests = NumberOfTests(trainee)
+                                      orderby numTests
+                                      group trainee by numTests;
                 return traineesInOrder;
 
 
@@ -830,7 +939,7 @@ namespace BL
             else
             {
                 var trainees = from trainee in traineeList
-                    group trainee by NumberOfTests(trainee);
+                               group trainee by NumberOfTests(trainee);
                 return trainees;
 
             }
@@ -838,7 +947,54 @@ namespace BL
 
         #endregion
 
+        public string adressDistance(string origin, string destination)
+        {
+
+            //origin = "pisga 45 st. jerusalem"; //or "תקווה פתח 100 העם אחד "etc.
+            //destination = "gilgal 78 st. ramat-gan";//or "גן רמת 10 בוטינסקי'ז "etc.
+            string KEY = @"oIomr8087DVAi6VGLGABq1jox21hylQh";
+            string url = @"https://www.mapquestapi.com/directions/v2/route" +
+                         @"?key=" + KEY +
+                         @"&from=" + origin +
+                         @"&to=" + destination +
+                         @"&outFormat=xml" +
+                         @"&ambiguities=ignore&routeType=fastest&doReverseGeocode=false" +
+                         @"&enhancedNarrative=false&avoidTimedConditions=false";
+            //request from MapQuest service the distance between the 2 addresses
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            WebResponse response = request.GetResponse();
+            Stream dataStream = response.GetResponseStream();
+            StreamReader sreader = new StreamReader(dataStream);
+            string responsereader = sreader.ReadToEnd();
+            response.Close();
+            //the response is given in an XML format
+            XmlDocument xmldoc = new XmlDocument();
+            xmldoc.LoadXml(responsereader);
+            if (xmldoc.GetElementsByTagName("statusCode")[0].ChildNodes[0].InnerText == "0")
+            //we have the expected answer
+            {
+                //display the returned distance
+                XmlNodeList distance = xmldoc.GetElementsByTagName("distance");
+                double distInMiles = Convert.ToDouble(distance[0].ChildNodes[0].InnerText);
+                string dis = "" + (distInMiles * 1.609344);
+                //  Console.WriteLine("Distance In KM: " + distInMiles * 1.609344);
+                //display the returned driving time
+                XmlNodeList formattedTime = xmldoc.GetElementsByTagName("formattedTime");
+                string fTime = formattedTime[0].ChildNodes[0].InnerText;
+                // Console.WriteLine("Driving Time: " + fTime);
+                return dis + "," + fTime;
+            }
+            else if (xmldoc.GetElementsByTagName("statusCode")[0].ChildNodes[0].InnerText == "402")
+            //we have an answer that an error occurred, one of the addresses is not found
+            {
+                return "ERROR. One of the addresses is not found. Try again.";
+            }
+            else //busy network or other error...
+            {
+                return "ERROR. No answer recieved. Please check your internet connection";
+            }
+
+        }
     }
-
-
 }
+

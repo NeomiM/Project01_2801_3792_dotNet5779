@@ -30,7 +30,6 @@ namespace PLWPF
         private BL.IBL bl;
         private BE.Trainee TraineeForPL;
         private List<Trainee> TraineeListForPL;
-
         public ManageTrainee()
         {
             InitializeComponent();
@@ -46,8 +45,8 @@ namespace PLWPF
             this.traineeGenderComboBox.ItemsSource = Enum.GetValues(typeof(BE.Gender));
             this.traineeGearComboBox.ItemsSource = Enum.GetValues(typeof(BE.GearType));
             this.traineecarComboBox.ItemsSource = Enum.GetValues(typeof(BE.CarType));
-            dateOfBirthDatePicker.DisplayDateEnd = DateTime.Now.AddYears(-1 * (int) BE.Configuration.MinAgeOFTrainee);
-            dateOfBirthDatePicker.DisplayDateStart = DateTime.Now.AddYears(-1 * (int) BE.Configuration.MaxAgeOFTrainee);
+            dateOfBirthDatePicker.DisplayDateEnd = DateTime.Now.AddYears(-1*(int)BE.Configuration.MinAgeOFTrainee);
+            dateOfBirthDatePicker.DisplayDateStart = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MaxAgeOFTrainee);
             TraineeComboBox.Visibility = Visibility.Hidden;
 
         }
@@ -56,13 +55,12 @@ namespace PLWPF
         {
             this.Close();
         }
-
         #region manage buttons
-
         private void AddTrainee_Click(object sender, RoutedEventArgs e)
         {
-            //TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
-            TraineeForPL = new Trainee();
+            removewarnings();
+           // TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
+            TraineeForPL =new Trainee();
             openAll();
             TraineeGrid.DataContext = TraineeForPL;
             IdErrors.Text = "";
@@ -78,20 +76,21 @@ namespace PLWPF
         {
             try
             {
+                removewarnings();
                 TraineeForPL = new Trainee();
                 Save.IsEnabled = false;
                 TraineeComboBox.SelectedItem = null;
                 closeAlmostAll();
                 TraineeGrid.DataContext = TraineeForPL;
                 IdErrors.Text = "First Select ID";
-                IdErrors.Foreground = Brushes.DarkBlue;
+                IdErrors.Foreground=Brushes.DarkBlue;
                 TraineeListForPL = bl.GetListOfTrainees();
-                TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
-                if (TraineeListForPL.Count == 0)
+                TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x=>x.TraineeId);
+                if (TraineeListForPL.Count==0)
                     throw new Exception("There are no trainees to update.");
                 TraineeGrid.Visibility = Visibility.Visible;
                 TraineeGrid.IsEnabled = true;
-
+               
                 Save.Content = "Check";
                 TraineeComboBox.Visibility = Visibility.Visible;
                 traineeIdTextBox.Visibility = Visibility.Hidden;
@@ -107,6 +106,7 @@ namespace PLWPF
         {
             try
             {
+                removewarnings();
                 Save.Content = "Delete";
                 TraineeForPL = new Trainee();
                 TraineeGrid.Visibility = Visibility.Visible;
@@ -128,17 +128,14 @@ namespace PLWPF
             }
 
         }
-
         #endregion
-
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-            System.Windows.Data.CollectionViewSource traineeViewSource =
-                ((System.Windows.Data.CollectionViewSource) (this.FindResource("traineeViewSource")));
+            System.Windows.Data.CollectionViewSource traineeViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("traineeViewSource")));
             // Load data by setting the CollectionViewSource.Source property:
             // traineeViewSource.Source = [generic data source]
-
+           
         }
 
 
@@ -163,11 +160,10 @@ namespace PLWPF
                 }
 
             }
-
             if (Save.Content == "Update")
             {
                 TraineeForPL.TraineeAddress = new Address(Street.Text, BuidingNumber.Text, City.Text);
-
+                
                 bl.UpdateTrainee(TraineeForPL);
                 //TraineeForPL = new Trainee();
                 TraineeGrid.Visibility = Visibility.Hidden;
@@ -178,8 +174,7 @@ namespace PLWPF
 
             if (Save.Content == "Delete")
             {
-                MessageBoxResult dialogResult = MessageBox.Show("Are you sure you want to delete?", "Warning",
-                    MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                MessageBoxResult dialogResult = MessageBox.Show("Are you sure you want to delete?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
                 if (dialogResult == MessageBoxResult.Yes)
                 {
                     bl.DeleteTrainee(TraineeForPL);
@@ -207,23 +202,21 @@ namespace PLWPF
                 {
                     if (bl.TraineeInSystem(TraineeForPL.TraineeId))
                     {
-                        MessageBoxResult dialogResult = MessageBox.Show(
-                            "Trainee alredy exists in the system! Do you want to update?", "Warning",
-                            MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                        MessageBoxResult dialogResult = MessageBox.Show("Trainee alredy exists in the system! Do you want to update?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
                         if (dialogResult == MessageBoxResult.Yes)
                         {
                             TraineeComboBox.Visibility = Visibility.Visible;
                             traineeIdTextBox.Visibility = Visibility.Hidden;
-                            TraineeComboBox.SelectedValue = (object) TraineeForPL.TraineeId;
+                            TraineeComboBox.SelectedValue = (object)TraineeForPL.TraineeId;
                             TraineeForPL = bl.GetListOfTrainees()
                                 .FirstOrDefault(x => x.TraineeId == traineeIdTextBox.Text);
                         }
                         else if (dialogResult == MessageBoxResult.No)
                         {
-                            TraineeForPL = new Trainee();
+                            TraineeForPL=new Trainee();
                             TraineeGrid.DataContext = TraineeForPL;
                         }
-
+                        
                     }
                     else Save.Content = "Add";
                 }
@@ -237,30 +230,29 @@ namespace PLWPF
                                     "and fix errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+
+           
+
         }
 
         #region id checks
-
         private void TraineeIdTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             throw new NotImplementedException();
         }
-
         private void TraineeComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             IdErrors.Text = "";
             if (Save.Content == "Check")
             {
                 openAll();
-
+                
             }
-
             Save.IsEnabled = true;
-            string id = (string) TraineeComboBox.SelectedItem;
+            string id = (string)TraineeComboBox.SelectedItem;
             TraineeForPL = bl.GetListOfTrainees().FirstOrDefault(a => a.TraineeId == id);
             this.TraineeGrid.DataContext = TraineeForPL;
         }
-
         private void TraineeIdTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             try
@@ -306,9 +298,7 @@ namespace PLWPF
         }
 
         #endregion
-
         #region Name checks
-
         private void FirstNameTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             try
@@ -328,7 +318,6 @@ namespace PLWPF
                     NameErrors.Foreground = Brushes.Orange;
                     firstNameTextBox.BorderBrush = Brushes.Orange;
                 }
-
                 NameErrors.Text = ex.Message;
 
             }
@@ -372,9 +361,7 @@ namespace PLWPF
             SirNameErrors.Foreground = Brushes.Black;
             sirnameTextBox.BorderBrush = Brushes.Black;
         }
-
         #endregion
-
         #region phone Number
 
         private void PhoneNumberTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -407,11 +394,9 @@ namespace PLWPF
             PhoneNumberErrors.Foreground = Brushes.Black;
             phoneNumberTextBox.BorderBrush = Brushes.Black;
         }
-
         #endregion
 
         #region address
-
         private void City_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             try
@@ -433,11 +418,10 @@ namespace PLWPF
                     AddressErrors.Foreground = Brushes.Orange;
                     City.BorderBrush = Brushes.Orange;
                 }
-                //AddressErrors.Text = ex.Message;
+                AddressErrors.Text = ex.Message;
 
             }
         }
-
         private void Street_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             try
@@ -458,26 +442,21 @@ namespace PLWPF
                     AddressErrors.Foreground = Brushes.Orange;
                     Street.BorderBrush = Brushes.Orange;
                 }
-
                 AddressErrors.Text = ex.Message;
 
             }
         }
-
         private void City_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            City.BorderBrush = Brushes.Black;
-
+            City.BorderBrush=Brushes.Black;
+            
         }
-
         private void Street_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            Street.BorderBrush = Brushes.Black;
-
+         Street.BorderBrush = Brushes.Black;
+            
         }
-
         #endregion
-
         #region driving teacher and driving school
 
         private void DrivingSchoolTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -499,32 +478,30 @@ namespace PLWPF
                     DrivingSchoolErrors.Foreground = Brushes.Orange;
                     drivingSchoolTextBox.BorderBrush = Brushes.Orange;
                 }
-
                 DrivingSchoolErrors.Text = ex.Message;
 
             }
         }
-
         private void DrivingTeacherTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             try
             {
-
+                
                 //DrivingTeacherErrors.Text = "";
                 //drivingTeacherTextBox.BorderBrush = Brushes.Black;
                 bl.CheckId(TraineeForPL.DrivingTeacher);
-
+                
             }
             catch (Exception ex)
             {
-                //if (ex.Message.Contains("ERROR. Field is empty."))
-                //{
-                //    DrivingTeacherErrors.Foreground = Brushes.Orange;
-                //    drivingTeacherTextBox.BorderBrush = Brushes.Orange;
-                //    DrivingTeacherErrors.Text = "Warning. Field is empty.";
-                //}
+                if (ex.Message.Contains("ERROR. Field is empty."))
+                {
+                    DrivingTeacherErrors.Foreground = Brushes.Orange;
+                    drivingTeacherTextBox.BorderBrush = Brushes.Orange;
+                    DrivingTeacherErrors.Text = "Warning. Field is empty.";
+                }
 
-                if (ex.Message.Contains("ERROR"))
+                else if(ex.Message.Contains("ERROR"))
                 {
                     DrivingTeacherErrors.Foreground = Brushes.Red;
                     drivingTeacherTextBox.BorderBrush = Brushes.Red;
@@ -543,15 +520,15 @@ namespace PLWPF
         {
             try
             {
-                if (TraineeForPL.Email == null || TraineeForPL.Email == "")
+                if(TraineeForPL.Email==null|| TraineeForPL.Email=="")
                     throw new Exception("Waring. Empty Field");
-                if (!bl.CheckEmail(TraineeForPL.Email))
+                if(!bl.CheckEmail(TraineeForPL.Email))
                     throw new Exception("ERROR. Invalid Email");
 
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("ERROR"))
+                if(ex.Message.Contains("ERROR"))
                 {
                     EmailErrors.Foreground = Brushes.Red;
                     emailTextBox.BorderBrush = Brushes.Red;
@@ -574,7 +551,6 @@ namespace PLWPF
             EmailErrors.Foreground = Brushes.Black;
             emailTextBox.BorderBrush = Brushes.Black;
         }
-
         #endregion
 
         #region lessson passed buttons
@@ -588,18 +564,16 @@ namespace PLWPF
 
         private void Minus_Click(object sender, RoutedEventArgs e)
         {
-            if (TraineeForPL.LessonsPassed >= 1)
-                TraineeForPL.LessonsPassed--;
+            if(TraineeForPL.LessonsPassed>=1)
+            TraineeForPL.LessonsPassed--;
             lessonsPassedTextBox.Text = "" + TraineeForPL.LessonsPassed;
         }
-
         #endregion
 
         #region comboboxes
-
         private void TraineeGenderComboBox_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            if (traineeGenderComboBox.SelectedItem == null)
+            if(traineeGenderComboBox.SelectedItem == null)
             {
                 GenderErrors.Text = "Warning. Field is empty.";
                 GenderErrors.Foreground = Brushes.Orange;
@@ -616,7 +590,7 @@ namespace PLWPF
             }
 
         }
-
+        
 
         private void TraineecarComboBox_OnMouseLeave(object sender, MouseEventArgs e)
         {
@@ -655,16 +629,15 @@ namespace PLWPF
                 traineeGearComboBox.BorderBrush = Brushes.Black;
             }
         }
-
         #endregion
 
-
+        #region opens and closes
         public bool noErrors()
         {
 
             try
             {
-                if (TraineeForPL.TraineeId == null)
+                if(TraineeForPL.TraineeId == null)
                     throw new Exception();
                 if (IdErrors.Text != "")
                     throw new Exception();
@@ -680,7 +653,7 @@ namespace PLWPF
                     throw new Exception();
                 if (DrivingTeacherErrors.Text.Contains("ERROR"))
                     throw new Exception();
-                if (AddressErrors.Text.Contains("ERROR"))
+                if(AddressErrors.Text.Contains("ERROR"))
                     throw new Exception();
                 return true;
             }
@@ -689,7 +662,7 @@ namespace PLWPF
                 return false;
             }
 
-
+            
         }
 
         public void closeAlmostAll()
@@ -718,20 +691,37 @@ namespace PLWPF
             firstNameTextBox.IsEnabled = true;
             sirnameTextBox.IsEnabled = true;
             dateOfBirthDatePicker.IsEnabled = true;
-            traineeGenderComboBox.IsEnabled = true;
+            traineeGenderComboBox.IsEnabled = true; 
             phoneNumberTextBox.IsEnabled = true;
-            emailTextBox.IsEnabled = true;
-            drivingSchoolTextBox.IsEnabled = true;
-            drivingTeacherTextBox.IsEnabled = true;
-            traineecarComboBox.IsEnabled = true;
-            traineeGearComboBox.IsEnabled = true;
-            City.IsEnabled = true;
-            Street.IsEnabled = true;
-            BuidingNumber.IsEnabled = true;
-            plus.IsEnabled = true;
-            minus.IsEnabled = true;
+            emailTextBox.IsEnabled = true; 
+            drivingSchoolTextBox.IsEnabled = true; 
+            drivingTeacherTextBox.IsEnabled = true; 
+            traineecarComboBox.IsEnabled = true; 
+            traineeGearComboBox.IsEnabled = true; 
+            City.IsEnabled = true; 
+            Street.IsEnabled = true; 
+            BuidingNumber.IsEnabled = true; 
+            plus.IsEnabled = true; 
+            minus.IsEnabled = true; 
         }
 
-        
+        public void removewarnings()
+        {
+            IdErrors.Text = "";
+            NameErrors.Text = "";
+            SirNameErrors.Text = "";
+            PhoneNumberErrors.Text = "";
+            EmailErrors.Text = "";
+            DateErrors.Text = "";
+            GenderErrors.Text = "";
+            DrivingSchoolErrors.Text = "";
+            DrivingTeacherErrors.Text = "";
+            CarTypeErrors.Text = "";
+            GearTypeErrors.Text = "";
+            AddressErrors.Text = "";
+
+
+        }
+        #endregion
     }
 }

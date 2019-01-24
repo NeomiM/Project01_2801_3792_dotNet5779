@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataGrid2DLibrary">
-      <HintPath>.\DataGrid2DLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -63,18 +60,13 @@
     <Compile Include="AddTestUserControl.xaml.cs">
       <DependentUpon>AddTestUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ManageTester.xaml.cs">
-      <DependentUpon>ManageTester.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ManageTester.xaml.cs" />
     <Compile Include="ManageTests.xaml.cs">
       <DependentUpon>ManageTests.xaml</DependentUpon>
     </Compile>
     <Compile Include="TestersByCarType.xaml.cs">
       <DependentUpon>TestersByCarType.xaml</DependentUpon>
     </Compile>
-    <!--   <Compile Include="Window1.xaml.cs">
-      <DependentUpon>Window1.xaml</DependentUpon>
--->
     <Compile Include="TestsByDate.xaml.cs">
       <DependentUpon>TestsByDate.xaml</DependentUpon>
     </Compile>
@@ -88,8 +80,8 @@
       <DependentUpon>validTrainees.xaml</DependentUpon>
     </Compile>
     <Page Include="AddTestUserControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -116,10 +108,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TestersByCarType.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <!--   <Page Include="Window1.xaml">-->
     <Page Include="TestsByDate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -129,8 +120,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UpdateTest.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="validTrainees.xaml">
       <SubType>Designer</SubType>

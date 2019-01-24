@@ -17,8 +17,6 @@ namespace DAL
             return Dal_XML_imp.Instance;
         }
     }
-
-
     public class Dal_XML_imp : Idal
     {
         #region Singleton
@@ -33,9 +31,6 @@ namespace DAL
 
         #endregion
 
-
-
-
         XElement configRoot;
         string configPath = @"ConfigXml.xml";
         XElement testerRoot;
@@ -45,43 +40,71 @@ namespace DAL
         XElement testRoot;
         string testPath = @"TestXml.xml";
 
+        private List<Trainee> _trainees = new List<Trainee>();
+
+        private List<Test> _tests = new List<Test>();
+
+        private List<Tester> _testers = new List<Tester>();
+
+
         public Dal_XML_imp()
         {
             #region create/load files
             if (!File.Exists(configPath))
             {
-                //
+                configRoot = new XElement("TestID","00000000");
+                configRoot.Save(configPath);
             }
-            else loadData(configRoot, configPath);
+            else
+            {
+                configRoot=loadData( configPath);
+                Configuration.FirstTestId = int.Parse(configRoot.Value);
+            }
 
             if (!File.Exists(testerPath))
             {
                 testerRoot = new XElement("testers");
                 testerRoot.Save(testerPath);
             }
-            else loadData(testerRoot, testerPath);
-
-            if (!File.Exists(traineePath))
+            else testerRoot= loadData( testerPath);
+            if (File.Exists(traineePath))
             {
-                traineeRoot = new XElement("trainees");
-                traineeRoot.Save(traineePath);
-            }
-            else loadData(traineeRoot, traineePath);
+                var file = new FileStream(traineePath, FileMode.Open);
 
-            if (!File.Exists(testPath))
-            {
-                testRoot = new XElement("tests");
-                testRoot.Save(testPath);
+                var xmlSerializer = new XmlSerializer(typeof(List<Trainee>));
+
+                var list = (List<Trainee>)xmlSerializer.Deserialize(file);
+
+                file.Close();
+                _trainees = list.ToList();
+
             }
-            else loadData(testerRoot, testPath);
+            else
+            {
+                _trainees = new List<Trainee>();
+            }
+
+            if (File.Exists(testPath))
+            {
+                var file = new FileStream(testPath, FileMode.Open);
+
+                var xmlSerializer = new XmlSerializer(typeof(List<Test>));
+
+                var list = (List<Test>)xmlSerializer.Deserialize(file);
+
+                file.Close();
+                _tests = list.ToList();
+
+            }
+            else  _tests = new List<Test>();
             #endregion
         }
 
-        private void loadData(XElement element, string path)
+        private XElement loadData( string path)
         {
             try
             {
-                element = XElement.Load(path);
+                return  XElement.Load(path);
             }
             catch
             {
@@ -154,9 +177,9 @@ namespace DAL
         }
 
         //from xml
-        public List<Tester> GetTestersList()
+        public List<Tester> GetListOfTesters()
         {
-            loadData(testerRoot, testerPath);
+            //loadData(testerRoot, testerPath);
             List<Tester> testers;
             try
             {
@@ -187,7 +210,7 @@ namespace DAL
 
         public Tester GetTester(string id)
         {
-            loadData(testerRoot, testerPath);
+            //loadData(testerRoot, testerPath);
             Tester tester;
             try
             {
@@ -245,23 +268,26 @@ namespace DAL
         //functions for tester
         public void AddTester(Tester tester)
         {
-            XElement id = new XElement("id", tester.TesterId);
-            XElement firstName = new XElement("firstName", tester.FirstName);
-            XElement sirName = new XElement("sirName", tester.Sirname);
-            XElement name = new XElement("name", firstName, sirName);
-            XElement DateOfBirth = new XElement("DateOfBirth", tester.DateOfBirth);
-            XElement gender = new XElement("gender", tester.TesterGender);
-            XElement PhoneNumber = new XElement("PhoneNumber", tester.PhoneNumber);
-            XElement email = new XElement("email", tester.Email);
-            XElement car = new XElement("car", tester.Testercar);
-            XElement maxDistanceForTest = new XElement("maxDistanceForTest", tester.MaxDistanceForTest);
-            XElement yearsOfExperience = new XElement("yearsOfExperience", tester.YearsOfExperience);
-            XElement maxTestInAWeek = new XElement("maxTestInAWeek", tester.MaxTestsInaWeek);
-            XElement address = new XElement("address", tester.TesterAdress);
-            XElement Schedule = new XElement("Schedule", get_schedule(tester._schedual));
+            testerRoot=loadData( testerPath);
+            var id = new XElement("id", tester.TesterId);
+            var firstName = new XElement("firstName", tester.FirstName);
+            var sirName = new XElement("sirName", tester.Sirname);
+            //var name = new XElement("name", firstName, sirName);
+            var DateOfBirth = new XElement("DateOfBirth", tester.DateOfBirth);
+            var gender = new XElement("gender", tester.TesterGender);
+            var PhoneNumber = new XElement("PhoneNumber", tester.PhoneNumber);
+            var email = new XElement("email", tester.Email);
+            var car = new XElement("car", tester.Testercar);
+            var maxDistanceForTest = new XElement("maxDistanceForTest", tester.MaxDistanceForTest);
+            var yearsOfExperience = new XElement("yearsOfExperience", tester.YearsOfExperience);
+            var maxTestInAWeek = new XElement("maxTestInAWeek", tester.MaxTestsInaWeek);
+            //XElement address = new XElement("address", tester.TesterAdress);
+            //var Schedule = new XElement("Schedule", get_schedule(tester._schedual));
 
-            testerRoot.Add(new XElement("student", id, name, DateOfBirth, gender, PhoneNumber, email, car, maxDistanceForTest, yearsOfExperience,
-                maxTestInAWeek, address, Schedule));
+            XElement finalTester = new XElement("tester", id, firstName, sirName, DateOfBirth, gender, PhoneNumber, email, car, maxDistanceForTest,
+                yearsOfExperience, maxTestInAWeek);
+
+            testerRoot.Add(finalTester);
             testerRoot.Save(testerPath);
         }
 
@@ -323,25 +349,112 @@ namespace DAL
         //functions for trainee
         public void AddTrainee(Trainee T)
         {
-            if (XML.GetAllTraineesFromXml(_traineesXml).Any(t => t. == T.Id))
+            if(_trainees.Exists(x=>x.TraineeId==T.TraineeId))
+                throw new Exception("ERROR. Trianee is already in the system.");
+            _trainees.Add(T);
 
-                throw new Exception("The trainee already exist in the system");
+            var file = new FileStream(traineePath, FileMode.Create);
 
+            var xmlSerializer = new XmlSerializer(_trainees.GetType());
 
+            xmlSerializer.Serialize(file, _trainees);
 
-            _traineesXml.Add(XML.ConvertTraineeToXml(newTrainee));
-
-            _traineesXml.Save(Configuration.TraineesXmlFilePath);
+            file.Close();
         }
-        public void DeleteTrainee(Trainee T) { }
-        public void UpdateTrainee(Trainee T) { }
-        //functions for test
-        public void AddTest(Test T) { }
-        public void UpdateTest(Test T) { }
 
-        public List<Tester> GetListOfTesters() { return null; }
-        public List<Trainee> GetListOfTrainees() { return null; }
-        public List<Test> GetListOfTests() { return null; }
+        public void DeleteTrainee(Trainee T)
+        {
+            if (_trainees.Exists(x => x.TraineeId == T.TraineeId))
+                _trainees.Remove(T);
+            var file = new FileStream(traineePath, FileMode.Create);
+
+            var xmlSerializer = new XmlSerializer(_trainees.GetType());
+
+            xmlSerializer.Serialize(file, _trainees);
+
+            file.Close();
+
+        }
+
+        public void UpdateTrainee(Trainee T)
+        {
+            if (_trainees.Exists(x => x.TraineeId == T.TraineeId))
+            {
+                _trainees.Remove(_trainees.Find(x => x.TraineeId == T.TraineeId));
+                _trainees.Add(T);
+            }
+            var file = new FileStream(traineePath, FileMode.Create);
+
+            var xmlSerializer = new XmlSerializer(_trainees.GetType());
+
+            xmlSerializer.Serialize(file, _trainees);
+
+            file.Close();
+        }
+        //functions for test
+        public void AddTest(Test T)
+        {
+            if (Configuration.FirstTestId < 99999999)
+             T.TestId = "" + Configuration.FirstTestId.ToString("D" + 8);
+            Configuration.FirstTestId += 1;
+            var testid = new XElement("TestID",T.TestId);
+            configRoot.RemoveAll();
+            configRoot.Add(testid);
+            configRoot.Save(configPath);
+
+            _tests.Add(T);
+
+            var file = new FileStream(testPath, FileMode.Create);
+
+            var xmlSerializer = new XmlSerializer(_tests.GetType());
+
+            xmlSerializer.Serialize(file, _tests);
+
+            file.Close();
+
+
+        }
+
+        public void UpdateTest(Test T)
+        {
+            if (_tests.Exists(x => x.TestId == T.TestId))
+            {
+                _tests.Remove(_tests.Find(x => x.TestId == T.TestId));
+                _tests.Add(T);
+            }
+            var file = new FileStream(testPath, FileMode.Create);
+
+            var xmlSerializer = new XmlSerializer(_tests.GetType());
+
+            xmlSerializer.Serialize(file, _tests);
+
+            file.Close();
+        }
+
+        //public List<Tester> GetListOfTesters() { return null; }
+        public List<Trainee> GetListOfTrainees()
+        {
+            if (_trainees.Count > 0)
+            {
+                FileStream file = new FileStream(traineePath, FileMode.Open);
+
+
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Trainee>));
+                List<Trainee> list = (List<Trainee>) xmlSerializer.Deserialize(file);
+                file.Close();
+                return list;
+            }
+            else return null;
+        }
+
+        public List<Test> GetListOfTests()
+        {
+            FileStream file = new FileStream(testPath, FileMode.Open);
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Test>));
+            List<Test> list = (List<Test>)xmlSerializer.Deserialize(file); file.Close();
+            return list;
+
+        }
 
     }
 }

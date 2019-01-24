@@ -467,6 +467,8 @@ namespace PLWPF
                 if (AvilabletestersForPL.ContainsKey(tester.TesterId))
                     fileredDistance.Add(tester.TesterId);
             }
+
+            #region green code
             //List<string> faultyAddress = new List<string>();
             //foreach (var key in AvilabletestersForPL.Keys)
             //{
@@ -488,6 +490,7 @@ namespace PLWPF
             //    TesterErrors.Foreground = Brushes.Orange;
             //    TesterErrors.Visibility = Visibility.Visible;
             //}
+            #endregion
             if (fileredDistance.Count != 0)
             {
             TesterComboBox.ItemsSource = fileredDistance;

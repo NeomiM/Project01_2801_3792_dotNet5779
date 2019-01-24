@@ -59,7 +59,7 @@ namespace PLWPF
         private void AddTrainee_Click(object sender, RoutedEventArgs e)
         {
             removewarnings();
-            TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
+           // TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
             TraineeForPL =new Trainee();
             openAll();
             TraineeGrid.DataContext = TraineeForPL;

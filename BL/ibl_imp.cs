@@ -361,6 +361,8 @@ namespace BL
             try
             {
                 List<Trainee> traineeList = dal.GetListOfTrainees();
+                if (traineeList == null)
+                    return false;
                 if (!traineeList.Any(x => x.TraineeId == TraineeId))
                 {
                     throw new Exception("ERROR. The trainee isn't in the system.");
@@ -396,6 +398,8 @@ namespace BL
             try
             {
                 List<Trainee> traineeList = dal.GetListOfTrainees();
+                if (traineeList == null)
+                    return true;
                 if (traineeList.Any(x => x.TraineeId == TraineeId))
                 {
                     throw new Exception("ERROR. The trainee is already in the system.");

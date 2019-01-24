@@ -47,32 +47,39 @@ namespace DAL
             {
                 //
             }
-            //else loadData(configRoot, configPath);
+            else loadData(ref configRoot, configPath);
 
             if (!File.Exists(testerPath))
             {
                 testerRoot = new XElement("testers");
                 testerRoot.Save(testerPath);
             }
-            //else loadData(testerRoot, testerPath);
+            else loadData(ref testerRoot, testerPath);
+            loadTesterData();
 
             if (!File.Exists(traineePath))
             {
                 traineeRoot = new XElement("trainees");
                 traineeRoot.Save(traineePath);
             }
-            //else loadData(traineeRoot, traineePath);
+            else loadData(ref traineeRoot, traineePath);
 
             if (!File.Exists(testPath))
             {
                 testRoot = new XElement("tests");
                 testRoot.Save(testPath);
             }
-            else loadData(testRoot, testPath);
+            else loadData(ref testRoot, testPath);
             #endregion
         }
+        #region additional function
+        private void loadTesterData()
+        {
+            try { testerRoot = XElement.Load(testerPath); }
+            catch { throw new Exception("File upload problem"); }
+        }
 
-        private void loadData(XElement element, string path)
+        private void loadData(ref XElement element, string path)
         {
             try
             {
@@ -84,6 +91,7 @@ namespace DAL
             }
         }
 
+        #endregion
         #region tester
         //to xml
         public void SaveTesterList(List<Tester> testersList)
@@ -151,7 +159,7 @@ namespace DAL
         //from xml
         public List<Tester> GetListOfTesters()
         {
-            //loadData(testerRoot, testerPath);
+            //loadData(ref testerRoot, testerPath);
             List<Tester> testers;
             try
             {
@@ -240,7 +248,10 @@ namespace DAL
         //functions for tester
         public void AddTester(Tester tester)
         {
-            loadData(testerRoot, testerPath);
+            //try { testerRoot = XElement.Load(testerPath); }
+            //catch { throw new Exception("File upload problem"); }
+            loadData(ref testerRoot, testerPath);
+            //loadTesterData();
             var id = new XElement("id", tester.TesterId);
             var firstName = new XElement("firstName", tester.FirstName);
             var sirName = new XElement("sirName", tester.Sirname);
@@ -253,13 +264,17 @@ namespace DAL
             var maxDistanceForTest = new XElement("maxDistanceForTest", tester.MaxDistanceForTest);
             var yearsOfExperience = new XElement("yearsOfExperience", tester.YearsOfExperience);
             var maxTestInAWeek = new XElement("maxTestInAWeek", tester.MaxTestsInaWeek);
-            //XElement address = new XElement("address", tester.TesterAdress);
-            //var Schedule = new XElement("Schedule", get_schedule(tester._schedual));
+            var street = new XElement("street", tester.TesterAdress.Street);
+            var buildingNumber = new XElement("buildingNumber", tester.TesterAdress.BuildingNumber);
+            var city = new XElement("city", tester.TesterAdress.City);
+            var address = new XElement("address", street, buildingNumber, city);
+
+            var Schedule = new XElement("Schedule", get_schedule(tester._schedual));
 
             XElement finalTester = new XElement("tester", id, firstName, sirName, DateOfBirth, gender, PhoneNumber, email, car, maxDistanceForTest,
-                yearsOfExperience, maxTestInAWeek);
+                yearsOfExperience, maxTestInAWeek, address, Schedule);
 
-            testerRoot.Element("testers").Add(finalTester);
+            testerRoot.Add(finalTester);
             testerRoot.Save(testerPath);
         }
 
@@ -318,16 +333,155 @@ namespace DAL
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #region trainee
+        public void AddTrainee(Trainee trainee)
+        {
+            var id = new XElement("id", trainee.TraineeId);
+            var firstName = new XElement("firstName", trainee.FirstName);
+            var sirName = new XElement("sirName", trainee.Sirname);
+            //var name = new XElement("name", firstName, sirName);
+            var DateOfBirth = new XElement("DateOfBirth", trainee.DateOfBirth);
+            var gender = new XElement("gender", trainee.TraineeGender);
+            var PhoneNumber = new XElement("PhoneNumber", trainee.PhoneNumber);
+            var email = new XElement("email", trainee.Email);
+            var DrivingSchool = new XElement("DrivingSchool", trainee.DrivingSchool);
+            var DrivingTeacher = new XElement("DrivingTeacher", trainee.DrivingTeacher);
+            var car = new XElement("car", trainee.Traineecar);
+            var Gear = new XElement("Gear", trainee.TraineeGear);
+            var street = new XElement("street", trainee.TraineeAddress.Street);
+            var buildingNumber = new XElement("buildingNumber", trainee.TraineeAddress.BuildingNumber);
+            var city = new XElement("city", trainee.TraineeAddress.City);
+            var address = new XElement("address", street, buildingNumber, city);
+            var LessonsPassed = new XElement("LessonsPassed", trainee.LessonsPassed);
+
+            XElement final = new XElement("trainee", id, firstName, sirName, DateOfBirth, gender, PhoneNumber, email, DrivingSchool, DrivingTeacher, car, Gear, address, LessonsPassed);
+            testerRoot.Add(final);
+            testerRoot.Save(testerPath);
+        }
+
+        public void UpdateTrainee(Trainee trainee)
+        {
+            XElement traineeElement = (from t in traineeRoot.Elements()
+                                       where t.Element("id").Value == trainee.TraineeId
+                                       select t).FirstOrDefault();
+            traineeElement.Element("name").Element("firstName").Value = trainee.FirstName;
+            traineeElement.Element("name").Element("sirName").Value = trainee.Sirname;
+            traineeElement.Element("DateOfBirth").Value = trainee.DateOfBirth.ToString();
+            traineeElement.Element("gender").Value = trainee.TraineeGender.ToString();
+            traineeElement.Element("PhoneNumber").Value = trainee.PhoneNumber;
+            traineeElement.Element("email").Value = trainee.Email;
+            traineeElement.Element("DrivingSchool").Value = trainee.DrivingSchool;
+            traineeElement.Element("DrivingTeacher").Value = trainee.DrivingTeacher;
+            traineeElement.Element("car").Value = trainee.Traineecar.ToString();
+            traineeElement.Element("Gear").Value = trainee.TraineeGear.ToString();
+            traineeElement.Element("Address").Value = trainee.TraineeAddress.ToString();
+            traineeElement.Element("LessonsPassed").Value = trainee.LessonsPassed.ToString();
+
+            traineeRoot.Save(traineePath);
+        }
+
+        public void DeleteTrainee(Trainee trainee)
+        {
+            string id = trainee.TraineeId;
+            XElement traineeElement;
+            try
+            {
+                traineeElement = (from t in traineeRoot.Elements()
+                                  where t.Element("id").Value == id
+                                  select t).FirstOrDefault();
+                traineeElement.Remove();
+                testerRoot.Save(testerPath);
+            }
+            catch
+            {
+                throw new Exception("problem deleting trainee");
+            }
+        }
+
+        public List<Trainee> GetListOfTrainees()
+        {
+            FileStream file = new FileStream(traineePath, FileMode.Open);
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Trainee>));
+            List<Trainee> list = (List<Trainee>)xmlSerializer.Deserialize(file);
+            file.Close();
+            if (list == null) return new List<Trainee>();
+            return list;
+        }
+        #endregion
+
+        #region test
+        public void AddTest(Test test)
+        {
+            var TestId = new XElement("TestId", test.TestId);
+            var TesterId = new XElement("TesterId", test.TesterId);
+            var TraineeId = new XElement("TraineeId", test.TraineeId);
+            var TestDate = new XElement("TestDate", test.TestDate);
+            var DateAndHourOfTest = new XElement("DateAndHourOfTest", test.DateAndHourOfTest);
+            var CarType = new XElement("CarType", test.CarType);
+            var StartingPoint = new XElement("StartingPoint", test.StartingPoint);
+            var KeptDistance = new XElement("KeptDistance", test.KeptDistance);
+            var Parking = new XElement("Parking", test.Parking);
+            var ReverseParking = new XElement("ReverseParking", test.ReverseParking);
+            var CheckMirrors = new XElement("CheckMirrors", test.CheckMirrors);
+            var UsedSignal = new XElement("UsedSignal", test.UsedSignal);
+            var KeptRightofPresidence = new XElement("KeptRightofPresidence", test.KeptRightofPresidence);
+            var StoppedAtRed = new XElement("StoppedAtRed", test.StoppedAtRed);
+            var StoppedAtcrossWalk = new XElement("StoppedAtcrossWalk", test.StoppedAtcrossWalk);
+            var RightTurn = new XElement("RightTurn", test.RightTurn);
+            var ImediateStop = new XElement("ImediateStop", test.ImediateStop);
+            var TestPassed = new XElement("TestPassed", test.TestPassed);
+            var RemarksOnTest = new XElement("StoppedAtcrossWalk", test.RemarksOnTest);
+
+            XElement final = new XElement("trainee", TestId, TesterId, TraineeId, TestDate, DateAndHourOfTest, CarType, StartingPoint, KeptDistance, Parking, ReverseParking,
+                CheckMirrors, UsedSignal, KeptRightofPresidence, StoppedAtRed, StoppedAtcrossWalk, RightTurn, ImediateStop, TestPassed, RemarksOnTest);
+            testRoot.Add(final);
+            testRoot.Save(testPath);
+        }
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //functions for trainee
-        public void AddTrainee(Trainee T) { }
-        public void DeleteTrainee(Trainee T) { }
-        public void UpdateTrainee(Trainee T) { }
+        //public void AddTrainee(Trainee T) { }
+        //public void DeleteTrainee(Trainee T) { }
+        //public void UpdateTrainee(Trainee T) { }
         //functions for test
-        public void AddTest(Test T) { }
+        //public void AddTest(Test T) { }
         public void UpdateTest(Test T) { }
 
         //public List<Tester> GetListOfTesters() { return null; }
-        public List<Trainee> GetListOfTrainees() { return null; }
+        //public List<Trainee> GetListOfTrainees() { return null; }
         public List<Test> GetListOfTests() { return null; }
 
     }

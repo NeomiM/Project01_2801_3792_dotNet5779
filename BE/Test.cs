@@ -59,7 +59,7 @@ namespace BE
         public bool StoppedAtcrossWalk { get => _stoppedAtcrossWalk; set => _stoppedAtcrossWalk = value; }
         public bool RightTurn { get => _rightTurn; set => _rightTurn = value; }
         public bool ImediateStop { get => _imediateStop; set => _imediateStop = value; }
-        internal Address StartingPoint { get => _startingPoint; set => _startingPoint = value; }
+        public Address StartingPoint { get => _startingPoint; set => _startingPoint = value; }
         public bool TestPassed { get => _testPassed; set => _testPassed = value; }
         public string RemarksOnTest { get => _remarksOnTest; set => _remarksOnTest = value; }
         public CarType CarType { get => _carType; set => _carType = value; }

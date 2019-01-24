@@ -61,7 +61,7 @@ namespace PLWPF
 
         private void AddTrainee_Click(object sender, RoutedEventArgs e)
         {
-            TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
+            //TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
             TraineeForPL = new Trainee();
             openAll();
             TraineeGrid.DataContext = TraineeForPL;
@@ -237,9 +237,6 @@ namespace PLWPF
                                     "and fix errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-
-
-
         }
 
         #region id checks

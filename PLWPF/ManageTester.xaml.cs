@@ -143,7 +143,7 @@ namespace PLWPF
             {
                 try
                 {
-                    //TesterForPL.TesterAddress = new Address(Street.Text, BuidingNumber.Text, City.Text);
+                    TesterForPL.TesterAdress = new Address(Street.Text, BuidingNumber.Text, City.Text);
                     TesterForPL.setSchedual(SundayArr, MondayArr, TuesdayArr, WednesdayArr, ThursdayArr);
                     bl.AddTester(TesterForPL);
                     TesterGrid.Visibility = Visibility.Hidden;
@@ -222,9 +222,7 @@ namespace PLWPF
                         case "Delete":
                             Save.Content = "Delete";
                             break;
-
-                    }
-                    
+                    }                    
                 }
                 else
                 {
@@ -501,36 +499,6 @@ namespace PLWPF
                         showDailyHours(SundayArr);
                         break;
                 }
-                //else//update or delete
-                //{
-                //    switch (dayLabel.Content)//change the Label
-                //    {
-                //        case "Sunday":
-                //            dayLabel.Content = "Monday";
-                //            showTesterTime(1);
-                //            break;
-
-                //        case "Monday":
-                //            dayLabel.Content = "Tuesday";
-                //            showTesterTime(2);
-                //            break;
-
-                //        case "Tuesday":
-                //            dayLabel.Content = "Wednesday";
-                //            showTesterTime(3);
-                //            break;
-
-                //        case "Wednesday":
-                //            dayLabel.Content = "Thursday";
-                //            showTesterTime(4);
-                //            break;
-
-                //        case "Thursday":
-                //            dayLabel.Content = "Sunday";
-                //            showTesterTime(0);
-                //            break;
-                //    }
-                //}
             }
             catch (Exception ex)
             {
@@ -569,37 +537,6 @@ namespace PLWPF
                         showDailyHours(WednesdayArr);
                         break;
                 }
-                //else//update or delete
-                //{
-                //    switch (dayLabel.Content)//change the Label
-                //    {
-
-                //        case "Sunday":
-                //            dayLabel.Content = "Thursday";
-                //            showTesterTime(4);                            
-                //            break;
-
-                //        case "Monday":
-                //            dayLabel.Content = "Sunday";
-                //            showTesterTime(0);
-                //            break;
-
-                //        case "Tuesday":
-                //            dayLabel.Content = "Monday";
-                //            showTesterTime(1);
-                //            break;
-
-                //        case "Wednesday":
-                //            dayLabel.Content = "Tuesday";
-                //            showTesterTime(2);
-                //            break;
-
-                //        case "Thursday":
-                //            dayLabel.Content = "Wednesday";
-                //            showTesterTime(3);
-                //            break;
-                //    }
-                //}
             }
             catch(Exception ex)
             {

@@ -349,6 +349,7 @@ namespace BL
             try
             {
                 List<Trainee> traineeList = dal.GetListOfTrainees();
+                if(traineeList == null)
                 if (!traineeList.Any(x=>x.TraineeId==TraineeId))
                 {
                  throw new Exception("ERROR. The trainee isn't in the system.");
@@ -385,6 +386,7 @@ namespace BL
             try
             {
                 List<Trainee> traineeList = dal.GetListOfTrainees();
+                if (traineeList.Count == 0) return true;
                 if (traineeList.Any(x=>x.TraineeId==TraineeId))
                 {
                  throw new Exception("ERROR. The trainee is already in the system.");
@@ -402,7 +404,7 @@ namespace BL
                 try
                 {
                     List<Tester> testerList = dal.GetListOfTesters();
-                if (testerList == null) return true;
+                if (testerList.Count == 0) return true;
                     if (testerList.Any(x=>x.TesterId==TesterId))
                     {
                     throw new Exception("ERROR. The tester alredy is in the system.");

@@ -59,7 +59,7 @@ namespace BL
             string TypeDAL = ConfigurationSettings.AppSettings.Get("TypeDS");
             MyDal = FactoryDAL.getDAL(TypeDAL);
         }
-
+        
         private Idal dal = Dal_imp.Instance;
 
         #endregion
@@ -95,7 +95,7 @@ namespace BL
         }
 
         public void DeleteTester(Tester T)
-        {
+         {
              bool[] checkAll =
                 {CheckId(T.TesterId),
                 TesterInSystem(T.TesterId)

@@ -136,6 +136,11 @@ namespace PLWPF
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            if (saveButton.Content == "Save")
+            {
+                bl.UpdateTest(TestForPL);
+                MessageBox.Show("Test saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
             if (saveButton.Content == "Check")
             {
                 if (!ThereNoEmptyFiles())
@@ -147,11 +152,6 @@ namespace PLWPF
                     saveButton.Content = "Save";
                     Button.IsEnabled = true;
                 }
-            }
-            if (saveButton.Content == "Save")
-            {
-                bl.UpdateTest(TestForPL);
-                MessageBox.Show("Test saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

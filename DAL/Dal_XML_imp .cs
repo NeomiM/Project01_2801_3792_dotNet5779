@@ -10,7 +10,16 @@ using BE;
 
 namespace DAL
 {
-    class Dal_XML_imp : Idal
+    public class FactoryDAL
+    {
+        public static Idal getDAL(string typeDAL)
+        {
+            return Dal_XML_imp.Instance;
+        }
+    }
+
+
+    public class Dal_XML_imp : Idal
     {
         #region Singleton
         private static readonly Dal_XML_imp instance = new Dal_XML_imp();
@@ -23,6 +32,9 @@ namespace DAL
         static Dal_XML_imp() { }
 
         #endregion
+
+
+
 
         XElement configRoot;
         string configPath = @"ConfigXml.xml";

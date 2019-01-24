@@ -61,7 +61,7 @@ namespace DAL
                 traineeRoot = new XElement("trainees");
                 traineeRoot.Save(traineePath);
             }
-            //else loadData(traineeRoot, traineePath);
+            else loadData(ref traineeRoot, traineePath);
 
             if (!File.Exists(testPath))
             {

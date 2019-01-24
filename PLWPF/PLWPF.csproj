@@ -64,11 +64,17 @@
     <Compile Include="ManageTests.xaml.cs">
       <DependentUpon>ManageTests.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TestersByCarType.xaml.cs">
+      <DependentUpon>TestersByCarType.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TestsByDate.xaml.cs">
       <DependentUpon>TestsByDate.xaml</DependentUpon>
     </Compile>
     <Compile Include="traineesByTeachers.xaml.cs">
       <DependentUpon>traineesByTeachers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UpdateTest.xaml.cs">
+      <DependentUpon>UpdateTest.xaml</DependentUpon>
     </Compile>
     <Compile Include="validTrainees.xaml.cs">
       <DependentUpon>validTrainees.xaml</DependentUpon>
@@ -101,6 +107,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="TestersByCarType.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="TestsByDate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -108,6 +118,10 @@
     <Page Include="traineesByTeachers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UpdateTest.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="validTrainees.xaml">
       <SubType>Designer</SubType>

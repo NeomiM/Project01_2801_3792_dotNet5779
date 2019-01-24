@@ -12,16 +12,11 @@
     </Window.Resources>
     <DockPanel LastChildFill="True" Background="AliceBlue">
         <TabControl Background="Bisque" SelectedIndex="0" SelectionChanged="Selector_OnSelectionChanged" >
-            <!--<TabItem Header="" Visibility="Collapsed">
-                --><!--There's nothing here--><!--
-            </TabItem>-->
             <TabItem x:Name="Add" Header="Add Test" >
                 <local:AddTestUserControl/>
             </TabItem>
             <TabItem x:Name="Update" Header="Update Test">
-                <StackPanel>
-                    <Button Content="this button is part of tab 2" />
-                </StackPanel>
+                <local:UpdateTest ></local:UpdateTest>
             </TabItem>
         </TabControl>
     </DockPanel>

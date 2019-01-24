@@ -4,31 +4,37 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PLWPF"
-        xmlns:BE="clr-namespace:BE;assembly=BE" x:Class="PLWPF.traineesByTeachers"
+        xmlns:BE="clr-namespace:BE;assembly=BE" x:Class="PLWPF.TestersByCarType"
         mc:Ignorable="d"
-        Title="Trainees By Teachers" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="TestersByCarType" Height="450" Width="800" Loaded="Window_Loaded">
+
     <Window.Resources>
-        <CollectionViewSource x:Key="traineeViewSource" d:DesignSource="{d:DesignInstance {x:Type BE:Trainee}, CreateList=True}"/>
+        <CollectionViewSource x:Key="testerViewSource" d:DesignSource="{d:DesignInstance {x:Type BE:Tester}, CreateList=True}"/>
     </Window.Resources>
-    <DockPanel LastChildFill="True" Margin="0,0,0,0" Background="Bisque" DataContext="{StaticResource traineeViewSource}">
+
+
+
+
+    <DockPanel LastChildFill="True" Margin="0,0,0,0" Background="Bisque" DataContext="{StaticResource testerViewSource}">
         <WrapPanel x:Name="backButtonSlot" DockPanel.Dock="Top" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="AliceBlue" Margin="0,0,0.4,0">
-            <Button x:Name="BackToMainMenue" Content="Back To Main Menue" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="BackToMainMenue_Click" Height="22"/>
+            <Button x:Name="BackToMainMenue" Content="Back To Main Menue" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Click="BackToMainMenue_Click" Height="22" Width="130"/>
         </WrapPanel>
 
         <StackPanel DockPanel.Dock="Left">
-            <TextBlock x:Name="slelectTeacher" Margin="3,5,2,0" Foreground="CornflowerBlue">Select a Teacher Below</TextBlock>
-            <ComboBox x:Name="TeacherComboBox" Width="120" SelectedItem="{Binding DrivingTeachers}"  SelectionChanged="Selector_OnSelectionChanged" Margin="5,10,5,5" />
-
+            <TextBlock x:Name="slelectCar" Margin="3,5,2,0" Foreground="CornflowerBlue">Select a Car Type Below</TextBlock>
+            <ComboBox x:Name="CarComboBox" Width="120" SelectedItem="{Binding CarType}"  SelectionChanged="Selector_OnSelectionChanged" Margin="5,10,5,5" />
         </StackPanel>
-        <DataGrid x:Name="traineeDataGrid" Background="Azure" AutoGenerateColumns="False" IsReadOnly="True" EnableRowVirtualization="True"  DockPanel.Dock="Right"  ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="0,0,0,0">
+
+        <DataGrid x:Name="testerDataGrid" Background="Azure" AutoGenerateColumns="False" IsReadOnly="True" EnableRowVirtualization="True"  DockPanel.Dock="Right"  ItemsSource="{Binding}" RowDetailsVisibilityMode="VisibleWhenSelected" Margin="0,0,0,0">
             <DataGrid.Columns>
-                <DataGridTemplateColumn x:Name="traineeIdColumn" Header="Trainee Id" Width="SizeToHeader">
+                <DataGridTemplateColumn x:Name="testerIdColumn" Header="Tester Id  " Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding TraineeId}"/>
+                            <TextBlock Text="{Binding TesterId}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
                 <DataGridTemplateColumn x:Name="firstNameColumn" Header="First Name" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -36,7 +42,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn x:Name="sirnameColumn" Header="Sirname" Width="SizeToHeader">
+
+                <DataGridTemplateColumn x:Name="sirnameColumn" Header="Last Name" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Sirname}"/>
@@ -51,21 +58,15 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn x:Name="drivingSchoolColumn" Header="Driving School" Width="SizeToHeader">
+
+                <DataGridTemplateColumn x:Name="testerGenderColumn" Header="Gender" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding DrivingSchool}"/>
+                            <TextBlock Text="{Binding TesterGender}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn x:Name="drivingTeacherColumn" Header="Driving Teacher" Width="SizeToHeader">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding DrivingTeacher}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
                 <DataGridTemplateColumn x:Name="phoneNumberColumn" Header="Phone Number" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -81,39 +82,40 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn x:Name="lessonsPassedColumn" Header="Lessons Passed" Width="SizeToHeader">
+
+                <DataGridTemplateColumn x:Name="maxDistanceForTestColumn" Header="Max Distance For Test" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding LessonsPassed}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn x:Name="traineecarColumn" Header="Traineecar" Width="SizeToHeader">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Traineecar}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn x:Name="traineeGearColumn" Header="Trainee Gear" Width="SizeToHeader">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding TraineeGear}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn x:Name="traineeGenderColumn" Header="Trainee Gender" Width="SizeToHeader">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding TraineeGender}"/>
+                            <TextBlock Text="{Binding MaxDistanceForTest}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
+                <DataGridTemplateColumn x:Name="yearsOfExperienceColumn" Header="Years Of Experience" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding YearsOfExperience}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn x:Name="maxTestsInaWeekColumn" Header="Max Tests Ina Week" Width="SizeToHeader">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding MaxTestsInaWeek}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
             </DataGrid.Columns>
         </DataGrid>
-
-
-
     </DockPanel>
 </Window>
+    
+    
+    
+    
+    
+    
+    
+    

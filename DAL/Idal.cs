@@ -9,8 +9,6 @@ namespace DAL
 {
     public interface Idal
     {
-
-
         //functions for tester
         void AddTester(Tester T);
         void DeleteTester(Tester T);
@@ -26,9 +24,5 @@ namespace DAL
         List<Tester> GetListOfTesters();
         List<Trainee> GetListOfTrainees();
         List<Test> GetListOfTests();
-
-        
-
-
     }
 }

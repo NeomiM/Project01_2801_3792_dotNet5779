@@ -86,6 +86,12 @@ namespace BL
 
         }
 
+        //ok it looks good to me now
+        //how come you had to write "ref"?
+
+        //if you want to update a pointer like testerRoot you need to send it by refference
+     
+
         public void DeleteTester(Tester T)
          {
              bool[] checkAll =

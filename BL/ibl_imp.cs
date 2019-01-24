@@ -52,7 +52,7 @@ namespace BL
             MyDal = FactoryDAL.getDAL(TypeDAL);
         }
         
-        private Idal dal = Dal_imp.Instance;
+        private Idal dal = Dal_XML_imp.Instance;
 
         #endregion
 
@@ -85,6 +85,12 @@ namespace BL
 
 
         }
+
+        //ok it looks good to me now
+        //how come you had to write "ref"?
+
+        //if you want to update a pointer like testerRoot you need to send it by refference
+     
 
         public void DeleteTester(Tester T)
          {
@@ -367,6 +373,7 @@ namespace BL
                 try
                 {
                     List<Tester> testerList = dal.GetListOfTesters();
+                if (testerList == null) return false;
                     if (testerList.All(x=>x.TesterId!=TesterId))
                     {
                     throw new Exception("ERROR. The tester isn't in the system.");
@@ -401,6 +408,7 @@ namespace BL
                 try
                 {
                     List<Tester> testerList = dal.GetListOfTesters();
+                if (testerList == null) return true;
                     if (testerList.Any(x=>x.TesterId==TesterId))
                     {
                     throw new Exception("ERROR. The tester alredy is in the system.");

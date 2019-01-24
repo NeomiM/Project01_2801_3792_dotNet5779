@@ -26,6 +26,7 @@ namespace PLWPF
         private BL.IBL bl;
         private BE.Tester TesterForPL;
         private List<Tester> TesterListForPL;
+        string winCondition;
         //arrays for schedule
         bool[] SundayArr = new bool[6];
         bool[] MondayArr = new bool[6];
@@ -42,6 +43,7 @@ namespace PLWPF
             TesterForPL = new Tester();
             this.TesterGrid.DataContext = TesterForPL;
             this.TesterComboBox.DataContext = TesterListForPL;
+            
             //manage calendar
             dateOfBirthDatePicker.DisplayDateEnd = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MinAgeOFTester);
             dateOfBirthDatePicker.DisplayDateStart = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MaxAgeOFTester);
@@ -68,8 +70,9 @@ namespace PLWPF
 
         private void AddTester_Click(object sender, RoutedEventArgs e)
         {
+            winCondition = "Add";
             removeWarnings();
-            TesterComboBox.ItemsSource = bl.GetListOfTesters().Select(x => x.TesterId);
+            //TesterComboBox.ItemsSource = bl.GetListOfTesters().Select(x => x.TesterId);
             TesterForPL = new Tester();
             openAll();
             TesterGrid.DataContext = TesterForPL;
@@ -83,6 +86,7 @@ namespace PLWPF
 
         private void UpdateTester_Click(object sender, RoutedEventArgs e)
         {
+            string winCondition = "Update";
             removeWarnings();
             try
             {
@@ -110,6 +114,7 @@ namespace PLWPF
 
         private void DeleteTester_Click(object sender, RoutedEventArgs e)
         {
+            string winCondition = "Delete";
             removeWarnings();
             try
             {
@@ -206,7 +211,20 @@ namespace PLWPF
                 }
                 else if (noErrors())
                 {
-                    Save.Content = "Update";
+                    switch(winCondition)
+                    {
+                        case "Add":
+                            Save.Content = "Add";
+                            break;
+                        case "Update":
+                            Save.Content = "Update";
+                            break;
+                        case "Delete":
+                            Save.Content = "Delete";
+                            break;
+
+                    }
+                    
                 }
                 else
                 {

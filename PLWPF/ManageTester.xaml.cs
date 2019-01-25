@@ -86,7 +86,7 @@ namespace PLWPF
 
         private void UpdateTester_Click(object sender, RoutedEventArgs e)
         {
-            string winCondition = "Update";
+            winCondition = "Update";
             removeWarnings();
             try
             {
@@ -114,7 +114,7 @@ namespace PLWPF
 
         private void DeleteTester_Click(object sender, RoutedEventArgs e)
         {
-            string winCondition = "Delete";
+            winCondition = "Delete";
             removeWarnings();
             try
             {
@@ -188,47 +188,85 @@ namespace PLWPF
             if (Save.Content == "Check")
             {
                 isWarnings();//empty filed
+                switch (winCondition)
+                {
+                    case "Add":
+                        if(noErrors())
+                        {
+                            if (bl.TesterInSystem(TesterForPL.TesterId))
+                            {
+                                MessageBoxResult dialogResult = MessageBox.Show("Tester alredy exists in the system! Do you want to update?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                                if (dialogResult == MessageBoxResult.Yes)
+                                {
+                                    TesterComboBox.Visibility = Visibility.Visible;
+                                    TesterComboBox.SelectedValue = (object)TesterForPL.TesterId;
+                                    TesterForPL = bl.GetListOfTesters()
+                                        .FirstOrDefault(x => x.TesterId == testerIdTextBox.Text);
+                                }
+                                else if (dialogResult == MessageBoxResult.No)
+                                {
+                                    TesterForPL = new Tester();
+                                    TesterGrid.DataContext = TesterForPL;
+                                }
+                            }
+                            else Save.Content = "Add";
+                        }
+                        else
+                        {
+                            MessageBox.Show("Can't add Tester. Fill ID " +
+                                            "and fix errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        break;
 
-                if (noErrors() && TesterComboBox.Visibility == Visibility.Visible)    
-                    {
-                    if (bl.TesterInSystem(TesterForPL.TesterId))
-                    {
-                        MessageBoxResult dialogResult = MessageBox.Show("Tester alredy exists in the system! Do you want to update?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-                        if (dialogResult == MessageBoxResult.Yes)
-                        {
-                            TesterComboBox.Visibility = Visibility.Visible;
-                            TesterComboBox.SelectedValue = (object)TesterForPL.TesterId;
-                            TesterForPL = bl.GetListOfTesters()
-                                .FirstOrDefault(x => x.TesterId == testerIdTextBox.Text);
-                        }
-                        else if (dialogResult == MessageBoxResult.No)
-                        {
-                            TesterForPL = new Tester();
-                            TesterGrid.DataContext = TesterForPL;
-                        }
-                    }
-                    else Save.Content = "Add";
+                    case "Update":
+                        if(noErrors()) Save.Content = "Update";
+                        break;
+
+                    case "Delete":
+                        if(noErrors()) Save.Content = "Delete";
+                        break;
                 }
-                else if (noErrors())
-                {
-                    switch(winCondition)
-                    {
-                        case "Add":
-                            Save.Content = "Add";
-                            break;
-                        case "Update":
-                            Save.Content = "Update";
-                            break;
-                        case "Delete":
-                            Save.Content = "Delete";
-                            break;
-                    }                    
-                }
-                else
-                {
-                    MessageBox.Show("Can't add Tester. Fill ID " +
-                                    "and fix errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+
+                //if (noErrors() && TesterComboBox.Visibility == Visibility.Hidden)  //checks if it is in the add window  
+                //    {
+                //    if (bl.TesterInSystem(TesterForPL.TesterId))
+                //    {
+                //        MessageBoxResult dialogResult = MessageBox.Show("Tester alredy exists in the system! Do you want to update?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                //        if (dialogResult == MessageBoxResult.Yes)
+                //        {
+                //            TesterComboBox.Visibility = Visibility.Visible;
+                //            TesterComboBox.SelectedValue = (object)TesterForPL.TesterId;
+                //            TesterForPL = bl.GetListOfTesters()
+                //                .FirstOrDefault(x => x.TesterId == testerIdTextBox.Text);
+                //        }
+                //        else if (dialogResult == MessageBoxResult.No)
+                //        {
+                //            TesterForPL = new Tester();
+                //            TesterGrid.DataContext = TesterForPL;
+                //        }
+                //    }
+                //    else Save.Content = "Add";
+                //}
+                //else if (noErrors())
+                //{
+                //    //switch(winCondition)
+                //    //{
+                //    //    case "Add":
+                //    //        Save.Content = "Add";
+                //    //        break;
+                //    //    case "Update":
+                //    //        Save.Content = "Update";
+                //    //        break;
+                //    //    case "Delete":
+                //    //        Save.Content = "Delete";
+                //    //        break;
+                //    //}                    
+                //}
+                //else
+                //{
+                //    MessageBox.Show("Can't add Tester. Fill ID " +
+                //                    "and fix errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                //}
             }
         }
         #endregion

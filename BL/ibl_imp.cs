@@ -101,7 +101,7 @@ namespace BL
 
             bool clear = checkAll.All(x => x);
             if (clear)          
-            dal.DeleteTester(T);
+                dal.DeleteTester(T);
         }
 
         public void UpdateTester(Tester T)
@@ -374,10 +374,10 @@ namespace BL
                 try
                 {
                     List<Tester> testerList = dal.GetListOfTesters();
-                if (testerList == null) return false;
+                    if (testerList == null) return false;
                     if (testerList.All(x=>x.TesterId!=TesterId))
                     {
-                    throw new Exception("ERROR. The tester isn't in the system.");
+                        throw new Exception("ERROR. The tester isn't in the system.");
                     }
                     return true;
                 }
@@ -410,10 +410,10 @@ namespace BL
                 try
                 {
                     List<Tester> testerList = dal.GetListOfTesters();
-                if (testerList.Count == 0) return true;
+                    if (testerList.Count == 0) return true;
                     if (testerList.Any(x=>x.TesterId==TesterId))
                     {
-                    throw new Exception("ERROR. The tester alredy is in the system.");
+                        throw new Exception("ERROR. The tester alredy is in the system.");
                     }
                     return true;
                 }
@@ -663,8 +663,8 @@ namespace BL
                 foreach (Tester t in testerlist)
                 {
 
-                    var row = Enumerable.Range(0, t.Schedule.GetLength(1))
-                        .Select(x => t.Schedule[dayOfWeek, x])
+                    var row = Enumerable.Range(0, t._schedual.GetLength(1))
+                        .Select(x => t._schedual[dayOfWeek, x])
                         .ToArray();
                     //no other tests in that hour with the same tester 
                     bool noOtherTest =

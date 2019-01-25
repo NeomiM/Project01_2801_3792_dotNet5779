@@ -65,7 +65,7 @@ namespace DAL
                 testerRoot = new XElement("testers");
                 testerRoot.Save(testerPath);
             }
-            else loadData( testerPath);
+            else testerRoot=loadData(testerPath);
 
             if (File.Exists(traineePath))
             {
@@ -106,7 +106,7 @@ namespace DAL
             {
                 return XElement.Load(path);
             }
-            catch
+            catch(Exception ex)
             {
                 throw new Exception("File upload problem");
             }
@@ -383,37 +383,6 @@ namespace DAL
         }
 
         //from xml
-        public List<Tester> GetListOfTesters()
-        {
-            var testers = new List<Tester>();
-            try
-            {
-                testers = (from t in testerRoot.Elements()
-                           select new Tester()
-                           {
-                               TesterId = t.Element("id").Value,
-                               FirstName = t.Element("firstName").Value,
-                               Sirname = t.Element("sirName").Value,
-                               DateOfBirth = DateTime.Parse(t.Element("dateOfBirth").Value),
-                               //TesterGender = Gender.Parse(t.Element("gender").Value),
-                               PhoneNumber = t.Element("phoneNumber").Value,
-                               Email = t.Element("email").Value,
-                               //Testercar = CarType.Parse(t.Element("car").Value),
-                               MaxDistanceForTest = int.Parse(t.Element("maxDistanceForTest").Value),
-                               YearsOfExperience = int.Parse(t.Element("yearsOfExperience").Value),
-                               MaxTestsInaWeek = int.Parse(t.Element("maxTestInAWeek").Value),
-                               //TesterAdress = new Address(t.Element("address").Element("street").Value,
-                               //     t.Element("address").Element("BuildingNumber").Value, t.Element("address").Element("city").Value),
-                               _schedual = set_schedule(t.Element("schedule").Element("sunday").Value, t.Element("schedule").Element("monday").Value, t.Element("schedule").Element("tuesday").Value,
-                                    t.Element("schedule").Element("wednesday").Value, t.Element("schedule").Element("thursday").Value)
-                           }).ToList();
-            }
-            catch (Exception ex)
-            {
-                testers = null;
-            }
-            return testers;
-        }
 
         public Tester GetTester(string id)
         {
@@ -639,7 +608,10 @@ namespace DAL
         public void DeleteTrainee(Trainee T)
         {
             if (_trainees.Exists(x => x.TraineeId == T.TraineeId))
-                _trainees.Remove(T);
+            {
+                _trainees.RemoveAll(x => x.TraineeId == T.TraineeId);
+            }
+
             var file = new FileStream(traineePath, FileMode.Create);
 
             var xmlSerializer = new XmlSerializer(_trainees.GetType());
@@ -717,7 +689,38 @@ namespace DAL
         #endregion
 
         #region gets
-        //public List<Tester> GetListOfTesters() { return null; }
+        public List<Tester> GetListOfTesters()
+        {
+            var testers = new List<Tester>();
+            try
+            {
+                testers = (from t in testerRoot.Elements()
+                           select new Tester()
+                           {
+                               TesterId = t.Element("id").Value,
+                               FirstName = t.Element("firstName").Value,
+                               Sirname = t.Element("sirName").Value,
+                               DateOfBirth = DateTime.Parse(t.Element("dateOfBirth").Value),
+                               //TesterGender = Gender.Parse(t.Element("gender").Value),
+                               PhoneNumber = t.Element("phoneNumber").Value,
+                               Email = t.Element("email").Value,
+                               //Testercar = CarType.Parse(t.Element("car").Value),
+                               MaxDistanceForTest = int.Parse(t.Element("maxDistanceForTest").Value),
+                               YearsOfExperience = int.Parse(t.Element("yearsOfExperience").Value),
+                               MaxTestsInaWeek = int.Parse(t.Element("maxTestInAWeek").Value),
+                               //TesterAdress = new Address(t.Element("address").Element("street").Value,
+                               //     t.Element("address").Element("BuildingNumber").Value, t.Element("address").Element("city").Value),
+                               _schedual = set_schedule(t.Element("schedule").Element("sunday").Value, t.Element("schedule").Element("monday").Value, t.Element("schedule").Element("tuesday").Value,
+                                    t.Element("schedule").Element("wednesday").Value, t.Element("schedule").Element("thursday").Value)
+                           }).ToList();
+            }
+            catch (Exception ex)
+            {
+                testers = null;
+            }
+            return testers;
+        }
+        
         public List<Trainee> GetListOfTrainees()
         {
             if (_trainees.Count > 0)
@@ -735,11 +738,14 @@ namespace DAL
 
         public List<Test> GetListOfTests()
         {
-            FileStream file = new FileStream(testPath, FileMode.Open);
+            if (_tests.Count > 0)
+            {
+                FileStream file = new FileStream(testPath, FileMode.Open);
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Test>));
             List<Test> list = (List<Test>)xmlSerializer.Deserialize(file); file.Close();
             return list;
-
+            }
+            else return null;
         }
    #endregion
 

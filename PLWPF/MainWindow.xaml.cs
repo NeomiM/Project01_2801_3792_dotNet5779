@@ -42,27 +42,47 @@ namespace PLWPF
 
         private void ManageTests_Click(object sender, RoutedEventArgs e)
         {
-            new ManageTests().ShowDialog();
+            if (mainBL.readyTrainees() == null || mainBL.GetListOfTesters() == null)
+            {
+                MessageBox.Show("There are no ready Trainees or Testers for a test", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else new ManageTests().ShowDialog();
         }
        
         private void ValidTrainees_Click(object sender, RoutedEventArgs e)//passed trainne
         {
-            new validTrainees().Show();
+            if (mainBL.GetListOfTrainees() == null)
+            {
+                MessageBox.Show("There are no Trainees", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+           else new validTrainees().Show();
         }
 
         private void TestsByDate_Click(object sender, RoutedEventArgs e)
         {
-            new TestsByDate().Show();
+            if (mainBL.GetListOfTrainees() == null)
+            {
+                MessageBox.Show("There are no Tests", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+           else new TestsByDate().Show();
         }
 
         private void TraineesByTesters_OnClick(object sender, RoutedEventArgs e)
         {
-            new traineesByTeachers().Show();
+            if (mainBL.GetListOfTrainees() == null)
+            {
+                MessageBox.Show("There are no Trainees", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else new traineesByTeachers().Show();
         }
 
         private void TestersByCarType_Click(object sender, RoutedEventArgs e)
         {
-            new TestersByCarType().ShowDialog();
+            if (mainBL.GetListOfTesters() == null)
+            {
+                MessageBox.Show("There are no Testers", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else new TestersByCarType().ShowDialog();
         }
     }
 }

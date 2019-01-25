@@ -282,10 +282,10 @@ namespace BL
                 throw new Exception("ERROR. Field is empty.");
             IsNumber(id);
             int idcheck;
-            if (id.Length > 9)
-                throw new Exception("ERROR. Id is too long.");
-            if (id.Length < 8)
-                throw new Exception("ERROR. Not enough numbers in id.");
+            //if (id.Length > 9)
+            //    throw new Exception("ERROR. Id is too long.");
+            //if (id.Length < 8)
+            //    throw new Exception("ERROR. Not enough numbers in id.");
 
             string tempId = id;
             //check if it's all numbers- 8/9 numbers
@@ -750,8 +750,8 @@ namespace BL
                     //    .Select(x => t.Schedule[dayOfWeek, x])
                     //    .ToArray();
                     ////no other tests in that hour with the same tester
-                    var colum = Enumerable.Range(0, t.Schedule.GetLength(0))
-                        .Select(x => t.Schedule[x, dayOfWeek])
+                    var colum = Enumerable.Range(0, t._schedual.GetLength(0))
+                        .Select(x => t._schedual[x, dayOfWeek])
                         .ToArray();
 
                     bool noOtherTest =
@@ -825,6 +825,8 @@ namespace BL
         {
 
             List<Trainee> trainees = GetListOfTrainees();
+            if(trainees==null)
+                return null;
             var filter = from trainee in trainees
                          where HasntPassedAnyTest(trainee) && trainee.LessonsPassed >= Configuration.MinAmmountOfLessons
                          select trainee;

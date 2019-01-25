@@ -48,6 +48,12 @@ namespace PLWPF
             dateOfBirthDatePicker.DisplayDateEnd = DateTime.Now.AddYears(-1*(int)BE.Configuration.MinAgeOFTrainee);
             dateOfBirthDatePicker.DisplayDateStart = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MaxAgeOFTrainee);
             TraineeComboBox.Visibility = Visibility.Hidden;
+            if (bl.GetListOfTrainees() == null)
+            {
+                UpdateTrainee.IsEnabled = false;
+                DeleteTrainee.IsEnabled = false;
+            }
+            
 
         }
 
@@ -85,9 +91,11 @@ namespace PLWPF
                 IdErrors.Text = "First Select ID";
                 IdErrors.Foreground=Brushes.DarkBlue;
                 TraineeListForPL = bl.GetListOfTrainees();
-                TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x=>x.TraineeId);
+                if ( TraineeListForPL == null)
+                    throw new Exception("There are no trainees to update.");
                 if (TraineeListForPL.Count==0)
                     throw new Exception("There are no trainees to update.");
+                TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x=>x.TraineeId);
                 TraineeGrid.Visibility = Visibility.Visible;
                 TraineeGrid.IsEnabled = true;
                
@@ -109,7 +117,6 @@ namespace PLWPF
                 removewarnings();
                 Save.Content = "Delete";
                 TraineeForPL = new Trainee();
-                TraineeGrid.Visibility = Visibility.Visible;
                 TraineeComboBox.Visibility = Visibility.Visible;
                 traineeIdTextBox.Visibility = Visibility.Hidden;
                 TraineeComboBox.SelectedItem = null;
@@ -118,9 +125,12 @@ namespace PLWPF
                 Save.IsEnabled = false;
                 IdErrors.Text = "First Select ID";
                 TraineeListForPL = bl.GetListOfTrainees();
-                TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
+                if (TraineeListForPL == null)
+                    throw new Exception("There are no trainees to delete.");
                 if (TraineeListForPL.Count == 0)
-                    throw new Exception("There are no trainees to update.");
+                    throw new Exception("There are no trainees to delete.");
+                TraineeGrid.Visibility = Visibility.Visible;
+                TraineeComboBox.ItemsSource = bl.GetListOfTrainees().Select(x => x.TraineeId);
             }
             catch (Exception exception)
             {
@@ -151,6 +161,8 @@ namespace PLWPF
                     TraineeGrid.Visibility = Visibility.Hidden;
                     //this.TraineeGrid.DataContext = TraineeForPL;
                     MessageBox.Show("Trainee saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    UpdateTrainee.IsEnabled = true;
+                    DeleteTrainee.IsEnabled = true;
                 }
 
                 catch (Exception exception)
@@ -183,6 +195,11 @@ namespace PLWPF
                     traineeIdTextBox.Visibility = Visibility.Visible;
                     TraineeForPL = new Trainee();
                     TraineeGrid.DataContext = TraineeForPL;
+                    if (bl.GetListOfTrainees() == null)
+                    {
+                        UpdateTrainee.IsEnabled = false;
+                        DeleteTrainee.IsEnabled = false;
+                    }
                 }
                 else if (dialogResult == MessageBoxResult.No)
                 {
@@ -252,6 +269,10 @@ namespace PLWPF
             string id = (string)TraineeComboBox.SelectedItem;
             TraineeForPL = bl.GetListOfTrainees().FirstOrDefault(a => a.TraineeId == id);
             this.TraineeGrid.DataContext = TraineeForPL;
+            traineeGearComboBox.SelectedItem = TraineeForPL.TraineeGear;
+            traineeGenderComboBox.SelectedItem = TraineeForPL.TraineeGender;
+            traineecarComboBox.SelectedItem = TraineeForPL.Traineecar;
+            //City.Text=TraineeForPL.TraineeAddress.
         }
         private void TraineeIdTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
@@ -590,7 +611,10 @@ namespace PLWPF
             }
 
         }
-        
+        private void TraineeGenderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TraineeForPL.TraineeGender = (Gender)Enum.Parse(typeof(Gender), traineeGenderComboBox.SelectedItem.ToString()); 
+        }
 
         private void TraineecarComboBox_OnMouseLeave(object sender, MouseEventArgs e)
         {
@@ -611,6 +635,10 @@ namespace PLWPF
             }
         }
 
+        private void TraineecarComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TraineeForPL.Traineecar = (CarType)Enum.Parse(typeof(CarType), traineecarComboBox.SelectedItem.ToString());
+        }
         private void TraineeGearComboBox_OnMouseLeave(object sender, MouseEventArgs e)
         {
             if (traineeGearComboBox.SelectedItem == null)
@@ -629,6 +657,12 @@ namespace PLWPF
                 traineeGearComboBox.BorderBrush = Brushes.Black;
             }
         }
+
+        private void TraineeGearComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TraineeForPL.TraineeGear = (GearType)Enum.Parse(typeof(GearType), traineeGearComboBox.SelectedItem.ToString());
+        }
+
         #endregion
 
         #region opens and closes
@@ -722,6 +756,8 @@ namespace PLWPF
 
 
         }
+
         #endregion
+
     }
 }

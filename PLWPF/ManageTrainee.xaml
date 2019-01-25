@@ -74,13 +74,13 @@
                 <Label VerticalAlignment="Center" Grid.Row="2" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Sirname:" Height="26" Width="56"/>
                 <TextBox x:Name="sirnameTextBox" GotKeyboardFocus="SirnameTextBox_OnGotKeyboardFocus" LostKeyboardFocus="SirnameTextBox_OnLostKeyboardFocus" Width="120" VerticalAlignment="Center" Text="{Binding Sirname,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Grid.Row="2" Margin="3.4,4.4,0,4.4" Height="24" HorizontalAlignment="Left" Grid.Column="1"/>
                 <Label VerticalAlignment="Center" Grid.Row="9" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Car Type:" Height="26" Width="58"/>
-                <ComboBox x:Name="traineecarComboBox" MouseLeave="TraineecarComboBox_OnMouseLeave" SelectedItem="{Binding CarType, UpdateSourceTrigger=PropertyChanged}" Width="120" VerticalAlignment="Center" Grid.Row="9" Margin="3.4,5,0,5"  Height="22" HorizontalAlignment="Left"  Grid.Column="1">
+                <ComboBox x:Name="traineecarComboBox" MouseLeave="TraineecarComboBox_OnMouseLeave" SelectedItem="{Binding CarType, UpdateSourceTrigger=PropertyChanged}" Width="120" VerticalAlignment="Bottom" Grid.Row="9" Margin="3.4,0,0,6"  Height="22" HorizontalAlignment="Left"  Grid.Column="1" SelectionChanged="TraineecarComboBox_SelectionChanged">
                 </ComboBox>
                 <Label VerticalAlignment="Center" Grid.Row="10" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Gear Type:" Height="26" Width="66"/>
-                <ComboBox x:Name="traineeGearComboBox" MouseLeave="TraineeGearComboBox_OnMouseLeave" Width="120" VerticalAlignment="Center" Grid.Row="10" Margin="3.4,5,0,5" SelectedItem="{Binding GearType}" Height="22" HorizontalAlignment="Left" Grid.Column="1">
+                <ComboBox x:Name="traineeGearComboBox" MouseLeave="TraineeGearComboBox_OnMouseLeave" Width="120" VerticalAlignment="Center" Grid.Row="10" Margin="3.4,5,0,5" SelectedItem="{Binding GearType}" Height="22" HorizontalAlignment="Left" Grid.Column="1" SelectionChanged="TraineeGearComboBox_SelectionChanged">
                 </ComboBox>
                 <Label VerticalAlignment="Center" Grid.Row="4" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Gender:" Height="26" Width="51"/>
-                <ComboBox x:Name="traineeGenderComboBox" MouseLeave="TraineeGenderComboBox_OnMouseLeave" VerticalAlignment="Top" Grid.Row="4" Margin="3.4,5.8,15,0"  Height="22" SelectedItem="{Binding Gender ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" />
+                <ComboBox x:Name="traineeGenderComboBox" MouseLeave="TraineeGenderComboBox_OnMouseLeave" VerticalAlignment="Top" Grid.Row="4" Margin="3.4,5.8,15,0"  Height="22" SelectedItem="{Binding Gender ,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" SelectionChanged="TraineeGenderComboBox_SelectionChanged" />
                 <Label Name="TraineeIDLabel" VerticalAlignment="Center" Margin="3,3,0,3" HorizontalAlignment="Left" Grid.Column="0" Content="Trainee Id:" Height="26" Width="64"/>
                 <TextBox x:Name="traineeIdTextBox" Text="{Binding TraineeId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Width="120" VerticalAlignment="Center" Margin="3.4,4,0,4" Height="24" HorizontalAlignment="Left" Grid.Column="1" GotKeyboardFocus="TraineeIdTextBox_OnGotKeyboardFocus" LostKeyboardFocus="TraineeIdTextBox_OnLostKeyboardFocus"/>
                 <TextBlock x:Name="IdErrors" Width="328" VerticalAlignment="Center"  Margin="3,4,-304.6,4.8" Height="24" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="0"/>
@@ -100,7 +100,7 @@
                 <Label Content="Address:" Grid.Row="11" Grid.Column="0"  VerticalAlignment="Center"  Margin="3,3,0,3" HorizontalAlignment="Left" Height="26" Width="94"/>
                 <StackPanel Orientation="Horizontal" Grid.Row="11" Grid.Column="2" HorizontalAlignment="Stretch" MinWidth="300" Margin="0,3">
                     <TextBox x:Name="BuidingNumber" Background="White" VerticalAlignment="Center" HorizontalAlignment="Stretch" LostKeyboardFocus="DrivingTeacherTextBox_OnLostKeyboardFocus" MinWidth="59" Text="{Binding Address.BuildingNumber, Mode=TwoWay, NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=true}" MinHeight="24" RenderTransformOrigin="0.5,0.5" Width="27">
-                      
+
                     </TextBox>
                     <TextBox x:Name="Street" Grid.Row="11" Grid.Column="2" Background="White" HorizontalAlignment="Stretch" GotKeyboardFocus="Street_OnGotKeyboardFocus" LostKeyboardFocus="Street_OnLostKeyboardFocus" Width="120" Text="{Binding Address.Street, Mode=TwoWay, NotifyOnValidationError=true, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=true}" Margin="0" Height="24"  />
                 </StackPanel>

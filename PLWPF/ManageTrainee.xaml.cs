@@ -85,7 +85,6 @@ namespace PLWPF
                 removewarnings();
                 TraineeForPL = new Trainee();
                 Save.IsEnabled = false;
-                TraineeComboBox.SelectedItem = null;
                 closeAlmostAll();
                 TraineeGrid.DataContext = TraineeForPL;
                 IdErrors.Text = "First Select ID";
@@ -102,10 +101,12 @@ namespace PLWPF
                 Save.Content = "Check";
                 TraineeComboBox.Visibility = Visibility.Visible;
                 traineeIdTextBox.Visibility = Visibility.Hidden;
+                TraineeComboBox.SelectedItem = null;
 
             }
             catch (Exception exception)
             {
+                if(exception.Message!= "Object reference not set to an instance of an object.")
                 MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -177,11 +178,11 @@ namespace PLWPF
                 TraineeForPL.TraineeAddress = new Address(Street.Text, BuidingNumber.Text, City.Text);
                 
                 bl.UpdateTrainee(TraineeForPL);
-                //TraineeForPL = new Trainee();
+                TraineeForPL = new Trainee();
                 TraineeGrid.Visibility = Visibility.Hidden;
-                //this.TraineeGrid.DataContext = TraineeForPL;
+                TraineeComboBox.SelectedItem = null;
+                this.TraineeGrid.DataContext = TraineeForPL;
                 MessageBox.Show("Trainee saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
-                //TraineeComboBox.SelectedItem = null;
             }
 
             if (Save.Content == "Delete")
@@ -259,20 +260,27 @@ namespace PLWPF
         }
         private void TraineeComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            IdErrors.Text = "";
-            if (Save.Content == "Check")
+            if (TraineeComboBox.SelectedIndex != -1)
             {
-                openAll();
-                
+                IdErrors.Text = "";
+                if (Save.Content == "Check")
+                {
+                    openAll();
+
+                }
+
+                Save.IsEnabled = true;
+                string id = (string) TraineeComboBox.SelectedItem;
+                TraineeForPL = bl.GetListOfTrainees().FirstOrDefault(a => a.TraineeId == id);
+                this.TraineeGrid.DataContext = TraineeForPL;
+
+                traineeGearComboBox.SelectedItem = TraineeForPL.TraineeGear;
+                traineeGenderComboBox.SelectedItem = TraineeForPL.TraineeGender;
+                traineecarComboBox.SelectedItem = TraineeForPL.Traineecar;
+                City.Text = TraineeForPL.TraineeAddress.Value.City;
+                Street.Text = TraineeForPL.TraineeAddress.Value.Street;
+                BuidingNumber.Text = TraineeForPL.TraineeAddress.Value.BuildingNumber;
             }
-            Save.IsEnabled = true;
-            string id = (string)TraineeComboBox.SelectedItem;
-            TraineeForPL = bl.GetListOfTrainees().FirstOrDefault(a => a.TraineeId == id);
-            this.TraineeGrid.DataContext = TraineeForPL;
-            traineeGearComboBox.SelectedItem = TraineeForPL.TraineeGear;
-            traineeGenderComboBox.SelectedItem = TraineeForPL.TraineeGender;
-            traineecarComboBox.SelectedItem = TraineeForPL.Traineecar;
-            //City.Text=TraineeForPL.TraineeAddress.
         }
         private void TraineeIdTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
@@ -613,6 +621,7 @@ namespace PLWPF
         }
         private void TraineeGenderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(traineeGenderComboBox.SelectedIndex!=-1)
             TraineeForPL.TraineeGender = (Gender)Enum.Parse(typeof(Gender), traineeGenderComboBox.SelectedItem.ToString()); 
         }
 
@@ -637,6 +646,7 @@ namespace PLWPF
 
         private void TraineecarComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(traineecarComboBox.SelectedIndex!=-1)
             TraineeForPL.Traineecar = (CarType)Enum.Parse(typeof(CarType), traineecarComboBox.SelectedItem.ToString());
         }
         private void TraineeGearComboBox_OnMouseLeave(object sender, MouseEventArgs e)
@@ -660,6 +670,7 @@ namespace PLWPF
 
         private void TraineeGearComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(traineeGearComboBox.SelectedIndex!=-1)
             TraineeForPL.TraineeGear = (GearType)Enum.Parse(typeof(GearType), traineeGearComboBox.SelectedItem.ToString());
         }
 

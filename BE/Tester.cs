@@ -17,7 +17,7 @@ namespace BE
         private DateTime _dateOfBirth;
         private Gender _testerGender;
         private string _phoneNumber = "";
-        //[XmlIgnore]//to not be automatic by serialise
+        [XmlIgnore]//to not be automatic by serialise
         public bool[,] _schedual = new bool[6, 5];
 
         private Address _testerAdress = new Address("","","");
@@ -49,7 +49,7 @@ namespace BE
         public double MaxDistanceForTest { get => _maxDistanceForTest; set => _maxDistanceForTest = value; }
 
         public CarType Testercar { get => _testercar; set => _testercar = value; }
-        public bool[,] Schedule { get; set; } = new bool[5, 6];
+        //public bool[,] Schedule { get; set; } = new bool[5, 6];
         public string Email { get => _email; set => _email = value; }
 
         public void setSchedual(bool[] SundayArr, bool[] MondayArr, bool[] TuesdayArr, bool[] WednesdayArr, bool[] ThursdayArr)

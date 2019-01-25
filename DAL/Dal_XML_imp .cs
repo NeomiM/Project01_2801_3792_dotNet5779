@@ -40,49 +40,78 @@ namespace DAL
         XElement testRoot;
         string testPath = @"TestXml.xml";
 
+        private List<Trainee> _trainees = new List<Trainee>();
+
+        private List<Test> _tests = new List<Test>();
+
+        private List<Tester> _testers = new List<Tester>();
+
         public Dal_XML_imp()
         {
             #region create/load files
             if (!File.Exists(configPath))
             {
-                //
+                configRoot = new XElement("TestID", "00000000");
+                configRoot.Save(configPath);
             }
-            //else loadData(configRoot, configPath);
+            else
+            {
+                configRoot = loadData(configPath);
+                Configuration.FirstTestId = int.Parse(configRoot.Value);
+            }
 
             if (!File.Exists(testerPath))
             {
                 testerRoot = new XElement("testers");
                 testerRoot.Save(testerPath);
             }
-            else loadData(ref testerRoot, testerPath);
+            else loadData( testerPath);
 
-            if (!File.Exists(traineePath))
+            if (File.Exists(traineePath))
             {
-                traineeRoot = new XElement("trainees");
-                traineeRoot.Save(traineePath);
-            }
-            else loadData(ref traineeRoot, traineePath);
+                var file = new FileStream(traineePath, FileMode.Open);
 
-            if (!File.Exists(testPath))
-            {
-                testRoot = new XElement("tests");
-                testRoot.Save(testPath);
+                var xmlSerializer = new XmlSerializer(typeof(List<Trainee>));
+
+                var list = (List<Trainee>)xmlSerializer.Deserialize(file);
+
+                file.Close();
+                _trainees = list.ToList();
+
             }
-            else loadData(ref testRoot, testPath);
+            else
+            {
+                _trainees = new List<Trainee>();
+            }
+
+            if (File.Exists(testPath))
+            {
+                var file = new FileStream(testPath, FileMode.Open);
+
+                var xmlSerializer = new XmlSerializer(typeof(List<Test>));
+
+                var list = (List<Test>)xmlSerializer.Deserialize(file);
+
+                file.Close();
+                _tests = list.ToList();
+
+            }
+            else _tests = new List<Test>();
             #endregion
         }
 
-        private void loadData(ref XElement element, string path)
+        private XElement loadData(string path)
         {
             try
             {
-                element = XElement.Load(path);
+                return XElement.Load(path);
             }
             catch
             {
                 throw new Exception("File upload problem");
             }
         }
+
 
         #region tester
         //to xml
@@ -115,18 +144,6 @@ namespace DAL
                                      );
             testerRoot.Save(testPath);
         }
-
-        //public string get_schedule(bool[,] scheduleMatrix, int day)
-        //{
-        //    string result = "";
-        //    for (int i = 0; i < Configuration.NumOfHoursPerDay; i++)
-        //    {
-        //        if (scheduleMatrix[i, day]) result += "true";
-        //        else result += "false";
-        //        if (i != Configuration.NumOfHoursPerDay - 1) result += ",";
-        //    }
-        //    return result;
-        //}
 
         public string get_schedule(bool[,] scheduleMatrix, int day)
         {
@@ -365,7 +382,6 @@ namespace DAL
             return result;
         }
 
-
         //from xml
         public List<Tester> GetListOfTesters()
         {
@@ -433,57 +449,7 @@ namespace DAL
             return tester;
         }
 
-        //public bool[,] set_schedule(string sunday, string monday, string tuesday, string wednesday, string thursday)
-        //{
-        //    string[] _sunday = sunday.Split(',');
-        //    string[] _monday = monday.Split(',');
-        //    string[] _tuesday = tuesday.Split(',');
-        //    string[] _wednesday = wednesday.Split(',');
-        //    string[] _thursday = thursday.Split(',');
-        //    bool[,] scheduleMatrix = new bool[Configuration.NumOfHoursPerDay, Configuration.NumOfWorkingDays];
-        //    for (int i = 0; i < Configuration.NumOfWorkingDays; i++)
-        //    {
-        //        for (int j = 0; j < Configuration.NumOfHoursPerDay; j++)
-        //        {
-        //            switch (i)
-        //            {
-        //                case 0:
-        //                    if (_sunday[j] == "true")
-        //                        scheduleMatrix[j, 0] = true;
-        //                    else scheduleMatrix[j, 0] = false;
-        //                    break;
-
-        //                case 1:
-        //                    if (_monday[j] == "true")
-        //                        scheduleMatrix[j, 1] = true;
-        //                    else scheduleMatrix[j, 1] = false;
-        //                    break;
-
-        //                case 2:
-        //                    if (_tuesday[j] == "true")
-        //                        scheduleMatrix[j, 2] = true;
-        //                    else scheduleMatrix[j, 2] = false;
-        //                    break;
-
-        //                case 3:
-        //                    if (_wednesday[j] == "true")
-        //                        scheduleMatrix[j, 3] = true;
-        //                    else scheduleMatrix[j, 3] = false;
-        //                    break;
-
-        //                case 4:
-        //                    if (_thursday[j] == "true")
-        //                        scheduleMatrix[j, 4] = true;
-        //                    else scheduleMatrix[j, 4] = false;
-        //                    break;
-        //            }
-        //        }
-        //    }
-        //    return scheduleMatrix;
-        //}
-
-
-
+     
         public void set_schedule_help(bool[,] scheduleMatrix, string dayString, int num)
         {
             string hour1 = "";
@@ -558,7 +524,6 @@ namespace DAL
             }
         }
 
-
         public bool[,] set_schedule(string sunday, string monday, string tuesday, string wednesday, string thursday)
         {
             bool[,] scheduleMatrix = new bool[Configuration.NumOfHoursPerDay, Configuration.NumOfWorkingDays];
@@ -570,88 +535,6 @@ namespace DAL
             set_schedule_help(scheduleMatrix, thursday, 4);
 
             return scheduleMatrix;
-
-            //for (int i = 0; i < Configuration.NumOfWorkingDays; i++)
-            //{
-            //    switch (i)
-            //    {
-            //        case 0:
-            //            void set_schedule_help(scheduleMatrix, sunday, 0);
-            //            break;
-
-            //        //case 1:
-            //        //    if (_monday[j] == "true")
-            //        //        scheduleMatrix[j, 1] = true;
-            //        //    else scheduleMatrix[j, 1] = false;
-            //        //    break;
-
-            //        //case 2:
-            //        //    if (_tuesday[j] == "true")
-            //        //        scheduleMatrix[j, 2] = true;
-            //        //    else scheduleMatrix[j, 2] = false;
-            //        //    break;
-
-            //        //case 3:
-            //        //    if (_wednesday[j] == "true")
-            //        //        scheduleMatrix[j, 3] = true;
-            //        //    else scheduleMatrix[j, 3] = false;
-            //        //    break;
-
-            //        //case 4:
-            //        //    if (_thursday[j] == "true")
-            //        //        scheduleMatrix[j, 4] = true;
-            //        //    else scheduleMatrix[j, 4] = false;
-            //        //    break;
-            //    }
-            //}
-
-
-
-            //string[] _sunday = sunday.Split(',');
-            //string[] _monday = monday.Split(',');
-            //string[] _tuesday = tuesday.Split(',');
-            //string[] _wednesday = wednesday.Split(',');
-            //string[] _thursday = thursday.Split(',');
-            //bool[,] scheduleMatrix = new bool[Configuration.NumOfHoursPerDay, Configuration.NumOfWorkingDays];
-            //for (int i = 0; i < Configuration.NumOfWorkingDays; i++)
-            //{
-            //    for (int j = 0; j < Configuration.NumOfHoursPerDay; j++)
-            //    {
-            //        switch (i)
-            //        {
-            //            case 0:
-            //                if (_sunday[j] == "true")
-            //                    scheduleMatrix[j, 0] = true;
-            //                else scheduleMatrix[j, 0] = false;
-            //                break;
-
-            //            case 1:
-            //                if (_monday[j] == "true")
-            //                    scheduleMatrix[j, 1] = true;
-            //                else scheduleMatrix[j, 1] = false;
-            //                break;
-
-            //            case 2:
-            //                if (_tuesday[j] == "true")
-            //                    scheduleMatrix[j, 2] = true;
-            //                else scheduleMatrix[j, 2] = false;
-            //                break;
-
-            //            case 3:
-            //                if (_wednesday[j] == "true")
-            //                    scheduleMatrix[j, 3] = true;
-            //                else scheduleMatrix[j, 3] = false;
-            //                break;
-
-            //            case 4:
-            //                if (_thursday[j] == "true")
-            //                    scheduleMatrix[j, 4] = true;
-            //                else scheduleMatrix[j, 4] = false;
-            //                break;
-            //        }
-            //    }
-            //}
-            //return scheduleMatrix;
         }
 
 
@@ -659,7 +542,7 @@ namespace DAL
         //functions for tester
         public void AddTester(Tester tester)
         {
-            loadData(ref testerRoot, testerPath);
+            loadData( testerPath);
             var id = new XElement("id", tester.TesterId);
             var firstName = new XElement("firstName", tester.FirstName);
             var sirName = new XElement("sirName", tester.Sirname);
@@ -737,435 +620,128 @@ namespace DAL
         }
         #endregion
 
-        //functions for trainee
-        public void AddTrainee(Trainee T) { }
-        public void DeleteTrainee(Trainee T) { }
-        public void UpdateTrainee(Trainee T) { }
-        //functions for test
-        public void AddTest(Test T) { }
-        public void UpdateTest(Test T) { }
+        #region trianee
+        public void AddTrainee(Trainee T)
+        {
+            if (_trainees.Exists(x => x.TraineeId == T.TraineeId))
+                throw new Exception("ERROR. Trianee is already in the system.");
+            _trainees.Add(T);
 
-        //public List<Tester> GetListOfTesters() { return null; }
-        public List<Trainee> GetListOfTrainees() { return null; }
-        public List<Test> GetListOfTests() { return null; }
+            var file = new FileStream(traineePath, FileMode.Create);
 
+            var xmlSerializer = new XmlSerializer(_trainees.GetType());
 
+            xmlSerializer.Serialize(file, _trainees);
 
+            file.Close();
+        }
 
+        public void DeleteTrainee(Trainee T)
+        {
+            if (_trainees.Exists(x => x.TraineeId == T.TraineeId))
+                _trainees.Remove(T);
+            var file = new FileStream(traineePath, FileMode.Create);
 
+            var xmlSerializer = new XmlSerializer(_trainees.GetType());
 
+            xmlSerializer.Serialize(file, _trainees);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //class Dal_Imp_Xml : Idal
-        //{
-
-        //    public Dal_Imp_Xml()
-        //    {
-        //        //XElement help = XElement.Load("..//..//..//xmlFiles//config.xml");
-        //        //Configuration.NumberOfTest = int.Parse(help.Element("NumberOfTest").Value);
-
-        //        if (!File.Exists(pathTest))
-        //        {
-        //            List<Test> TestList = new List<Test>();//empty list for start
-        //            SaveToXML<List<Test>>(TestList, pathTest);
-        //        }
-
-        //        if (!File.Exists(pathTester))
-        //        {
-        //            List<Tester> TesterList = new List<Tester>();//empty list for start
-        //            SaveToXML<List<Tester>>(TesterList, pathTester);
-        //        }
-
-        //        if (!File.Exists(pathConfig))
-        //        {
-
-        //        }
-        //        if (!File.Exists(pathTrainee))//we have to add new file
-        //            CreateFileTrainee();
-        //        else//ensure all data is according to current information
-        //            LoadDataTrainee();
-        //    }
-
-        //    private void LoadDataTrainee()//load from file to program
-        //    {
-        //        try
-        //        {
-        //            TraineeRoot = XElement.Load(pathTrainee);
-        //        }
-        //        catch
-        //        {
-        //            throw new Exception("File upload problem");
-        //        }
-        //    }
-
-        //    private void CreateFileTrainee()//for new file
-        //    {
-        //        TraineeRoot = new XElement("Trainee");
-        //        TraineeRoot.Save(pathTrainee);//add new main element
-        //    }
-
-        //    public static void SaveToXML<T>(T source, string path)//save objects like elements from program to  file
-        //    {
-        //        FileStream file = new FileStream(path, FileMode.Create);
-        //        XmlSerializer xmlSerializer = new XmlSerializer(source.GetType());
-        //        xmlSerializer.Serialize(file, source);
-        //        file.Close();
-        //    }
-
-        //    public static T LoadFromXML<T>(string path)//save elements like objects from file to program 
-        //    {
-        //        FileStream file = new FileStream(path, FileMode.Open);
-        //        XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-        //        T result = (T)xmlSerializer.Deserialize(file);
-        //        file.Close();
-        //        return result;
-        //    }
-
-
-
-
-            //#region Tester
-            //public void addTesterDAL(Tester tes)
-            //{
-            //    Tester tester = getTesterDAL(tes.Id);
-            //    if (tester == null)
-            //    {
-            //        List<Tester> testerList = LoadFromXML<List<Tester>>(pathTester);
-            //        testerList.Add(tes);
-            //        SaveToXML<List<Tester>>(testerList, pathTester);
-            //    }
-            //    else
-            //        throw new Exception("הטסטר הזה כבר קיים במערכת\n");
-            //}
-
-            //public void deleteTesterDAL(int id)
-            //{
-            //    List<Tester> testersListHelp = getTestersDAL().ToList();
-            //    if (testersListHelp.Count() == 0)
-            //        throw new Exception("לא קיים טסטר כזה במערכת\n");
-            //    Tester tester = getTesterDAL(id);
-            //    if (tester != null)
-            //    {
-            //        List<Tester> testersList = LoadFromXML<List<Tester>>(pathTester);
-            //        testersList.RemoveAll(t => t.Id == id);
-            //        SaveToXML<List<Tester>>(testersList, pathTester);
-            //        throw new Exception("נמחקת בהצלחה מהמערכת");
-            //    }
-            //    else
-            //        throw new Exception("לא נמצא טסטר כזה במערכת\n");
-            //}
-
-            //public void setTesterDetailsDAL(Tester tes)
-            //{
-            //    if (File.Exists(pathTester))
-            //    {
-            //        List<Tester> testersList = LoadFromXML<List<Tester>>(pathTester);
-            //        int index = testersList.FindIndex(s => s.Id == tes.Id);
-            //        if (index != -1)
-            //        {
-            //            testersList[index] = tes;
-            //            SaveToXML<List<Tester>>(testersList, pathTester);
-            //            throw new Exception("פרטיך עודכנו בהצלחה במערכת");
-
-            //        }
-            //    }
-            //    else
-            //        throw new Exception("לא נמצא טסטר כזה במערכת\n");
-            //}
-
-            //public Tester getTesterDAL(int id)
-            //{
-            //    if (File.Exists(pathTester))
-            //    {
-
-            //        List<Tester> testersList = LoadFromXML<List<Tester>>(pathTester);
-            //        if (testersList.Count() == 0)
-            //        {
-            //            return null;
-            //        }
-            //        return testersList.FirstOrDefault(s => s.Id == id);
-            //    }
-            //    return null;
-            //}
-
-            //public IEnumerable<Tester> getTestersDAL(Func<Tester, bool> predicat = null)
-            //{
-            //    if (predicat == null)
-            //        return LoadFromXML<List<Tester>>(pathTester).AsEnumerable().ToList();
-
-            //    return LoadFromXML<List<Tester>>(pathTester).Where(predicat).ToList();
-            //}
-
-            //#endregion
-
-            //#region Test
-
-            //public void addTestDAL(Test test)
-            //{
-            //    if (File.Exists(pathTrainee) && File.Exists(pathTest))
-            //    {
-            //        List<Trainee> traineehelp = LoadFromXML<List<Trainee>>(pathTrainee);
-            //        int index = traineehelp.FindIndex(s => s.Id == test.TraineeId);
-            //        if (index != -1)
-            //            traineehelp[index].NumOfTests++;//the amount of tests this trainee is taking
-            //        else
-            //            throw new Exception("לא נמצא נבחן כזה במערכת\n");
-            //        Configuration.NumberOfTest++;//id of all tests
-            //        test.TestNumber = Configuration.NumberOfTest;
-            //        List<Test> testhelp = LoadFromXML<List<Test>>(pathTest);
-            //        testhelp.Add(test);
-            //        SaveToXML<List<Trainee>>(traineehelp, pathTrainee);
-            //        SaveToXML<List<Test>>(testhelp, pathTest);
-            //    }
-            //}
-
-            //public void setTestDAL(Test test)
-            //{
-            //    if (File.Exists(pathTest))
-            //    {
-            //        List<Test> testhelp = LoadFromXML<List<Test>>(pathTest);
-            //        int index = testhelp.FindIndex(s => s.TestNumber == test.TestNumber);
-            //        if (index != -1)
-            //        {
-            //            testhelp[index] = test;
-            //            SaveToXML<List<Test>>(testhelp, pathTest);
-            //        }
-            //    }
-            //    else
-            //        throw new Exception("לא נמצא מבחן כזה במערכת\n");
-            //}
-
-            //public Test getTestDAL(int num)
-            //{
-            //    if (File.Exists(pathTest))
-            //    {
-            //        List<Test> testhelp = LoadFromXML<List<Test>>(pathTest);
-            //        if (testhelp.Count == 0)
-            //            return null;
-            //        return new Test(testhelp.FirstOrDefault(s => s.TestNumber == num));
-            //    }
-            //    return null;
-            //}
-
-            //public IEnumerable<Test> getTestsDAL(Func<Test, bool> predicat = null)
-            //{
-            //    if (predicat == null)
-            //        return LoadFromXML<List<Test>>(pathTest).AsEnumerable().ToList();
-
-            //    return LoadFromXML<List<Test>>(pathTest).Where(predicat).ToList();
-            //}
-
-            //#endregion
-
-            //#region Trainee
-            //public void addTraineeDAL(Trainee trainee)
-            //{
-            //    LoadDataTrainee();
-            //    Trainee train = getTraineeDAL(trainee.Id);
-            //    if (train != null)
-            //        throw new Exception("כבר קיים תלמיד עם אותה ת.ז");
-            //    XElement Id = new XElement("id", trainee.Id);
-            //    XElement FirstName = new XElement("firstName", trainee.FirstName);
-            //    XElement LastName = new XElement("lastName", trainee.LastName);
-            //    XElement Email = new XElement("email", trainee.Email);
-            //    XElement TraineeGender = new XElement("traineeGender", trainee.TraineeGender);
-            //    XElement PhoneNumber = new XElement("phoneNumber", trainee.PhoneNumber);
-            //    //XElement street = new XElement("studentAddress", trainee.StudentAddress.street);
-            //    //XElement buildingNumber = new XElement("studentAddress", trainee.StudentAddress.buildingNumber);
-            //    //XElement town = new XElement("studentAddress", trainee.StudentAddress.town);
-            //    //XElement StudentAddress = new XElement("studentAddress", street,buildingNumber,town /street,buildingNumber,town/);
-            //    XElement Address = new XElement("Address", new XElement("street", trainee.StudentAddress.street), new XElement("building", trainee.StudentAddress.buildingNumber), new XElement("city", trainee.StudentAddress.town));
-            //    XElement BirthDate = new XElement("birthDate", trainee.BirthDate);
-            //    XElement Vehicle = new XElement("vehicle", trainee.Vehicle);
-            //    XElement Gear = new XElement("gear", trainee.Gear);
-            //    XElement DrivingSchoolName = new XElement("drivingSchoolName", trainee.DrivingSchoolName);
-            //    XElement TeacherName = new XElement("teacherName", trainee.TeacherName);
-            //    XElement NumberOfClasses = new XElement("numberOfClasses", trainee.NumberOfClasses);
-            //    XElement Age = new XElement("age", trainee.Age);
-            //    XElement Isrealicitzian = new XElement("isrealicitzian", trainee.Isrealicitzian);
-
-            //    XElement complete = new XElement("trainee", Id, FirstName, LastName, Email, TraineeGender, PhoneNumber, Address, BirthDate, Vehicle, Gear, DrivingSchoolName, TeacherName, NumberOfClasses, Age, Isrealicitzian);
-
-            //    TraineeRoot.Add(complete);//add new trainee to all trainee in file
-            //    TraineeRoot.Save(pathTrainee);
-            //}
-
-            //public void deleteTraineeDAL(int id)
-            //{
-            //    LoadDataTrainee();
-            //    XElement deleteTraineeElement;
-            //    deleteTraineeElement = (from trElement in TraineeRoot.Elements()
-            //                            where int.Parse(trElement.Element("id").Value) == id
-            //                            select trElement).FirstOrDefault();
-            //    if (deleteTraineeElement == null)
-            //        throw new Exception("לא קיים תלמיד כזה במערכת");
-            //    else
-            //    {
-            //        deleteTraineeElement.Remove();
-            //        TraineeRoot.Save(pathTrainee);
-            //    }
-
-            //}
-
-            //public void setTraineeDAL(Trainee trainee)
-            //{
-            //    LoadDataTrainee();
-            //    //find element of this trainee
-            //    XElement setTraineeElement;
-            //    setTraineeElement = (from trElement in TraineeRoot.Elements()
-            //                         where int.Parse(trElement.Element("id").Value) == trainee.Id
-            //                         select trElement).FirstOrDefault();
-            //    if (setTraineeElement == null)
-            //        throw new Exception("לא קיים תלמיד עם אותה ת.ז");
-            //    setTraineeElement.Element("id").Value = trainee.Id.ToString();
-            //    setTraineeElement.Element("firstName").Value = trainee.FirstName;
-            //    setTraineeElement.Element("lastName").Value = trainee.LastName;
-            //    setTraineeElement.Element("email").Value = trainee.Email;
-            //    setTraineeElement.Element("traineeGender").Value = trainee.TraineeGender.ToString();
-            //    setTraineeElement.Element("phoneNumber").Value = trainee.PhoneNumber.ToString();
-            //    setTraineeElement.Element("Address").Element("street").Value = trainee.StudentAddress.street;
-            //    setTraineeElement.Element("Address").Element("buildingNumber").Value = trainee.StudentAddress.buildingNumber.ToString();
-            //    setTraineeElement.Element("Address").Element("town").Value = trainee.StudentAddress.town;
-            //    setTraineeElement.Element("birthDate").Value = trainee.BirthDate.ToString();
-            //    setTraineeElement.Element("vehicle").Value = trainee.Vehicle.ToString();
-            //    setTraineeElement.Element("gear").Value = trainee.Gear.ToString();
-            //    setTraineeElement.Element("drivingSchoolName").Value = trainee.DrivingSchoolName;
-            //    setTraineeElement.Element("teacherName").Value = trainee.TeacherName;
-            //    setTraineeElement.Element("numberOfClasses").Value = trainee.NumberOfClasses.ToString();
-            //    setTraineeElement.Element("age").Value = trainee.Age.ToString();
-            //    setTraineeElement.Element("isrealicitzian").Value = trainee.Isrealicitzian.ToString();
-            //    //save new to file            
-            //    TraineeRoot.Save(pathTrainee);
-
-            //}
-            //public Trainee getTraineeDAL(int id)
-            //{
-            //    LoadDataTrainee();
-            //    //find element of this trainee
-            //    Trainee trainee;
-            //    trainee = (from trElement in TraineeRoot.Elements()
-            //               where int.Parse(trElement.Element("id").Value) == id
-            //               select new Trainee()
-            //               {
-            //                   Id = int.Parse(trElement.Element("id").Value),
-            //                   FirstName = trElement.Element("firstName").Value,
-            //                   LastName = trElement.Element("lastName").Value,
-            //                   Email = trElement.Element("email").Value,
-            //                   TraineeGender = (Gender)Enum.Parse(typeof(Gender), trElement.Element("traineeGender").Value),
-            //                   PhoneNumber = int.Parse(trElement.Element("phoneNumber").Value),
-            //                   StudentAddress = ToAddress(trElement.Element("Address")),
-            //                   BirthDate = DateTime.Parse(trElement.Element("birthDate").Value),
-            //                   Vehicle = (TypeOfVehicle)Enum.Parse(typeof(TypeOfVehicle), trElement.Element("vehicle").Value),
-            //                   Gear = (TypeOfGearControl)Enum.Parse(typeof(TypeOfGearControl), trElement.Element("gear").Value),
-            //                   DrivingSchoolName = trElement.Element("drivingSchoolName").Value,
-            //                   TeacherName = trElement.Element("teacherName").Value,
-            //                   NumberOfClasses = int.Parse(trElement.Element("numberOfClasses").Value),
-            //                   Age = int.Parse(trElement.Element("age").Value),
-            //                   Isrealicitzian = bool.Parse(trElement.Element("isrealicitzian").Value),
-            //               }).FirstOrDefault();
-            //    return trainee;
-            //}
-
-
-            //public static Address ToAddress(XElement a)
-            //{
-            //    Address help = new Address();
-            //    help.street = a.Element("street").Value;
-            //    help.buildingNumber = Int32.Parse(a.Element("building").Value);
-            //    help.town = a.Element("city").Value;
-            //    return help;
-            //}
-
-            //public IEnumerable<Trainee> getTraineesDAL(Func<Trainee, bool> predicate = null)
-            //{
-            //    LoadDataTrainee();
-            //    //string StudentAddress = null;
-            //    IEnumerable<Trainee> allTrainee = (from trElement in TraineeRoot.Elements()
-            //                                       select new Trainee()//convert from element in file to object of trainee
-            //                                       {
-            //                                           Id = int.Parse(trElement.Element("id").Value),
-            //                                           FirstName = trElement.Element("firstName").Value,
-            //                                           LastName = trElement.Element("lastName").Value,
-            //                                           Email = trElement.Element("email").Value,
-            //                                           TraineeGender = (Gender)Enum.Parse(typeof(Gender), trElement.Element("traineeGender").Value),
-            //                                           PhoneNumber = int.Parse(trElement.Element("phoneNumber").Value),
-            //                                           StudentAddress = ToAddress(trElement.Element("Address")),
-            //                                           BirthDate = DateTime.Parse(trElement.Element("birthDate").Value),
-            //                                           Vehicle = (TypeOfVehicle)Enum.Parse(typeof(TypeOfVehicle), trElement.Element("vehicle").Value),
-            //                                           Gear = (TypeOfGearControl)Enum.Parse(typeof(TypeOfGearControl), trElement.Element("gear").Value),
-            //                                           DrivingSchoolName = trElement.Element("drivingSchoolName").Value,
-            //                                           TeacherName = trElement.Element("teacherName").Value,
-            //                                           NumberOfClasses = int.Parse(trElement.Element("numberOfClasses").Value),
-            //                                           Age = int.Parse(trElement.Element("age").Value),
-            //                                           Isrealicitzian = bool.Parse(trElement.Element("isrealicitzian").Value)
-            //                                       });
-
-            //    if (predicate == null)//no condition
-            //    {
-            //        return allTrainee;
-            //    }
-            //    else
-            //    {
-            //        return allTrainee.Where(predicate);
-            //    }
-            //}
-            //#endregion
+            file.Close();
 
         }
 
+        public void UpdateTrainee(Trainee T)
+        {
+            if (_trainees.Exists(x => x.TraineeId == T.TraineeId))
+            {
+                _trainees.Remove(_trainees.Find(x => x.TraineeId == T.TraineeId));
+                _trainees.Add(T);
+            }
+            var file = new FileStream(traineePath, FileMode.Create);
+
+            var xmlSerializer = new XmlSerializer(_trainees.GetType());
+
+            xmlSerializer.Serialize(file, _trainees);
+
+            file.Close();
+        }
 
 
+        #endregion
+
+        #region Test
 
 
+        
+
+        //functions for test
+        public void AddTest(Test T)
+        {
+            if (Configuration.FirstTestId < 99999999)
+                T.TestId = "" + Configuration.FirstTestId.ToString("D" + 8);
+            Configuration.FirstTestId += 1;
+            var testid = new XElement("TestID", T.TestId);
+            configRoot.RemoveAll();
+            configRoot.Add(testid);
+            configRoot.Save(configPath);
+
+            _tests.Add(T);
+
+            var file = new FileStream(testPath, FileMode.Create);
+
+            var xmlSerializer = new XmlSerializer(_tests.GetType());
+
+            xmlSerializer.Serialize(file, _tests);
+
+            file.Close();
 
 
+        }
+
+        public void UpdateTest(Test T)
+        {
+            if (_tests.Exists(x => x.TestId == T.TestId))
+            {
+                _tests.Remove(_tests.Find(x => x.TestId == T.TestId));
+                _tests.Add(T);
+            }
+            var file = new FileStream(testPath, FileMode.Create);
+
+            var xmlSerializer = new XmlSerializer(_tests.GetType());
+
+            xmlSerializer.Serialize(file, _tests);
+
+            file.Close();
+        }
+
+        #endregion
+
+        #region gets
+        //public List<Tester> GetListOfTesters() { return null; }
+        public List<Trainee> GetListOfTrainees()
+        {
+            if (_trainees.Count > 0)
+            {
+                FileStream file = new FileStream(traineePath, FileMode.Open);
 
 
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Trainee>));
+                List<Trainee> list = (List<Trainee>)xmlSerializer.Deserialize(file);
+                file.Close();
+                return list;
+            }
+            else return null;
+        }
 
+        public List<Test> GetListOfTests()
+        {
+            FileStream file = new FileStream(testPath, FileMode.Open);
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Test>));
+            List<Test> list = (List<Test>)xmlSerializer.Deserialize(file); file.Close();
+            return list;
 
+        }
+   #endregion
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 }

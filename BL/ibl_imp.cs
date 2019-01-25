@@ -805,11 +805,15 @@ namespace BL
         public bool CanGetLicence(Trainee T)
         {
             List<Test> testList = dal.GetListOfTests();
+            if (testList != null)
+            {
+
             var tests = from test in testList
                         where test.TestPassed && test.TraineeId == T.TraineeId
                         select test;
             if (tests.Any())
                 return true;
+            }
             return false;
 
         }
@@ -817,6 +821,7 @@ namespace BL
         public List<Test> TestsByDate()
         {
             List<Test> testList = dal.GetListOfTests();
+
             var tests = testList.OrderByDescending(x => x.DateAndHourOfTest);
             return tests.ToList();
         }

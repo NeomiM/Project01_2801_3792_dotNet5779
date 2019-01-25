@@ -60,7 +60,7 @@ namespace PLWPF
 
         private void TestsByDate_Click(object sender, RoutedEventArgs e)
         {
-            if (mainBL.GetListOfTrainees() == null)
+            if (mainBL.GetListOfTests() == null)
             {
                 MessageBox.Show("There are no Tests", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }

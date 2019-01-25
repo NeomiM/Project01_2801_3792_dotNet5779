@@ -833,11 +833,14 @@ namespace BL
             List<Trainee> filterbytime = filter.ToList();
             foreach (Trainee train in filter)
             {
+                if (GetListOfTests() != null)
+                {
                 var testTime = from item in GetListOfTests().Where(x => x.TraineeId == train.TraineeId && x.CarType == train.Traineecar)
                                select item.DateAndHourOfTest;
                 if (testTime.Any() && testTime.Count() > 1)
                     if (testTime.Any(x => (now - x).TotalDays < 7))
                         filterbytime.Remove(train);
+                }
 
             }
             return filterbytime;
@@ -846,12 +849,18 @@ namespace BL
         public bool HasntPassedAnyTest(Trainee T)
         {
             List<Test> testList = dal.GetListOfTests();
+            if (testList != null)
+            {
+
             var tests = from test in testList
                         where test.TestPassed && test.TraineeId == T.TraineeId
                         select test;
             if (!tests.Any())
                 return true;
             return false;
+            }
+
+            return true;
         }
 
         #endregion

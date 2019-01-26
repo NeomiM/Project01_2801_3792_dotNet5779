@@ -66,6 +66,11 @@ namespace PLWPF
                 UpdateTester.IsEnabled = false;
                 DeleteTester.IsEnabled = false;
             }
+            else if (bl.GetListOfTesters().Count == 0)
+            {
+                UpdateTester.IsEnabled = false;
+                DeleteTester.IsEnabled = false;
+            }
         }
 
         #region manage buttons
@@ -197,6 +202,11 @@ namespace PLWPF
                     TesterForPL = new Tester();
                     TesterGrid.DataContext = TesterForPL;
                     if (bl.GetListOfTesters() == null)
+                    {
+                        UpdateTester.IsEnabled = false;
+                        DeleteTester.IsEnabled = false;
+                    }
+                    else if (bl.GetListOfTesters().Count == 0)
                     {
                         UpdateTester.IsEnabled = false;
                         DeleteTester.IsEnabled = false;

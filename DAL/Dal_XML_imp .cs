@@ -32,13 +32,13 @@ namespace DAL
         #endregion
 
         XElement configRoot;
-        string configPath = @"ConfigXml.xml";
+        string configPath = @"Data\ConfigXml.xml";
         XElement testerRoot;
-        string testerPath = @"TesterXml.xml";
+        string testerPath = @"Data\TesterXml.xml";
         XElement traineeRoot;
-        string traineePath = @"TraineeXml.xml";
+        string traineePath = @"Data\TraineeXml.xml";
         XElement testRoot;
-        string testPath = @"TestXml.xml";
+        string testPath = @"Data\TestXml.xml";
 
         private List<Trainee> _trainees = new List<Trainee>();
 
@@ -397,14 +397,14 @@ namespace DAL
                               FirstName = t.Element("name").Element("firstName").Value,
                               Sirname = t.Element("name").Element("sirName").Value,
                               DateOfBirth = DateTime.Parse(t.Element("DateOfBirth").Value),
-                              //TesterGender = Gender.Parse(t.Element("gender").Value),
+                              TesterGender = (Gender)Enum.Parse(typeof(Gender), t.Element("gender").Value),
                               PhoneNumber = t.Element("PhoneNumber").Value,
                               Email = t.Element("email").Value,
-                              //Testercar = (Types.CarType)int.Parse(t.Element("car").Value),
+                              Testercar = (CarType)Enum.Parse(typeof(CarType),t.Element("car").Value),
                               MaxDistanceForTest = int.Parse(t.Element("maxDistanceForTest").Value),
                               YearsOfExperience = int.Parse(t.Element("yearsOfExperience").Value),
                               MaxTestsInaWeek = int.Parse(t.Element("maxTestInAWeek").Value),
-                              TesterAdress = new Address(t.Element("address").Element("strret").Value,
+                              TesterAdress = new Address(t.Element("address").Element("street").Value,
                                     t.Element("address").Element("buildingNumber").Value,
                                     t.Element("address").Element("city").Value),
                               _schedual = set_schedule(t.Element("schedule").Element("sunday").Value, t.Element("schedule").Element("monday").Value,

@@ -43,8 +43,9 @@ namespace PLWPF
             TesterForPL = new Tester();
             this.TesterGrid.DataContext = TesterForPL;
             this.TesterComboBox.DataContext = TesterListForPL;
-            
+
             //manage calendar
+            dateOfBirthDatePicker.SelectedDate = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MaxAgeOFTester);
             dateOfBirthDatePicker.DisplayDateEnd = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MinAgeOFTester);
             dateOfBirthDatePicker.DisplayDateStart = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MaxAgeOFTester);
             //enums
@@ -60,6 +61,11 @@ namespace PLWPF
             this.sirnameTextBox.PreviewTextInput += TextBox_PreviewTextInputLetters;
             this.firstNameTextBox.PreviewTextInput += TextBox_PreviewTextInputLetters;
             this.City.PreviewTextInput += TextBox_PreviewTextInputLetters;
+            if (bl.GetListOfTesters() == null)
+            {
+                UpdateTester.IsEnabled = false;
+                DeleteTester.IsEnabled = false;
+            }
         }
 
         #region manage buttons
@@ -76,6 +82,9 @@ namespace PLWPF
             TesterForPL = new Tester();
             openAll();
             TesterGrid.DataContext = TesterForPL;
+            dateOfBirthDatePicker.SelectedDate = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MaxAgeOFTester);
+            dateOfBirthDatePicker.DisplayDateEnd = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MinAgeOFTester);
+            dateOfBirthDatePicker.DisplayDateStart = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MaxAgeOFTester);
             IdErrors.Text = "";
             testerIdTextBox.Visibility = Visibility.Visible;
             TesterGrid.Visibility = Visibility.Visible;
@@ -97,9 +106,13 @@ namespace PLWPF
                 IdErrors.Text = "First Select ID";
                 IdErrors.Foreground = Brushes.DarkBlue;
                 TesterListForPL = bl.GetListOfTesters();
-                TesterComboBox.ItemsSource = bl.GetListOfTesters().Select(x => x.TesterId);
+                if (TesterListForPL ==null)
+                    throw new Exception("There are no Testers to update.");
                 if (TesterListForPL.Count == 0)
                     throw new Exception("There are no Testers to update.");
+                dateOfBirthDatePicker.DisplayDateEnd = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MinAgeOFTester);
+                dateOfBirthDatePicker.DisplayDateStart = DateTime.Now.AddYears(-1 * (int)BE.Configuration.MaxAgeOFTester);
+                TesterComboBox.ItemsSource = bl.GetListOfTesters().Select(x => x.TesterId);
                 TesterGrid.Visibility = Visibility.Visible;
                 TesterGrid.IsEnabled = true;                
                 Save.Content = "Check";
@@ -108,7 +121,8 @@ namespace PLWPF
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (exception.Message != "Object reference not set to an instance of an object.")
+                    MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -127,9 +141,11 @@ namespace PLWPF
                 closeAlmostAll();
                 IdErrors.Text = "First Select ID";
                 TesterListForPL = bl.GetListOfTesters();
-                TesterComboBox.ItemsSource = bl.GetListOfTesters().Select(x => x.TesterId);
+                if (TesterListForPL == null)
+                    throw new Exception("There are no testers to delete.");
                 if (TesterListForPL.Count == 0)
-                    throw new Exception("There are no testers to update.");
+                    throw new Exception("There are no testers to delete.");
+                TesterComboBox.ItemsSource = bl.GetListOfTesters().Select(x => x.TesterId);
             }
             catch (Exception exception)
             {
@@ -148,6 +164,8 @@ namespace PLWPF
                     bl.AddTester(TesterForPL);
                     TesterGrid.Visibility = Visibility.Hidden;
                     MessageBox.Show("Tester saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    UpdateTester.IsEnabled = true;
+                    DeleteTester.IsEnabled = true;
                 }
                 catch (Exception exception)
                 {
@@ -158,9 +176,12 @@ namespace PLWPF
 
             if (Save.Content == "Update")
             {
-                //TesterForPL.TesterAdress = new Address(Street.Text, BuidingNumber.Text, City.Text);
+                TesterForPL.TesterAdress = new Address(Street.Text, BuidingNumber.Text, City.Text);
                 TesterForPL.setSchedual(SundayArr, MondayArr, TuesdayArr, WednesdayArr, ThursdayArr);
                 bl.UpdateTester(TesterForPL);
+                TesterForPL = new Tester();
+                TesterComboBox.SelectedItem = null;
+                this.TesterGrid.DataContext = TesterForPL;
                 TesterGrid.Visibility = Visibility.Hidden;
                 MessageBox.Show("Tester saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -175,6 +196,11 @@ namespace PLWPF
                     MessageBox.Show("Tester successfully deleted.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                     TesterForPL = new Tester();
                     TesterGrid.DataContext = TesterForPL;
+                    if (bl.GetListOfTesters() == null)
+                    {
+                        UpdateTester.IsEnabled = false;
+                        DeleteTester.IsEnabled = false;
+                    }
                 }
                 else if (dialogResult == MessageBoxResult.No)
                 {
@@ -227,46 +253,7 @@ namespace PLWPF
                         break;
                 }
 
-                //if (noErrors() && TesterComboBox.Visibility == Visibility.Hidden)  //checks if it is in the add window  
-                //    {
-                //    if (bl.TesterInSystem(TesterForPL.TesterId))
-                //    {
-                //        MessageBoxResult dialogResult = MessageBox.Show("Tester alredy exists in the system! Do you want to update?", "Warning", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-                //        if (dialogResult == MessageBoxResult.Yes)
-                //        {
-                //            TesterComboBox.Visibility = Visibility.Visible;
-                //            TesterComboBox.SelectedValue = (object)TesterForPL.TesterId;
-                //            TesterForPL = bl.GetListOfTesters()
-                //                .FirstOrDefault(x => x.TesterId == testerIdTextBox.Text);
-                //        }
-                //        else if (dialogResult == MessageBoxResult.No)
-                //        {
-                //            TesterForPL = new Tester();
-                //            TesterGrid.DataContext = TesterForPL;
-                //        }
-                //    }
-                //    else Save.Content = "Add";
-                //}
-                //else if (noErrors())
-                //{
-                //    //switch(winCondition)
-                //    //{
-                //    //    case "Add":
-                //    //        Save.Content = "Add";
-                //    //        break;
-                //    //    case "Update":
-                //    //        Save.Content = "Update";
-                //    //        break;
-                //    //    case "Delete":
-                //    //        Save.Content = "Delete";
-                //    //        break;
-                //    //}                    
-                //}
-                //else
-                //{
-                //    MessageBox.Show("Can't add Tester. Fill ID " +
-                //                    "and fix errors.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                //}
+               
             }
         }
         #endregion
@@ -647,20 +634,35 @@ namespace PLWPF
 
         private void TesterComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            IdErrors.Text = "";
-            if (Save.Content == "Check")
+            if (TesterComboBox.SelectedIndex != -1)
             {
-                openAll();
+                IdErrors.Text = "";
+                if (Save.Content == "Check")
+                {
+                    openAll();
+                }
+                string id = (string)TesterComboBox.SelectedItem;
+                TesterForPL = bl.GetListOfTesters().FirstOrDefault(a => a.TesterId == id);
+                this.TesterGrid.DataContext = TesterForPL;
+
+                testerGenderComboBox.SelectedItem = TesterForPL.TesterGender;
+                if (TesterForPL.TesterGender == Gender.Male)
+                    testerGenderComboBox.SelectedIndex = 0;
+                else if (TesterForPL.TesterGender == Gender.Female)
+                    testerGenderComboBox.SelectedIndex = 1;
+                else testerGenderComboBox.SelectedIndex = 2;
+                testercarComboBox.SelectedItem = TesterForPL.Testercar;
+                City.Text = TesterForPL.TesterAdress.City;
+                Street.Text = TesterForPL.TesterAdress.Street;
+                BuidingNumber.Text = TesterForPL.TesterAdress.BuildingNumber;
+
+                //schedual
+                TesterForPL.getSchedual(SundayArr, MondayArr, TuesdayArr, WednesdayArr, ThursdayArr);
+                showDailyHours(SundayArr);//working hours in sunday
+
+//this.TesterGrid.DataContext = TesterForPL;
+               }
             }
-            string id = (string)TesterComboBox.SelectedItem;
-            TesterForPL = bl.GetListOfTesters().FirstOrDefault(a => a.TesterId == id);
-
-            //schedual
-            TesterForPL.getSchedual(SundayArr, MondayArr, TuesdayArr, WednesdayArr, ThursdayArr);
-            showDailyHours(SundayArr);//working hours in sunday
-
-            this.TesterGrid.DataContext = TesterForPL;
-        }
         #endregion
 
         #region names
@@ -751,6 +753,24 @@ namespace PLWPF
         {
             BuidingNumber.BorderBrush = Brushes.Black;
         }
+        #endregion
+
+        #region combobox
+
+             private void GenderComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+                {
+            if (testerGenderComboBox.SelectedIndex != -1)
+                TesterForPL.TesterGender = (Gender)Enum.Parse(typeof(Gender), testerGenderComboBox.SelectedItem.ToString());
+        }
+
+        private void TestercarComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (testercarComboBox.SelectedIndex != -1)
+                TesterForPL.Testercar = (CarType)Enum.Parse(typeof(CarType), testercarComboBox.SelectedItem.ToString());
+        }
+
+       
+
         #endregion
 
         #endregion

@@ -518,7 +518,7 @@ namespace PLWPF
                 
                 //DrivingTeacherErrors.Text = "";
                 //drivingTeacherTextBox.BorderBrush = Brushes.Black;
-                bl.CheckId(TraineeForPL.DrivingTeacher);
+              //  bl.CheckId(TraineeForPL.DrivingTeacher);
                 
             }
             catch (Exception ex)

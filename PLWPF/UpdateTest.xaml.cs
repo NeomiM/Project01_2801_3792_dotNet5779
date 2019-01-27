@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -14,6 +15,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BE;
 using BL;
+using CheckBox = System.Windows.Controls.CheckBox;
+using MessageBox = System.Windows.MessageBox;
+using UserControl = System.Windows.Controls.UserControl;
+
 //hi
 // how to make an xml file in configuration. 
 //read on serialise
@@ -55,7 +60,7 @@ namespace PLWPF
                 if(TestListForPL==null)
                    throw new Exception("There are no Tests to update");
                 this.DataContext = TestForPL;
-                this.testIdComboBox.ItemsSource = bl.GetListOfTests();
+                this.testIdComboBox.ItemsSource = bl.GetListOfTests().OrderByDescending(x=>x.TestId);
                 closeAlmostAll();
                 if (TestListForPL.Count == 0)
                     throw new Exception("There are no Tests to update");
@@ -106,6 +111,20 @@ namespace PLWPF
             commentsGroupBox.IsEnabled = true;
             BoolItemsGrid.IsEnabled = true;
             saveButton.IsEnabled = true;
+        }
+
+        void setChecks()
+        {
+            
+            checkMirrorsCheckBox.IsChecked = TestForPL.CheckMirrors;
+            imediateStopCheckBox.IsChecked = TestForPL.ImediateStop;
+            keptRightofPresidenceCheckBox.IsChecked = TestForPL.KeptRightofPresidence;
+            parkingCheckBox.IsChecked = TestForPL.Parking;
+            reverseParkingCheckBox.IsChecked = TestForPL.ReverseParking;
+            rightTurnCheckBox.IsChecked = TestForPL.RightTurn;
+            stoppedAtcrossWalkCheckBox.IsChecked = TestForPL.StoppedAtcrossWalk;
+            stoppedAtRedCheckBox.IsChecked = TestForPL.StoppedAtRed;
+            usedSignalCheckBox.IsChecked = TestForPL.UsedSignal;
         }
 
         void fillFields()
@@ -173,10 +192,13 @@ namespace PLWPF
             {
                 string id = ((Test)testIdComboBox.SelectedItem).TestId;
                 TestForPL = bl.GetListOfTests().FirstOrDefault(a => a.TestId == id);
+                setChecks();
+                testPassedCheckBox.IsChecked = TestForPL.TestPassed;
                 testerIdTextBox.Text = TestForPL.TesterId;
                 traineeIdTextBox.Text = TestForPL.TraineeId;
                 testDateDatePicker.Text = TestForPL.TestDate.ToString();
                 openAll();
+
             }
         }
 

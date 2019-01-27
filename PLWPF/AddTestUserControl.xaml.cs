@@ -510,13 +510,13 @@ namespace PLWPF
             findTesters.Content = "Find Testers";
         }
 
-        private void ClosesedToTest_Click(object sender, RoutedEventArgs e)
+        private void FindTesters_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                if(bl.GetListOfTests()!=null)
                 if (!bl.NoConflictingTests(AddTestForPL))
                 {
-                 
                  throw new Exception("ERROR. can't add dates that are less than a week apart.");
                 }
 
@@ -623,6 +623,7 @@ namespace PLWPF
                 TesterComboBox.IsEnabled = false;
                         MessageBox.Show("Test successfully added.", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                 emptyAddTab();
+                
 
             }
             catch (Exception ex)

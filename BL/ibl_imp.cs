@@ -185,7 +185,8 @@ namespace BL
                 DayInRange((int)T.TestDate.DayOfWeek),
 
                 NotPassedPrevTest(T),
-                AvailableTesterFound(T)!=null,
+               // AvailableTesterFound(T)!=null,
+                T.TesterId!=null && T.TesterId!="",
             TraineeInSystem(T.TraineeId),
             NoConflictingTests(T)
 
@@ -464,6 +465,7 @@ namespace BL
                 //var testTime = from item in testlist
                 //             where item.TraineeId == T.TraineeId &&item.CarType==T.CarType
                 //           select item.DateAndHourOfTest;
+                if(testlist!=null)
                 if (testlist.Count > 0)
                 {
                     var testTime = from item in AllTestsThat(x => x.TraineeId == T.TraineeId && x.CarType == T.CarType)
@@ -525,10 +527,13 @@ namespace BL
             try
             {
                 List<Test> testlist = dal.GetListOfTests();
+                if (testlist != null)
+                {
                 bool passedTheTest = testlist.Where(x => x.TraineeId == T.TraineeId)
                     .Any(x => x.CarType == T.CarType && x.TestPassed == true);
                 if (passedTheTest)
                     throw new Exception("ERROR. Can't add a test that already has been passed");
+                }
                 return true;
             }
             catch (Exception e)
@@ -666,6 +671,10 @@ namespace BL
         public bool HasntPassedMaxTests(Tester T, DateTime DateOfTest)
         {
             List<Test> tests = dal.GetListOfTests();
+
+            if (tests != null)
+            {
+
             //gets the date for the beginning of the week
             int diff = (7 + (DateOfTest.DayOfWeek - DayOfWeek.Sunday)) % 7;
             DateTime weekDay = DateOfTest.AddDays(-1 * diff).Date;
@@ -683,6 +692,9 @@ namespace BL
             if (countTests < T.MaxTestsInaWeek)
                 return true;
             return false;
+            }
+
+            return true;
         }
 
         #endregion
@@ -739,6 +751,8 @@ namespace BL
         public List<Tester> AvailableTesters(DateTime dateAndHour, List<Tester> testersWithCar)//all available testers in that hour schedual and other test wise
         {
             List<Test> testlist = dal.GetListOfTests();
+            
+
             List<Tester> filteredTesters = new List<Tester>();
             int dayOfWeek = (int)dateAndHour.DayOfWeek;
             int hour = dateAndHour.Hour;
@@ -753,16 +767,22 @@ namespace BL
                     var colum = Enumerable.Range(0, t._schedual.GetLength(0))
                         .Select(x => t._schedual[x, dayOfWeek])
                         .ToArray();
-
-                    bool noOtherTest =
+                    if(testlist!=null)
+                    { bool noOtherTest =
                         testlist.Where(x => x.TestDate == dateAndHour.Date && x.TesterId == t.TesterId)
                         .All(delegate (Test x) { return x.DateAndHourOfTest.Hour != hour; });
+
                     //.All(x => x.DateAndHourOfTest.Hour != hour);
                     //if the tester is available in that hour and doesnt have any other tests 
                     if (colum[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
                         filteredTesters.Add(t);
-
-                }
+                    }
+                    else
+                    {
+                        if (colum[hour - Configuration.StartOfWorkDay] != false)
+                            filteredTesters.Add(t);
+                    }
+                }    
             return filteredTesters;
         }
 

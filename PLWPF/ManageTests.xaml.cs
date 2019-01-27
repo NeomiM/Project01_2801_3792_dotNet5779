@@ -33,15 +33,15 @@ namespace PLWPF
 
             bl = IBL_imp.Instance;
            
-            if (bl.GetListOfTests() == null)
-            {
-                Update.Visibility = Visibility.Hidden;
-            }
+            //if (bl.GetListOfTests() == null)
+            //{
+            //    Update.Visibility = Visibility.Hidden;
+            //}
 
-            else if (bl.GetListOfTests().Count == 0)
-            {
-                Update.Visibility = Visibility.Hidden;
-            }
+            //else if (bl.GetListOfTests().Count == 0)
+            //{
+            //    Update.Visibility = Visibility.Hidden;
+            //}
 
 
 
@@ -56,27 +56,27 @@ namespace PLWPF
             // testViewSource.Source = [generic data source]
         }
 
-        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //if (Update.IsSelected)
-            //{
-              try
-                {
-            //        AddTestForPL = new Test();
-            //        TestAddGrid.DataContext = AddTestForPL;
-            //        AddTraineeListForPL = bl.readyTrainees();
-            //        emptyAddTab();
-            //        AddTestCalender.SelectedDate = null;
-            //        hours.IsEnabled = false;
-                }
-                catch (Exception exception)
-               {
-            //        MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+        //private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    //if (Update.IsSelected)
+        //    //{
+        //      try
+        //        {
+        //    //        AddTestForPL = new Test();
+        //    //        TestAddGrid.DataContext = AddTestForPL;
+        //    //        AddTraineeListForPL = bl.readyTrainees();
+        //    //        emptyAddTab();
+        //    //        AddTestCalender.SelectedDate = null;
+        //    //        hours.IsEnabled = false;
+        //        }
+        //        catch (Exception exception)
+        //       {
+        //    //        MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        }
 
 
-         //   }
-        }
+        // //   }
+        //}
 
     }
 }

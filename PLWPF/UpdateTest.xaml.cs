@@ -60,11 +60,13 @@ namespace PLWPF
                 this.testPassedGrid.DataContext = TestForPL;
                 this.BoolItemsGrid.DataContext = TestForPL;
                 TestListForPL = bl.GetListOfTests();
+                if(TestListForPL==null)
+                   throw new Exception("There are no Tests to update");
                 this.DataContext = TestForPL;
                 this.testIdComboBox.ItemsSource = bl.GetListOfTests();
                 closeAlmostAll();
                 if (TestListForPL.Count == 0)
-                    throw new Exception("There are no Testers to update");
+                    throw new Exception("There are no Tests to update");
             }
             catch (Exception ex)
             {

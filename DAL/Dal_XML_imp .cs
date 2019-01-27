@@ -652,7 +652,7 @@ namespace DAL
             if (Configuration.FirstTestId < 99999999)
                 T.TestId = "" + Configuration.FirstTestId.ToString("D" + 8);
             Configuration.FirstTestId += 1;
-            var testid = new XElement("TestID", T.TestId);
+            var testid = new XElement("TestID", "" + Configuration.FirstTestId.ToString("D" + 8));
             configRoot.RemoveAll();
             configRoot.Add(testid);
             configRoot.Save(configPath);

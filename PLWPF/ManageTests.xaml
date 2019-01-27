@@ -11,7 +11,7 @@
         <CollectionViewSource x:Key="testViewSource" d:DesignSource="{d:DesignInstance {x:Type BE:Test}, CreateList=True}"/>
     </Window.Resources>
     <DockPanel LastChildFill="True" Background="AliceBlue">
-        <TabControl Background="Bisque" SelectedIndex="0" SelectionChanged="Selector_OnSelectionChanged" >
+        <TabControl Background="Bisque" SelectedIndex="0"  >
             <TabItem x:Name="Add" Header="Add Test" >
                 <local:AddTestUserControl/>
             </TabItem>

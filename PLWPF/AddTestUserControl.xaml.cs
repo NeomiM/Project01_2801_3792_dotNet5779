@@ -26,28 +26,24 @@ namespace PLWPF
     /// </summary>
     public partial class AddTestUserControl : UserControl
     {
+        #region private vars
         private BL.IBL bl;
         private List<Trainee> AddTraineeListForPL; 
         private Test AddTestForPL;
         private Dictionary<string, List<int>> AvilabletestersForPL;
         private Address? traineeAdd;
        private BackgroundWorker sortTestersByAddress;
-     //   private BackgroundWorker DistanceOfTest;
-        private List<Tester> TesterByDistance;
+      private List<Tester> TesterByDistance;
         private string testDistance;
+        #endregion
         public AddTestUserControl()
         {
             InitializeComponent();
-            bl = IBL_imp.Instance;
-
-            List<Tester> SortedTestersByCarType= new List<Tester>();
-
             try
             {
-                
-
-                hours.Visibility = Visibility.Hidden;
-                
+                bl = IBL_imp.Instance;
+                #region make the tab ready
+                hours.Visibility = Visibility.Hidden; 
                 TesterComboBox.IsEnabled = false;
                 AddDateErrors.Foreground = Brushes.Red;
                 HoursErrors.Foreground = Brushes.Red;
@@ -64,12 +60,9 @@ namespace PLWPF
                 AddTestCalender.IsEnabled = false;
                 hours.IsEnabled = false;
                 testIdTextBlock.Text = Configuration.FirstTestId.ToString("D" + 8);
-               // blackoutFridaysAndSaterdays(DateTime.Today, DateTime.Today.AddDays(60));
                 if(DateTime.Now.Hour>BE.Configuration.EndOfWorkDay-1)
                     AddTestCalender.BlackoutDates.Add(new CalendarDateRange(DateTime.Today));
-                
-
-
+                 #endregion
             }
             catch (Exception exception)
             {
@@ -79,7 +72,6 @@ namespace PLWPF
                 TesterErrors.Text = exception.Message;
                 TesterErrors.Visibility = Visibility.Visible;
                 TesterErrors.Foreground = Brushes.Red;
-                //  MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
@@ -105,8 +97,6 @@ namespace PLWPF
             findTesters.IsEnabled = false;
             emptyErrors();
             TesterComboBox.SelectedIndex = -1;
-        //    SortByDistance.Visibility = Visibility.Hidden;
-            //    AddTestCalender=new System.Windows.Controls.Calendar();
         }
 
         public void emptyErrors()
@@ -140,23 +130,15 @@ namespace PLWPF
                 TesterComboBox.Visibility = Visibility.Hidden;
                 TestAddressBlock.IsEnabled = true;
                 findTesters.IsEnabled = true;
-                if(TesterByDistance!=null)
-                    //SortByDistance.Visibility = Visibility.Visible;
                 testerAddress.Text = "";
                 hours.Items.Clear();
                 hours.Visibility = Visibility.Hidden;
                 AddDateErrors.Text = "";
                 TesterComboBox.SelectedIndex=-1;
-                //if (TesterComboBox.Items != null)
-                //    TesterComboBox.SelectedIndex = -1;
-               // if (bl.AvailableTesterFound(AddTestForPL) == null)
-                 //   throw new Exception("ERROR. No testers avialble on that date");
                 AddTestForPL.TestDate = (DateTime) AddTestCalender.SelectedDate;
                 AvilabletestersForPL = bl.AvailableTesterFound(AddTestForPL);
                 TesterComboBox.ItemsSource = AvilabletestersForPL.Keys.ToList();
                 TesterComboBox.SelectedItem = null;
-               // TesterComboBox.IsEnabled = true;
-                //SortByDistance.Visibility = Visibility.Visible;
                 AddDateErrors.Visibility = Visibility.Collapsed;
                 AddDateErrors.Text = "";
                 TimeSpan ts = new TimeSpan(9, 0, 0);
@@ -198,7 +180,6 @@ namespace PLWPF
 
                     AddTestCalender.BlackoutDates.Add(new CalendarDateRange(startdate));
                     AddTestCalender.BlackoutDates.Add(new CalendarDateRange(startdate.AddDays(1)));
-                    //yield return startdate;
                     startdate = startdate.AddDays(7);
                 }
 
@@ -229,6 +210,7 @@ namespace PLWPF
                 {
                     AddTestForPL.TestDate = new DateTime(AddTestCalender.DisplayDate.Year,
                         AddTestCalender.DisplayDate.Month, start);
+                    //if there are no available testers in that hour
                     if (bl.AvailableTesterFound(AddTestForPL) == null)
                         AddTestCalender.BlackoutDates.Add(new CalendarDateRange(
                             new DateTime(AddTestCalender.DisplayDate.Year, startMonth, start)));
@@ -258,14 +240,7 @@ namespace PLWPF
                         if(sortTestersByAddress.IsBusy)
                         sortTestersByAddress.CancelAsync();
 
-                    // AddTestCalender.DisplayDateStart = DateTime.Today;
                     AddTestCalender.BlackoutDates.Clear();
-                    //var blackoutdates = from date in AddTestCalender.BlackoutDates select date;
-                    //foreach (var blackoutdate in blackoutdates)
-                    //{
-                    //    AddTestCalender.BlackoutDates.Remove(blackoutdate);
-                    //}
-                    // AddTestCalender.DisplayDate = DateTime.Now;
                     AddTestForPL.TraineeId = AddTraineeIdComboBox.SelectedItem.ToString();
                     AddTestForPL.CarType = bl.GetListOfTrainees().Where(x => x.TraineeId == AddTestForPL.TraineeId)
                         .Select(x => x.Traineecar).FirstOrDefault();
@@ -289,10 +264,6 @@ namespace PLWPF
                         city.Text = traineeAdd.Value.City;
                         street.Text = traineeAdd.Value.Street;
                         stNumber.Text = traineeAdd.Value.BuildingNumber;
-                        //sortTestersByAddress=new BackgroundWorker();
-                        //sortTestersByAddress.DoWork += sortTestersByAddress_DoWork;
-                        //sortTestersByAddress.RunWorkerCompleted += sortTestersByAddress_Complete;
-                        //sortTestersByAddress.RunWorkerAsync();
                     }
                     else traineeAddress.Text = "Address not found";
 
@@ -300,14 +271,6 @@ namespace PLWPF
                 AddTestCalender.IsEnabled = true;
                     TestAddressBlock.IsEnabled = false;
                     findTesters.IsEnabled = false;
-                    // Blackoutdays(DateTime.Today.Day, DateTime.Today.Month);
-                    // blackoutFridaysAndSaterdays(DateTime.Today, DateTime.Today.AddDays(60));
-
-                    //   int next = DateTime.Today.Month + 1;
-                    // if (DateTime.Today.Month == 12)
-                    //    next = 1;
-                    //Blackoutdays(DateTime.Today.Day, next);
-
 
                 }
 
@@ -318,8 +281,7 @@ namespace PLWPF
                 TesterErrors.Visibility = Visibility.Visible;
                 TesterErrors.Foreground = Brushes.Red;
                 AddTestCalender.IsEnabled = false;
-                // MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                //AddTraineeIdComboBox.SelectedIndex = -1;
+                
             }
 
         }
@@ -377,15 +339,10 @@ namespace PLWPF
         }
         #endregion
         
-
-
         private void Hours_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-                //if (AddTestForPL.DateAndHourOfTest.Date == DateTime.Today &&
-                  //  DateTime.Now.Hour >= hours.SelectedIndex + 9)
-                    //throw new Exception("EROOR. Can't add an hour that has already passed.");
                 TimeSpan ts;
                 if(hours.Items.Count!=null)
                 switch (hours.SelectedItem.ToString())
@@ -445,10 +402,7 @@ namespace PLWPF
 
         private void sortTestersByAddress_DoWork(object sender, DoWorkEventArgs e)
         {
-            //List<Tester> TestersWithcar = bl.GetListOfTesters().Where(x => x.Testercar == AddTestForPL.CarType && x.TesterAdress != null).ToList();
-            //if (TestersWithcar.Count >= 2)
-            //    e.Result = bl.TestersInArea(TestersWithcar, traineeAdd);
-            //else e.Result = null;
+            
             List<Tester> TestersWithcar = bl.GetListOfTesters().Where(x => x.Testercar == AddTestForPL.CarType && x.TesterAdress != null && AvilabletestersForPL.ContainsKey(x.TesterId)).ToList();
             if (TestersWithcar.Count > 0)
                 e.Result = bl.TestersInArea(TestersWithcar, AddTestForPL.StartingPoint);
@@ -461,36 +415,14 @@ namespace PLWPF
             TesterByDistance = new List<Tester>();
             TesterByDistance = (List<Tester>)e.Result;
             List<string> fileredDistance = new List<string>();
-            //List<string> unknownDistance=new List<string>();
+
             foreach (var tester in TesterByDistance)
             {
                 if (AvilabletestersForPL.ContainsKey(tester.TesterId))
                     fileredDistance.Add(tester.TesterId);
             }
 
-            #region green code
-            //List<string> faultyAddress = new List<string>();
-            //foreach (var key in AvilabletestersForPL.Keys)
-            //{
-            //    if (!TesterByDistance.Exists(x => x.TesterId == key))
-            //    {
-            //        fileredDistance.Add(key);
-            //        if (bl.GetListOfTesters().Where(x => x.TesterId == key).Select(x => x.TesterAdress)
-            //                .FirstOrDefault() != null)
-            //        {
-            //            faultyAddress.Add(key);
-            //        }
-            //    }
-
-            //}
-            //if (faultyAddress.Count > 0)
-            //{
-            //    TesterErrors.Text = "Warning: faulty addresses with testers: ";
-            //    TesterErrors.Text += String.Join(",", faultyAddress);
-            //    TesterErrors.Foreground = Brushes.Orange;
-            //    TesterErrors.Visibility = Visibility.Visible;
-            //}
-            #endregion
+            
             if (fileredDistance.Count != 0)
             {
             TesterComboBox.ItemsSource = fileredDistance;
@@ -523,8 +455,6 @@ namespace PLWPF
                 TesterComboBox.Visibility = Visibility.Hidden;
                 TestAddressErrors.Visibility = Visibility.Collapsed;
                 checkAddress();
-                     //   if (testAddress.Text==""||testAddress.Text==null)
-                        //    throw new Exception("ERROR.Test address empty. cannot calculate distance. ");
 
                 sortTestersByAddress = new BackgroundWorker();
                 sortTestersByAddress.DoWork += sortTestersByAddress_DoWork;
@@ -558,23 +488,16 @@ namespace PLWPF
         
         void checkAddress()
         {
-            //try
-           // {
+
                 bl.IsText(city.Text);
                 bl.IsText(street.Text);
                 bl.IsNumber(stNumber.Text);
-                AddTestForPL.StartingPoint=new Address(street.Text,stNumber.Text,city.Text);
-            //}
-            //catch (Exception ex)
-            //{
-            //    TestAddressErrors.Text = ex.Message;
-            //    TestAddressErrors.Foreground = Brushes.Red;
-            //    TestAddressErrors.Visibility = Visibility.Visible;
-            //}
+                AddTestForPL.StartingPoint=new Address(street.Text,stNumber.Text,city.Text);          
         }
 
         #endregion
 
+        #region checks
         private void checkErrors()
         {
             if(AddDateErrors.Text!="" && AddDateErrors.Text != null)
@@ -585,8 +508,7 @@ namespace PLWPF
                 throw new Exception();
             if (TestAddressErrors.Text != "" && TestAddressErrors.Text != null)
                 throw new Exception();
-            //if (blErrors.Text != "" && blErrors.Text != null)
-            //    throw new Exception();
+            
 
 
         }
@@ -606,6 +528,7 @@ namespace PLWPF
             if (AddTestForPL.StartingPoint == null)
                 throw new Exception();
         }
+        #endregion
             
         private void Save_Click(object sender, RoutedEventArgs e)
         {
@@ -628,9 +551,6 @@ namespace PLWPF
             }
             catch (Exception ex)
             {
-                //blErrors.Visibility = Visibility.Visible;
-                //blErrors.Text = ex.Message;
-                //blErrors.Foreground = Brushes.Red;
                 MessageBox.Show("Can't add test. Check Errors and empty Fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 
             }

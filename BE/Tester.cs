@@ -12,7 +12,7 @@ namespace BE
         
        #region private variables
         private string _testerId="";
-        private string _sirname="";
+        private string _surname="";
         private string _firstName = "";
         private DateTime _dateOfBirth;
         private Gender _testerGender;
@@ -38,7 +38,7 @@ namespace BE
             get { return _testerId; }
             set { _testerId = value; }
         }
-        public string Sirname { get => _sirname; set => _sirname = value; }
+        public string Surname { get => _surname; set => _surname = value; }
         public string FirstName { get => _firstName; set => _firstName = value; }
         public DateTime DateOfBirth { get => _dateOfBirth; set => _dateOfBirth = value; }
         public Gender TesterGender { get => _testerGender; set => _testerGender = value; } 
@@ -110,6 +110,7 @@ namespace BE
 
         public override string ToString()
         {
+          //  format of tostring is : "property name: property value"
             PropertyInfo[] _PropertyInfos = this.GetType().GetProperties(); ;
 
             var sb = new StringBuilder();

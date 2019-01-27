@@ -7,6 +7,7 @@ namespace BE
 {
     public class Configuration
     {
+        //the current running test
         public static int FirstTestId = 0;
         public static float MinAgeOFTester = 40;
         public static float MaxAgeOFTester = 70;

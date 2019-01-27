@@ -9,10 +9,10 @@ namespace BE
     {
         #region private variables
         private string _testId;
-        private string _testerId; //might need to have a user for each tester
+        private string _testerId; 
         private string _traineeId;
         private DateTime _testDate;
-        private DateTime _dateAndHourofTest; //need to check if it is an exact hour?
+        private DateTime _dateAndHourofTest; 
         private CarType _carType;
         private Address _startingPoint;
         //things to check in test
@@ -68,6 +68,7 @@ namespace BE
 
         public override string ToString()
         {
+            //format of tostring is : "property name: property value" 
              PropertyInfo[] _PropertyInfos = this.GetType().GetProperties(); ;
 
             var sb = new StringBuilder();

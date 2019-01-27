@@ -36,7 +36,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn x:Name="sirnameColumn" Header="Sirname" Width="SizeToHeader">
+                <DataGridTemplateColumn x:Name="sirnameColumn" Header="Surname" Width="SizeToHeader">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Sirname}"/>

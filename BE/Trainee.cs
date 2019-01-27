@@ -9,7 +9,7 @@ namespace BE
     {
         #region private variables
         private string _traineeId;
-        private string _sirname;
+        private string _surname;
         private string _firstName;
         private DateTime _dateOfBirth=DateTime.Now.AddYears(-1*(int)BE.Configuration.MinAgeOFTrainee);
         private Gender _traineeGender;
@@ -33,7 +33,7 @@ namespace BE
             get { return _traineeId; }
             set { _traineeId = value; }
         }
-        public string Sirname { get => _sirname; set => _sirname = value; }
+        public string Sirname { get => _surname; set => _surname = value; }
         public string FirstName { get => _firstName; set => _firstName = value; }
         public DateTime DateOfBirth { get => _dateOfBirth; set => _dateOfBirth = value; }
         public Gender TraineeGender { get => _traineeGender; set => _traineeGender = value; }
@@ -49,6 +49,7 @@ namespace BE
 
         public override string ToString()
         {
+            //format of tostring is : "property name: property value" 
             PropertyInfo[] _PropertyInfos = this.GetType().GetProperties(); ;
 
             var sb = new StringBuilder();

@@ -462,9 +462,6 @@ namespace BL
 
                 List<Test> testlist = GetListOfTests();
                 //gets all of the datetimes of the tests with the same student
-                //var testTime = from item in testlist
-                //             where item.TraineeId == T.TraineeId &&item.CarType==T.CarType
-                //           select item.DateAndHourOfTest;
                 if(testlist!=null)
                 if (testlist.Count > 0)
                 {
@@ -549,7 +546,7 @@ namespace BL
             List<int> availableHours = new List<int>();
             try
             {
-                //filters car typa and hasnt passed max tests
+                //filters car type and hasnt passed max tests
                 List<Tester> testers = GetListOfTesters();
                 var clear = from tester in testers
                             where tester.Testercar == T.CarType && HasntPassedMaxTests(tester, T.TestDate)
@@ -562,18 +559,19 @@ namespace BL
                 List<Tester> filteredTesters = new List<Tester>();
                 DateTime checkhour = T.TestDate;
                 checkhour = checkhour.AddHours(Configuration.StartOfWorkDay);
+                //makes a list of testers and their available hours 
                 Dictionary<string, List<int>> TestersAndHours = new Dictionary<string, List<int>>();
-                //      Dictionary<int,string> HoursAndTrainees = new Dictionary<int,string>();
-                //IEnumerable<IGrouping<string, int>> TrainersAndHours=from tester in cleanTesters group (new int()) by tester.TesterId ;
 
+                //goes through every hour of the day and adds to the dictionary
                 for (int i = Configuration.StartOfWorkDay; i < Configuration.EndOfWorkDay; i++)
                 {
+                    //gets all avialble testers in that hour
                     filteredTesters = AvailableTesters(checkhour, cleanTesters);
                     if (filteredTesters.Any())
                     {
                         foreach (Tester t in filteredTesters)
                         {
-
+                            //adds an hour to the tester
 
                             if (TestersAndHours.ContainsKey(t.TesterId))
                             {
@@ -585,62 +583,21 @@ namespace BL
                                 TestersAndHours.Add(t.TesterId, new List<int>());
                                 TestersAndHours[t.TesterId].Add(i);
                             }
-                            //  HoursAndTrainees.Add(i,t.TesterId);
+
                         }
 
                         availableHours.Add(i);
                     }
                     checkhour = checkhour.AddHours(1);
-                    //else throw new Exception("ERROR. There are no available testers that day.");
                 }
+                //if there are no available hours then the day gets blacked out
                 if (availableHours.Count == 0)
                     throw new Exception("ERROR. There are no available testers that day.");
                 return TestersAndHours;
-                //string hours = string.Join(",", availableHours);
-                //filteredTesters =AvailableTesters(T.DateAndHourOfTest, cleanTesters);
-                ////check for any testers in that hour
-                //if (!filteredTesters.Any())
-                //{
-                //    throw new Exception("ERROR. No testers available in that hour");
-                //}
-
-                //var first = filteredTesters.First();
-                //return first.TesterId;
-                //filters all of the cartypes
-                //var carMatch = from tester in filteredTesters
-                //    where tester.Testercar == T.CarType
-                //    select tester;
-                //if(!carMatch.Any())
-                //    throw new Exception("ERROR. There are no testers with that car type available that date.");
-                //filteredTesters = (List<Tester>) carMatch;
-                //string testerFound = "";
-                //foreach (Tester t in filteredTesters)
-                //{
-                //    if (HasntPassedMaxTests(t,T.TestDate))
-                //    {
-                //        testerFound = t.TesterId;
-                //        return testerFound;
-                //    }
-                //}
-                //throw new Exception("ERROR. Potential testers have passed their max amount of tests in a week");
+               
             }
             catch (Exception e)
             {
-
-                //Console.WriteLine(e.Message);
-                //if (e.Message == "ERROR. No testers available in that hour")
-                //{
-                //    if (availableHours.Any())
-                //    {
-                //        //Console.WriteLine("Avialable hours are: ");
-                //        string hours=string.Join(",",availableHours);
-                //        //Console.WriteLine(hours);
-                //        return "Avialable hours are: "+hours;
-                //    }
-
-
-                //}
-                // MessageBox.Show(e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
 
@@ -706,21 +663,18 @@ namespace BL
             List<Tester> filteredTesters = new List<Tester>();
             try
             {
-
-
-                // List<Tester> testerlist = dal.GetListOfTesters();
-
+                //gets testers with the distance 
                 Dictionary<Tester, string> testersWithDistance = new Dictionary<Tester, string>();
-                //makes a random number for distance
-                // Random r = new Random();
-                //int x = r.Next(100, 1000);
+               
                 foreach (Tester t in testerlist)
                 {
-
+                    //gets distance between tester and test address
                     string distance = adressDistance(t.TesterAdress.ToString(), a.ToString());
                     if (!distance.Contains("ERROR"))
                     {
+                        //gets the distance
                         List<string> dis = distance.Split(',').ToList<string>();
+                        //if the ditance is smaller then the max distance it adds the tester to the list
                         if (float.Parse(dis.First()) <= t.MaxDistanceForTest)
                         {
                             testersWithDistance.Add(t, dis.First());
@@ -734,7 +688,7 @@ namespace BL
 
 
                 }
-
+                //orders the testers by the ditance to the test address
                 var filter = filteredTesters.OrderBy(x => testersWithDistance[x]);
                 filteredTesters = filter.ToList();
                 return filteredTesters;
@@ -748,7 +702,8 @@ namespace BL
             }
         }
 
-        public List<Tester> AvailableTesters(DateTime dateAndHour, List<Tester> testersWithCar)//all available testers in that hour schedual and other test wise
+        //all available testers in that hour schedual and other test wise
+        public List<Tester> AvailableTesters(DateTime dateAndHour, List<Tester> testersWithCar)
         {
             List<Test> testlist = dal.GetListOfTests();
             
@@ -756,23 +711,22 @@ namespace BL
             List<Tester> filteredTesters = new List<Tester>();
             int dayOfWeek = (int)dateAndHour.DayOfWeek;
             int hour = dateAndHour.Hour;
+            //if the day and hour is in range
             if (dayOfWeek < 5 && hour >= Configuration.StartOfWorkDay && hour <= Configuration.EndOfWorkDay)
                 foreach (Tester t in testersWithCar)
                 {
-
-                    //var row = Enumerable.Range(0, t.Schedule.GetLength(1))
-                    //    .Select(x => t.Schedule[dayOfWeek, x])
-                    //    .ToArray();
-                    ////no other tests in that hour with the same tester
+                    //gets all hours in a day 
                     var colum = Enumerable.Range(0, t._schedual.GetLength(0))
                         .Select(x => t._schedual[x, dayOfWeek])
                         .ToArray();
                     if(testlist!=null)
-                    { bool noOtherTest =
+                    {
+                        //if there is another test in that hour
+                        bool noOtherTest =
                         testlist.Where(x => x.TestDate == dateAndHour.Date && x.TesterId == t.TesterId)
                         .All(delegate (Test x) { return x.DateAndHourOfTest.Hour != hour; });
 
-                    //.All(x => x.DateAndHourOfTest.Hour != hour);
+                    
                     //if the tester is available in that hour and doesnt have any other tests 
                     if (colum[hour - Configuration.StartOfWorkDay] != false && noOtherTest)
                         filteredTesters.Add(t);
@@ -982,7 +936,7 @@ namespace BL
         }
 
         #endregion
-
+        //returns the distance between two addresses
         public string adressDistance(string origin, string destination)
         {
 

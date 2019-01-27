@@ -27,6 +27,7 @@ namespace BL
 
         #endregion
 
+        //get lists
         List<Tester> GetListOfTesters();
         List<Trainee> GetListOfTrainees();
         List<Test> GetListOfTests();
@@ -122,9 +123,14 @@ namespace BL
         /// 
         /// </summary>
         /// <param name="predicate"></param>
-        /// <returns>returns a list of all thats that the predicate returns true</returns>
+        /// <returns>returns a list of all tests that the predicate returns true</returns>
         IEnumerable<Test> AllTestsThat(Func<Test,bool> predicate=null);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns>returns a list of all trainees that the predicate returns true</returns>
         List<Trainee> AllTraineesThat(Func<Trainee, bool> predicate= null);
         /// <summary>
         /// 
@@ -156,6 +162,11 @@ namespace BL
         IEnumerable<IGrouping<string, Trainee>> TraineesByTeachers(bool orderList = false);
         IEnumerable<IGrouping<int, Trainee>> TraineesByNumTestsDone(bool orderList = false);
         #endregion
+
+        /// <summary>
+        /// gives back the distance between two addresses
+        /// </summary>
+        /// <returns></returns>
         string adressDistance(string origin, string destination);
 
 

@@ -122,7 +122,7 @@ namespace DAL
                                     select new XElement("tester",
                                         new XElement("id", t.TesterId),
                                         new XElement("firstName", t.FirstName),
-                                        new XElement("sirName", t.Sirname),
+                                        new XElement("sirName", t.Surname),
                                         new XElement("dateOfBirth", t.DateOfBirth),
                                         new XElement("gender", t.TesterGender),
                                         new XElement("phoneNumber", t.PhoneNumber),
@@ -395,7 +395,7 @@ namespace DAL
                           {
                               TesterId = t.Element("id").Value,
                               FirstName = t.Element("name").Element("firstName").Value,
-                              Sirname = t.Element("name").Element("sirName").Value,
+                              Surname = t.Element("name").Element("sirName").Value,
                               DateOfBirth = DateTime.Parse(t.Element("DateOfBirth").Value),
                               TesterGender = (Gender)Enum.Parse(typeof(Gender), t.Element("gender").Value),
                               PhoneNumber = t.Element("PhoneNumber").Value,
@@ -514,7 +514,7 @@ namespace DAL
             loadData( testerPath);
             var id = new XElement("id", tester.TesterId);
             var firstName = new XElement("firstName", tester.FirstName);
-            var sirName = new XElement("sirName", tester.Sirname);
+            var sirName = new XElement("sirName", tester.Surname);
             var dateOfBirth = new XElement("dateOfBirth", tester.DateOfBirth);
             var gender = new XElement("gender", tester.TesterGender);
             var phoneNumber = new XElement("phoneNumber", tester.PhoneNumber);
@@ -565,7 +565,7 @@ namespace DAL
                                       where t.Element("id").Value == tester.TesterId
                                       select t).FirstOrDefault();
             testerElement.Element("firstName").Value = tester.FirstName;
-            testerElement.Element("sirName").Value = tester.Sirname;
+            testerElement.Element("sirName").Value = tester.Surname;
             testerElement.Element("dateOfBirth").Value = tester.DateOfBirth.ToString();
             testerElement.Element("gender").Value = tester.TesterGender.ToString();
             testerElement.Element("phoneNumber").Value = tester.PhoneNumber;
@@ -699,7 +699,7 @@ namespace DAL
                            {
                                TesterId = t.Element("id").Value,
                                FirstName = t.Element("firstName").Value,
-                               Sirname = t.Element("sirName").Value,
+                               Surname = t.Element("sirName").Value,
                                DateOfBirth = DateTime.Parse(t.Element("dateOfBirth").Value),
                                TesterGender = (Gender)Enum.Parse(typeof(Gender), t.Element("gender").Value),
                                PhoneNumber = t.Element("phoneNumber").Value,

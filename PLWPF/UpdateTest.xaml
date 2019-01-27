@@ -130,8 +130,6 @@
             </GroupBox>
             <TextBlock x:Name="warningTextBlock" Text="ERROR, Please fill all fields" Foreground="Red" VerticalAlignment="Center" Width="auto" Margin="8" HorizontalAlignment="Center" Visibility="Hidden"/>
             <Button x:Name="saveButton" Content="Check" Width="75" Click="SaveButton_Click"/>
-            <Button x:Name="Button" Content="Save" Width="75" Margin="8" IsEnabled="False" Click="Button_Click"/>
-
 
 
         </StackPanel>

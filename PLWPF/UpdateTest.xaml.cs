@@ -138,12 +138,13 @@ namespace PLWPF
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (saveButton.Content == "Save")
+            if (saveButton.Content.ToString() == "Save")
             {
-                bl.UpdateTest(TestForPL);
+               // bl.UpdateTest(TestForPL);
+                lastCheck();
                 MessageBox.Show("Test saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            if (saveButton.Content == "Check")
+            if (saveButton.Content.ToString() == "Check")
             {
                 if (!ThereNoEmptyFiles())
                     warningTextBlock.Visibility = Visibility.Visible;
@@ -152,12 +153,12 @@ namespace PLWPF
                 if (warningTextBlock.Visibility == Visibility.Hidden && warningTextBlock1.Visibility == Visibility.Hidden)
                 {
                     saveButton.Content = "Save";
-                    Button.IsEnabled = true;
+                    //Button.IsEnabled = true;
                 }
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void lastCheck()
         {
             if (keptDistanceCheckBox.IsChecked == true)
                 TestForPL.KeptDistance = true;

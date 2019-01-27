@@ -501,7 +501,7 @@ namespace PLWPF
             }
             else
             {
-                TesterErrors.Text = "ERROR. No testers found.";
+                TesterErrors.Text = "ERROR. No testers found. Check internet and Tester addresses";
                 TesterErrors.Foreground = Brushes.Red;
                 TesterErrors.Visibility = Visibility.Visible;
 

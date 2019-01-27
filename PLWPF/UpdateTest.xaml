@@ -88,43 +88,43 @@
 
                     <Label Content="Check Mirrors:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
                     <CheckBox x:Name="checkMirrorsCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left"
-                                      IsChecked="{Binding CheckMirrors, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="0" VerticalAlignment="Center" IsThreeState="True"/>
+                                      IsChecked="{Binding CheckMirrors, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="0" VerticalAlignment="Center" />
 
                     <Label Content="Imediate Stop:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
                     <CheckBox x:Name="imediateStopCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left"
-                                      IsChecked="{Binding ImediateStop, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3,0,0,8" Grid.Row="1" VerticalAlignment="Bottom" IsThreeState="True"/>
+                                      IsChecked="{Binding ImediateStop, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3,0,0,8" Grid.Row="1" VerticalAlignment="Bottom" />
 
                     <Label Content="Kept Distance:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="2" VerticalAlignment="Center"/>
                     <CheckBox x:Name="keptDistanceCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left"
-                                      IsChecked="{Binding KeptDistance, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3,0,0,8" Grid.Row="2" VerticalAlignment="Bottom" IsThreeState="True"/>
+                                      IsChecked="{Binding KeptDistance, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3,0,0,8" Grid.Row="2" VerticalAlignment="Bottom" />
 
                     <Label Content="Kept Rightof Presidence:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="3" VerticalAlignment="Center"/>
                     <CheckBox x:Name="keptRightofPresidenceCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Right"
-                                      IsChecked="{Binding KeptRightofPresidence, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="0,8,5,8" Grid.Row="3" VerticalAlignment="Center" IsThreeState="True"/>
+                                      IsChecked="{Binding KeptRightofPresidence, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="0,8,5,8" Grid.Row="3" VerticalAlignment="Center" />
 
                     <Label Content="Parking:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="4" VerticalAlignment="Center"/>
                     <CheckBox x:Name="parkingCheckBox" Content="" Grid.Column="1"
-                                      IsChecked="{Binding Parking, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3,8,4,8" Grid.Row="4" VerticalAlignment="Center" IsThreeState="True"/>
+                                      IsChecked="{Binding Parking, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3,8,4,8" Grid.Row="4" VerticalAlignment="Center" />
 
                     <Label Content="Reverse Parking:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="5" VerticalAlignment="Center"/>
                     <CheckBox x:Name="reverseParkingCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left"
-                                      IsChecked="{Binding ReverseParking, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="5" VerticalAlignment="Center" IsThreeState="True"/>
+                                      IsChecked="{Binding ReverseParking, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="5" VerticalAlignment="Center" />
 
                     <Label Content="Right Turn:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="6" VerticalAlignment="Center"/>
                     <CheckBox x:Name="rightTurnCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left"
-                                      IsChecked="{Binding RightTurn, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="6" VerticalAlignment="Center" IsThreeState="True"/>
+                                      IsChecked="{Binding RightTurn, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="6" VerticalAlignment="Center" />
 
                     <Label Content="Stopped Atcross Walk:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="7" VerticalAlignment="Center"/>
                     <CheckBox x:Name="stoppedAtcrossWalkCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left"
-                                      IsChecked="{Binding StoppedAtcrossWalk, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="7" VerticalAlignment="Center" IsThreeState="True"/>
+                                      IsChecked="{Binding StoppedAtcrossWalk, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="7" VerticalAlignment="Center" />
 
                     <Label Content="Stopped At Red:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="8" VerticalAlignment="Center"/>
                     <CheckBox x:Name="stoppedAtRedCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left"
-                                      IsChecked="{Binding StoppedAtRed, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="8" VerticalAlignment="Center" IsThreeState="True"/>
+                                      IsChecked="{Binding StoppedAtRed, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="8" VerticalAlignment="Center"/>
 
                     <Label Content="Used Signal:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="9" VerticalAlignment="Center"/>
                     <CheckBox x:Name="usedSignalCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left"
-                                          IsChecked="{Binding UsedSignal, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="9" VerticalAlignment="Center" IsThreeState="True"/>
+                                          IsChecked="{Binding UsedSignal, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="9" VerticalAlignment="Center"/>
 
                 </Grid>
             </GroupBox>

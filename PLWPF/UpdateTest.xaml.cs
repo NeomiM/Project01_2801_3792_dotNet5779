@@ -52,13 +52,13 @@ namespace PLWPF
 
 
 
-                
+                testPassedCheckBox.IsEnabled = false;
                 bl = IBL_imp.Instance;
                 TestForPL = new Test();
                 this.TestDetailsGrid.DataContext = TestForPL;
                 this.commentsGroupBox.DataContext = TestForPL;
-                this.testPassedGrid.DataContext = TestForPL;
-                this.BoolItemsGrid.DataContext = TestForPL;
+              //  this.testPassedGrid.DataContext = TestForPL;
+               // this.BoolItemsGrid.DataContext = TestForPL;
                 TestListForPL = bl.GetListOfTests();
                 if(TestListForPL==null)
                    throw new Exception("There are no Tests to update");
@@ -85,6 +85,17 @@ namespace PLWPF
             testPassedCheckBox.IsEnabled = false;
             BoolItemsGrid.IsEnabled = false;
             saveButton.IsEnabled = false;
+            checkMirrorsCheckBox.IsChecked = false;
+            imediateStopCheckBox.IsChecked = false;
+            keptRightofPresidenceCheckBox.IsChecked = false;
+            parkingCheckBox.IsChecked = false;
+            reverseParkingCheckBox.IsChecked = false;
+            rightTurnCheckBox.IsChecked = false;
+            stoppedAtcrossWalkCheckBox.IsChecked = false;
+            stoppedAtRedCheckBox.IsChecked = false;
+            usedSignalCheckBox.IsChecked = false;
+
+
         }
 
         public void openAll()
@@ -93,24 +104,34 @@ namespace PLWPF
             testerIdTextBox.IsEnabled = true;
             traineeIdTextBox.IsEnabled = true;
             commentsGroupBox.IsEnabled = true;
-            testPassedCheckBox.IsEnabled = true;
+           // testPassedCheckBox.IsEnabled = true;
             BoolItemsGrid.IsEnabled = true;
             saveButton.IsEnabled = true;
         }
 
         public bool ThereNoEmptyFiles()
         {
+            int EmptyFields = 0;
             bool allfill = true;            
-            if (checkMirrorsCheckBox.IsChecked == false || checkMirrorsCheckBox.IsThreeState == false) allfill = false;
-            if (imediateStopCheckBox.IsChecked == false || imediateStopCheckBox.IsThreeState == false) allfill = false;
-            if (keptDistanceCheckBox.IsChecked == false || keptDistanceCheckBox.IsThreeState == false) allfill = false;
-            if (keptRightofPresidenceCheckBox.IsChecked == false || keptRightofPresidenceCheckBox.IsThreeState == false) allfill = false;
-            if (parkingCheckBox.IsChecked == false || parkingCheckBox.IsThreeState == false) allfill = false;
-            if (reverseParkingCheckBox.IsChecked == false || reverseParkingCheckBox.IsThreeState == false) allfill = false;
-            if (rightTurnCheckBox.IsChecked == false || rightTurnCheckBox.IsThreeState == false) allfill = false;
-            if (stoppedAtcrossWalkCheckBox.IsChecked == false || stoppedAtcrossWalkCheckBox.IsThreeState == false) allfill = false;
-            if (stoppedAtRedCheckBox.IsChecked == false || stoppedAtRedCheckBox.IsThreeState == false) allfill = false;
-            if (usedSignalCheckBox.IsChecked == false || usedSignalCheckBox.IsThreeState == false) allfill = false;
+            if (checkMirrorsCheckBox.IsChecked == false ) EmptyFields++;
+            if (imediateStopCheckBox.IsChecked == false ) EmptyFields++;
+            if (keptDistanceCheckBox.IsChecked == false ) EmptyFields++;
+            if (keptRightofPresidenceCheckBox.IsChecked == false) EmptyFields++;
+            if (parkingCheckBox.IsChecked == false ) EmptyFields++;
+            if (reverseParkingCheckBox.IsChecked == false ) EmptyFields++;
+            if (rightTurnCheckBox.IsChecked == false ) EmptyFields++;
+            if (stoppedAtcrossWalkCheckBox.IsChecked == false ) EmptyFields++;
+            if (stoppedAtRedCheckBox.IsChecked == false ) EmptyFields++;
+            if (usedSignalCheckBox.IsChecked == false ) EmptyFields++;
+            if (EmptyFields > 5)
+            {
+                allfill = false;
+            }
+            else
+            {
+                testPassedCheckBox.IsChecked = true;
+            }
+
             return allfill;
         }
 
@@ -138,31 +159,52 @@ namespace PLWPF
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (saveButton.Content.ToString() == "Save")
+            try
             {
-               // bl.UpdateTest(TestForPL);
-                lastCheck();
-                MessageBox.Show("Test saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            if (saveButton.Content.ToString() == "Check")
-            {
-                if (!ThereNoEmptyFiles())
-                    warningTextBlock.Visibility = Visibility.Visible;
-                if (testPassedCheckBox.IsChecked == false || testPassedCheckBox.IsThreeState == false)
-                    warningTextBlock1.Visibility = Visibility.Visible;
-                if (warningTextBlock.Visibility == Visibility.Hidden && warningTextBlock1.Visibility == Visibility.Hidden)
+
+                if (saveButton.Content.ToString() == "Save")
                 {
-                    saveButton.Content = "Save";
-                    //Button.IsEnabled = true;
+
+                    fillFields();
+                    bl.UpdateTest(TestForPL);
+                    TestForPL=new Test();
+                    this.TestDetailsGrid.DataContext = TestForPL;
+                    this.commentsGroupBox.DataContext = TestForPL;
+                    MessageBox.Show("Test saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    closeAlmostAll();
                 }
+
+                if (saveButton.Content.ToString() == "Check")
+                {
+                    warningTextBlock.Visibility = Visibility.Hidden;
+                    warningTextBlock1.Visibility = Visibility.Hidden;
+
+                    if (!ThereNoEmptyFiles())
+                        warningTextBlock.Visibility = Visibility.Visible;
+                    if (testPassedCheckBox.IsChecked == false )
+                        warningTextBlock1.Visibility = Visibility.Visible;
+                    if (warningTextBlock.Visibility == Visibility.Hidden &&
+                        warningTextBlock1.Visibility == Visibility.Hidden)
+                    {
+                        saveButton.Content = "Save";
+                        //Button.IsEnabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message+" Test not saved.", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                saveButton.Content = "Check";
+
             }
         }
 
-        private void lastCheck()
+        private void fillFields()
         {
             if (keptDistanceCheckBox.IsChecked == true)
                 TestForPL.KeptDistance = true;
-            else TestForPL.KeptDistance = false;
+            else 
+                TestForPL.KeptDistance = false;
 
             if (parkingCheckBox.IsChecked == true)
                 TestForPL.Parking = true;
@@ -206,9 +248,9 @@ namespace PLWPF
 
             TestForPL.RemarksOnTest = commentsTextBox.Text;
 
-            bl.UpdateTest(TestForPL);
+           // bl.UpdateTest(TestForPL);
 
-            MessageBox.Show("Test saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
+           // MessageBox.Show("Test saved successfully", "", MessageBoxButton.OK, MessageBoxImage.Information);
             testIdComboBox.SelectedItem = null;
 
         }

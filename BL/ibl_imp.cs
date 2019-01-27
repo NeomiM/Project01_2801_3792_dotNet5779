@@ -204,27 +204,27 @@ namespace BL
         public void UpdateTest(Test T)
         {
             //UpdateTest(T);
-            try
-            {
+            //try
+            //{
                 //checks all of the bool properties to see if any are empty
                 bool emptyfield = T.GetType().GetProperties()
-                    .Where(pi => pi.PropertyType == typeof(string))
-                    .Select(pi => (string)pi.GetValue(T))
+                    .Where(pi => pi.PropertyType == typeof(bool))
+                    .Select(pi => (bool)pi.GetValue(T))
                     .Any(value => value == null);
-                if (emptyfield || T.RemarksOnTest == null)
+                if (emptyfield )
                     throw new Exception("ERROR. Not all of fields for end of test filled");
                 var mostFailed = T.GetType().GetProperties()
-                    .Where(pi => pi.PropertyType == typeof(bool))
-                    .Select(pi => (bool)pi.GetValue(T) == false);
-                if (mostFailed.Count(x => x == false) > 5 && T.TestPassed == true)
+                    .Where(pi => pi.PropertyType == typeof(bool?))
+                    .Select(pi => (bool?)pi.GetValue(T) == false);
+                if (mostFailed.Count(x => x == true) > 5 && T.TestPassed == true)
                     throw new Exception("ERROR. Cannot pass a student if failed more then five checks." +
                                         " The test will not be updated.");
                 dal.UpdateTest(T);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
         }
 
         #endregion
@@ -829,7 +829,7 @@ namespace BL
             {
 
             var tests = from test in testList
-                        where test.TestPassed && test.TraineeId == T.TraineeId
+                        where test.TestPassed==true && test.TraineeId == T.TraineeId
                         select test;
             if (tests.Any())
                 return true;
@@ -878,7 +878,7 @@ namespace BL
             {
 
             var tests = from test in testList
-                        where test.TestPassed && test.TraineeId == T.TraineeId
+                        where test.TestPassed==true && test.TraineeId == T.TraineeId
                         select test;
             if (!tests.Any())
                 return true;

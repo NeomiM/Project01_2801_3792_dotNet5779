@@ -61,7 +61,7 @@
 
                 </Grid>
             </GroupBox>
-            <TextBlock x:Name="warningTextBlock1" Text="ERROR, Please fill field" Foreground="Red" VerticalAlignment="Center" HorizontalAlignment="Center" Width="auto" Margin="8" Visibility="Hidden"/>
+            <!--<TextBlock x:Name="warningTextBlock1" Text="ERROR, Please fill field" Foreground="Red" VerticalAlignment="Center" HorizontalAlignment="Center" Width="auto" Margin="8" Visibility="Hidden"/>-->
 
         </StackPanel>
 
@@ -88,7 +88,7 @@
 
                     <Label Content="Check Mirrors:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
                     <CheckBox x:Name="checkMirrorsCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left"
-                                      IsChecked="{Binding CheckMirrors, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="0" VerticalAlignment="Center" />
+                                      IsChecked="{Binding CheckMirrors, Mode=TwoWay, NotifyOnValidationError=true, ValidatesOnExceptions=true}" Margin="3" Grid.Row="0" VerticalAlignment="Center"/>
 
                     <Label Content="Imediate Stop:" Grid.Column="0" HorizontalAlignment="Left" Margin="3" Grid.Row="1" VerticalAlignment="Center"/>
                     <CheckBox x:Name="imediateStopCheckBox" Content="" Grid.Column="1" HorizontalAlignment="Left"
